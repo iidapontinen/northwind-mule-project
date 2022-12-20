@@ -1,0 +1,6 @@
+#%RAML 1.0 NamedExample
+inquiry-example:
+  
+  customerID: PULP
+  productID: 34
+  quantity: 10
