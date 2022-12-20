@@ -1,0 +1,35 @@
+#%RAML 1.0 DataType
+displayName: Offer Details
+description: All details for all offers
+type: object
+properties:
+  offerID?:
+    type: integer 
+  status?:
+    enum:
+      - Pending
+      - Proposed
+      - Rejected
+      - Accepted
+      - Shipped
+      - Out of stock
+  dateCreated?:
+    type: date-only
+  employeeID:
+    type: integer
+  customerID?:
+    type: string
+    minLength: 2
+    maxLength: 5
+  productID:
+    type: integer
+  quantity:
+    type: integer
+  orderID?:
+    type: integer
+  totalPrice?:
+    type: integer
+  priceDiscount?:
+    type: integer
+  paymentTransactionID?:
+    type: integer
