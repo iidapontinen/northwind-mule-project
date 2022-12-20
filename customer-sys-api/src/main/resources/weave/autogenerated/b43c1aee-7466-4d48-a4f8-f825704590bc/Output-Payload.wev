@@ -1,0 +1,4 @@
+%dw 2.0
+
+type auto_b43c1aee_7466_4d48_a4f8_f825704590bc_Output_Payload = Array<{|  CustomerID: String,   CompanyName: String,   ContactName?: String,   ContactTitle?: String,   Address?: String,   City?: String,   Region?: String,   PostalCode?: String,   Country?: String,   Phone?: String,   Fax?: String|}>
+
