@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="implementation-test-suite.xml" />
+	<munit:test name="eapi-implementation-test-suite-successful-get" doc:id="08089464-fab9-4abc-bb46-f5ebf187fbdf" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="e74ce9a5-8205-46bc-a95d-0a022249891d" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="30c670f3-f6f1-4bde-97dc-5f8bc6f44d70" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value='#[%dw 2.0&#10;output application/json&#10;---&#10;[&#10;    {&#10;        "CustomerID": "ALFKI",&#10;        "CompanyName": "Alfreds Futterkiste",&#10;        "ContactName": "Maria Anders"&#10;    },&#10;    {&#10;        "CustomerID": "ANATR",&#10;        "CompanyName": "Ana Trujillo Emparedados y helados",&#10;        "ContactName": "Ana Trujillo"&#10;    }&#10; &#10;]]' mediaType="application/json" />
+				</munit-tools:then-return>
+			
+</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to get-customers-eapi-flow" doc:id="647a1f1a-52dd-49ef-b379-9b78a6cb92d3" name="get-customers-eapi-flow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert expression" doc:id="788e987a-8d0b-4c1f-b01f-dd8c7d1ac0cf" />
+		</munit:validation>
+	</munit:test>
+<!-- [STUDIO:"eapi-implementation-test-suite-succesfful-post-response-to-client"]	<munit:test name="eapi-implementation-test-suite-succesfful-post-response-to-client" doc:id="4d8e069d-eb5c-4d81-a77b-52f75ab55420" description="Test">
+		<munit:behavior >
+			<munit:set-event doc:name="Set Event" doc:id="31bab586-b1bf-4c85-b8a1-208a95c9a010" >
+				<munit:payload value='#[output application/xml&#10;&#45;&#45;-&#10;"message": "Customer added successfully."]' />
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to post-customers-eapi-flow" doc:id="3a126b5e-f5e2-484c-9fcd-32980d1bf104" name="post-customers-eapi-flow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert expression" doc:id="552979e1-f14e-43ee-aad9-ccdd88a8a34b" />
+		</munit:validation>
+	</munit:test> [STUDIO] -->
+	<munit:test name="eapi-implementation-test-suite-successful-post-customer" doc:id="9045df45-b6cf-427b-899a-f6252ecff705" description="Test">
+		<munit:behavior >
+			<munit:set-event doc:name="Set Event" doc:id="57fd78f2-52b9-42d1-9454-39eded81a0e9" >
+				<munit:payload value='#[{&#10;    customer: {&#10;      customerID: "ID",&#10;      companyName: "myCompany",&#10;      contactName: "John Larsen",&#10;      contactTitle: "Manager",&#10;      address: "Kapelvej 15",&#10;      postalCode: "2200",&#10;      country: "Finland",&#10;      phone: "0045 29157586"&#10;    }&#10;  }]' />
+			</munit:set-event>
+			<munit-tools:mock-when doc:name="Mock when" doc:id="cc918079-3bcf-405d-b27f-c088e3e9228e" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="b7aa0f05-f3b2-4fb2-b05a-ea5466458836" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value='#[output application/json&#10;---&#10;"message": "Customer added successfully."]' />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to post-customers-eapi-flow" doc:id="1e950280-ebe1-4e8a-8c6c-b448cda99c86" name="post-customers-eapi-flow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="3800e8d8-19c6-4eaa-b571-c63d132af199" actual="#[output application/json&#10;---&#10;payload.message]" expected="Customer added successfully." message="Error message not received."/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="eapi-implementation-test-suite-get-error-path-HTTP-connectivity" doc:id="6e05a780-543e-445c-85d2-2c25827a34c5" description="Test" timeOut="600000">
+		<munit:behavior>
+			<munit-tools:mock-when doc:name="Mock when" doc:id="7365d18b-420b-48b6-8c7e-aeb60a207a08" processor="http:request">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute whereValue="30c670f3-f6f1-4bde-97dc-5f8bc6f44d70" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return>
+					<munit-tools:error typeId="HTTP:CONNECTIVITY" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution>
+			<flow-ref doc:name="Flow-ref to get-customers-eapi-flow" doc:id="22cfba50-b70a-4152-8828-6025d5ce3454" name="get-customers-eapi-flow" />
+		</munit:execution>
+		<munit:validation>
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="7746d4cf-450e-4be3-a8c6-898dbbc6ce7a" actual="#[output application/json&#10;---&#10;payload.message]" expected="Connectivity error. Try again later." message="Error message not received." />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="eapi-implementation-test-suite-post-error-path-HTTP-query-execution" doc:id="bc75681e-c38c-44e4-a8c4-710213dfc6d4" description="Test" timeOut="600000">
+		<munit:behavior>
+			<munit:set-event doc:name="Set Event" doc:id="0c19ddb5-2a67-4c2e-98cb-5af5c7b805c0">
+				<munit:payload value='#[output application/xml&#10;---&#10;{&#10;    customer: {&#10;      customerID: "ID",&#10;      companyName: "myCompany",&#10;      contactName: "John Larsen",&#10;      contactTitle: "Manager",&#10;      address: "Kapelvej 15",&#10;      postalCode: "2200",&#10;      country: "Finland",&#10;      phone: "0045 29157586"&#10;    }&#10;  }]' />
+			</munit:set-event>
+			<munit-tools:mock-when doc:name="Mock when" doc:id="e3b9829f-05b2-4a2a-97df-c1376dc428d6" processor="http:request">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute whereValue="b7aa0f05-f3b2-4fb2-b05a-ea5466458836" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return>
+					<munit-tools:error typeId="HTTP:BAD_REQUEST" />
+				</munit-tools:then-return>
+			
+</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution>
+			<flow-ref doc:name="Flow-ref to post-customers-eapi-flow" doc:id="14344951-03a3-4850-b5da-861b50707c14" name="post-customers-eapi-flow" />
+		</munit:execution>
+		<munit:validation>
+
+<!-- [STUDIO:"Assert that"]			<munit-tools:assert-that doc:name="Assert that" doc:id="435388a6-7235-45ac-9cde-6ebfa0181ee0" is="#[MunitTools::notNullValue()]"/> [STUDIO] -->
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="6ef8a71f-2ad4-4c6e-ad25-baf576505c36" actual="#[output application/json&#10;---&#10;payload.message]" expected="#[error.muleMessage.payload.message]" message="Error message not received." />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="eapi-implementation-test-suite-get-error-path-ANY" doc:id="2813ce8d-1d58-4381-a5c1-fadb41d01fd0" description="Test" expectedErrorType="ANY" timeOut="600000">
+		<munit:behavior>
+			<munit-tools:mock-when doc:name="Mock when" doc:id="8d6c638d-2ffb-4c52-a73a-350c5cf80405" processor="http:request">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute whereValue="30c670f3-f6f1-4bde-97dc-5f8bc6f44d70" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return>
+					<munit-tools:error typeId="ANY" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution>
+			<flow-ref doc:name="Flow-ref to get-customers-eapi-flow" doc:id="76bc7917-6dec-4381-ac97-d835ed4d13f5" name="get-customers-eapi-flow" />
+		</munit:execution>
+		<munit:validation>
+<!-- [STUDIO:"Assert expression"]			<munit-tools:assert doc:name="Assert expression" doc:id="196b5d9d-b42f-4618-aaec-ba044108b6d4" /> [STUDIO] -->
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="676d4e73-a563-4bd7-93a2-483a9e0d25c1" expected='#["message": error.description]' actual="#[output application/json&#10;---&#10;payload.message]" message="Error message not received."/>
+		</munit:validation>
+	</munit:test>
+
+
+</mule>

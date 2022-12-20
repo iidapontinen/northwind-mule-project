@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="3446bb62-026a-49dc-ad47-6272c98da9f8" >
+		<http:request-connection host="${sapi.host}" port="${sapi.port}" connectionIdleTimeout="3000000">
+			<reconnection >
+				<reconnect />
+			</reconnection>
+		</http:request-connection>
+	</http:request-config>
+	<configuration-properties doc:name="Configuration properties" doc:id="2a1954b0-80e1-446c-9ee5-93068e661b72" file="config.yaml" />
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="ace7b2a2-b185-4e53-837d-dbf0b9bd4a15" >
+		<http:listener-connection host="0.0.0.0" port="8082" />
+	</http:listener-config>
+	<configuration doc:name="Configuration" doc:id="f6548d94-c860-4f92-968e-5fe7406e465c" defaultErrorHandler-ref="globalError_Handler" />
+	<error-handler name="globalError_Handler" doc:id="15d32bff-10e4-4bc0-b637-d9e4ff89e0c8" >
+		<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="a8973560-9f87-4dfd-8e86-564238ee9510" type="HTTP:CONNECTIVITY">
+			<ee:transform doc:name="Transform Message" doc:id="8be208c0-d9dd-466c-91c2-1ee3cd57de8c" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/xml
+---
+"message": "Connectivity error. Try again later." ++ error.description as String
+]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+			<set-variable value="500" doc:name="httpStatus" doc:id="443c994c-b612-42f4-91a6-10a697498a94" variableName="httpStatus"/>
+		</on-error-continue>
+		<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="596be83f-a45c-4bd9-8b21-a1ce6f2d086f" type="HTTP:BAD_REQUEST">
+			<ee:transform doc:name="Transform Message" doc:id="8616e888-8454-40e4-a0c8-d9c489af0528" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/xml
+---
+"message": error.muleMessage.payload.message
+
+]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+			<set-variable value="#[error.muleMessage.attributes.statusCode]" doc:name="httpStatus" doc:id="5a80cdbf-1a1d-4ff7-89b1-13eb84539c7f" variableName="httpStatus"/>
+		</on-error-continue>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="adc01fc3-3886-4aad-9725-e12b70696c4a" type="ANY">
+			<ee:transform doc:name="Transform Message" doc:id="3fc397a0-1037-4fd7-af1c-0cfe9782a893" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/xml
+---
+"message": error.description]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+			<set-variable value="500" doc:name="httpStatus" doc:id="7f7bbb8b-eb6f-425b-b143-08c06227b341" variableName="httpStatus"/>
+		</on-error-propagate>
+	</error-handler>
+</mule>

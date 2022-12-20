@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<customers>
+<customer>
+<customerID>ASDF</customerID>
+<companyName>ABC Corp</companyName>
+<contactName>Ann John</contactName>
+</customer>
+<customer>
+<customerID>QWERT</customerID>
+<companyName>ABC Corp</companyName>
+<contactName>Ann John</contactName>
+</customer>
+</customers>

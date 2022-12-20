@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<customer>
+<customerID>QWER</customerID>
+<companyName>Seb's Beer Bar</companyName>
+<contactName>Seb Anders</contactName>
+<contactTitle>Bar tender</contactTitle>
+<address>Timonkatu 57</address>
+<postalCode>12209</postalCode>
+<country>Finland</country>
+<phone>030-0074321</phone>
+</customer>

@@ -4,7 +4,10 @@
 	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
-	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="fab551dc-972f-403e-8683-11426aa45de9" >
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="699ececf-d994-4701-86fd-4e703988d87e" >
 		<http:listener-connection host="0.0.0.0" port="8081" />
 	</http:listener-config>
+	<flow name="offer-sys-apiFlow" doc:id="69d21276-145b-4ecd-a229-efdf8b4681f5" >
+		<http:listener doc:name="Listener" doc:id="e1ca9161-4a9d-4311-8aa5-52cbf9fb11c7" />
+	</flow>
 </mule>

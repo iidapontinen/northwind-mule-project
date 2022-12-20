@@ -1,0 +1,28 @@
+[
+  {
+    "customerID": "QWERTY",
+    "companyName": "ABC Corp",
+    "contactName": "Ann John",
+    "contactTitle": "Owner",
+    "city": "Berlin",
+    "region": "null",
+    "address": "87 Polk St. Suite 5",
+    "postalcode": "1307",
+    "country": "Germany",
+    "phone": "0372-035180",
+    "fax": "null"
+  },
+  {
+    "customerID": "BLAHB",
+    "companyName": "YMC Company",
+    "contactName": "David Wallace",
+    "contactTitle": "Boss",
+    "city": "Manhattan",
+    "region": "null",
+    "address": "5th Avenue, Manhattan",
+    "postalcode": "10128",
+    "country": "USA",
+    "phone": "+1 212-753-4000",
+    "fax": "null"
+  }
+]

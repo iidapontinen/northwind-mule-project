@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+
+	<flow name="get-customers-eapi-flow" doc:id="ebbcb711-caf5-4c71-b4da-d10810341b65" >
+		<logger level="INFO" doc:name="Entering eapi getCustomers flow" doc:id="a8a4ac78-1dd0-4efd-8048-5f58c11e1972" />
+		<http:request method="GET" doc:name="Request to customers-sys-api" doc:id="30c670f3-f6f1-4bde-97dc-5f8bc6f44d70" config-ref="HTTP_Request_configuration" path="/api/customers" responseTimeout="300000"/>
+		<ee:transform doc:name="Transform Message from json to xml" doc:id="8deda804-093c-4378-8ff1-a5dd95611f66" >
+			<ee:message >
+				<ee:set-payload resource="get-customers-json-to-xml.dwl" />
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Leaving sapi getCustomers flow" doc:id="ed36eacf-056a-441f-9201-51c49f139747" />
+	</flow>
+	<flow name="post-customers-eapi-flow" doc:id="bfa58e4d-c986-40f3-b48e-2552d232b754" >
+	
+		<logger level="INFO" doc:name="Entering eapi postCustomers flow" doc:id="55d6ebd6-07c2-4fd5-a894-4e4d250abe84" message="Entering postCustomers flow"/>
+		<ee:transform doc:name="Transform Message from xml to json" doc:id="8707f697-cf06-4b98-90a7-1bae265c5121">
+			<ee:message>
+				<ee:set-payload resource="post-customer-xml-to-json.dwl" />
+			</ee:message>
+		</ee:transform>
+		<http:request method="POST" doc:name="Request to customers-sys-api" doc:id="b7aa0f05-f3b2-4fb2-b05a-ea5466458836" path="/api/customers" config-ref="HTTP_Request_configuration" responseTimeout="300000"/>
+		<logger level="INFO" doc:name="Leaving eapi postCustomers flow" doc:id="62ae0c29-2c7f-4309-ac21-0357b94baee5" />
+	</flow>
+</mule>
