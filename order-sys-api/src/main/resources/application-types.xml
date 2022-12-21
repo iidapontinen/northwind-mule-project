@@ -180,15 +180,7 @@ type auto_d7a6f37e_1e46_465d_92e0_5fbf288e8879_Output_Variables_outboundHeaders 
 type: string]]></types:shape>
     </types:type>
   </types:catalog>
-  <types:enrichment select="#bfe16ce4-5b35-4ec0-838b-691885673470">
-    <types:processor-declaration>
-      <types:output-event>
-        <types:message>
-          <types:payload type="orders-example-json"/>
-        </types:message>
-      </types:output-event>
-    </types:processor-declaration>
-  </types:enrichment>
+  <types:enrichment select="#bfe16ce4-5b35-4ec0-838b-691885673470"/>
   <types:enrichment select="#5d31c2e9-c6ba-4d15-bb98-7a9b8b03a7f6">
     <types:processor-declaration>
       <types:input-event>
@@ -213,15 +205,7 @@ type: string]]></types:shape>
       </types:output-event>
     </types:processor-declaration>
   </types:enrichment>
-  <types:enrichment select="#e4a07279-e56a-4d3b-b5e5-206bd862d25f">
-    <types:processor-declaration>
-      <types:output-event>
-        <types:message>
-          <types:payload type="order-example-json"/>
-        </types:message>
-      </types:output-event>
-    </types:processor-declaration>
-  </types:enrichment>
+  <types:enrichment select="#e4a07279-e56a-4d3b-b5e5-206bd862d25f"/>
   <types:enrichment select="#d7a6f37e-1e46-465d-92e0-5fbf288e8879">
     <types:processor-declaration>
       <types:input-event>

@@ -35,12 +35,11 @@ payload map ( payload01 , indexOfPayload01 ) -> {
 	<flow name="get-order-by-ID-flow" doc:id="d7a6f37e-1e46-465d-92e0-5fbf288e8879" >
 		<logger level="INFO" doc:name="Entering get-order-by-ID-flow" doc:id="0e8175b5-c059-4241-bc82-2a174004710a" />
 		<db:select doc:name="order by ID from Northwind" doc:id="8fbfd2b6-6e2f-43e4-a0ba-b39c62636bb4" config-ref="Northwind_database_Config">
-			<db:sql ><![CDATA[SELECT orders.*, offers.offerID, offers.dateApproved
+			<db:sql ><![CDATA[SELECT orders.orderID, orders.employeeID, orders.shipVia, orders.customerID, 
+orders.shippedDate, offers.offerID, offers.dateApproved
 FROM orders, offers
 WHERE orders.orderID = offers.orderID AND orders.orderID = :orderID]]></db:sql>
-			<db:input-parameters ><![CDATA[#[{ 
-	'orderID': attributes.uriParams.'orderID'
-}]]]></db:input-parameters>
+			<db:input-parameters ><![CDATA[#['orderID': attributes.uriParams.'orderID']]]></db:input-parameters>
 		</db:select>
 		<ee:transform doc:name="Transform Message from db-java -&gt; json" doc:id="e4a07279-e56a-4d3b-b5e5-206bd862d25f" >
 			<ee:message >
@@ -48,13 +47,13 @@ WHERE orders.orderID = offers.orderID AND orders.orderID = :orderID]]></db:sql>
 output application/json
 ---
 {
-	orderID: payload.OrderID,
+	shipperID: payload.shipVia,
+	orderID: payload.orderID,
+	customerID: payload.customerID default "",
 	offerID: payload.offerID,
-	employeeID: payload.EmployeeID default 0,
-	shipperID: payload.ShipVia default 0,
-	customerID: payload.CustomerID default "",
-	acceptedDate: payload.dateApproved as String default "",
-	shippedDate: payload.ShippedDate as String default ""
+	employeeID: payload.employeeID default 0,
+	acceptedDate: payload.dateApproved default "",
+	shippedDate: payload.shippedDate
 }]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
