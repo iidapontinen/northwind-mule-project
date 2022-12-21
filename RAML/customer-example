@@ -1,0 +1,10 @@
+#%RAML 1.0 NamedExample
+customer-example:
+  customerID: PULP
+  companyName: Iidas juice bar
+  contactName: Iida Pöntinen
+  contactTitle: juicer
+  address: Eerikinkatu 1 a 5
+  postalcode: "00100"
+  country: Finland
+  phone: "044123123"

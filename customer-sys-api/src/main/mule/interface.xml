@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mule xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd ">
-    <apikit:config name="customer-sys-api-config" api="resource::1ec1ffdf-e401-497e-9db2-a6e7c3152165:customer-sys-api:1.0.0:raml:zip:customer-sys-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
-    <flow name="customer-sys-api-main">
-        <http:listener path="/api/*" config-ref="HTTP_Listener_config">
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd ">
+    <http:listener-config name="customer-sys-api-2-httpListenerConfig">
+        <http:listener-connection host="0.0.0.0" port="8081" />
+    </http:listener-config>
+    <apikit:config name="customer-sys-api-2-config" api="customer-sys-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
+    <flow name="customer-sys-api-2-main">
+        <http:listener config-ref="customer-sys-api-2-httpListenerConfig" path="/api/*">
             <http:response statusCode="#[vars.httpStatus default 200]">
-                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
             </http:response>
             <http:error-response statusCode="#[vars.httpStatus default 500]">
-                <http:body><![CDATA[#[payload]]]></http:body>
-                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+                <http:body>#[payload]</http:body>
+                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
             </http:error-response>
         </http:listener>
-        <apikit:router config-ref="customer-sys-api-config" />
+        <apikit:router config-ref="customer-sys-api-2-config" />
         <error-handler>
             <on-error-propagate type="APIKIT:BAD_REQUEST">
                 <ee:transform>
@@ -93,17 +96,17 @@ output application/json
             </on-error-propagate>
         </error-handler>
     </flow>
-    <flow name="customer-sys-api-console">
-        <http:listener path="/console/*" config-ref="HTTP_Listener_config">
+    <flow name="customer-sys-api-2-console">
+        <http:listener config-ref="customer-sys-api-2-httpListenerConfig" path="/console/*">
             <http:response statusCode="#[vars.httpStatus default 200]">
-                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
             </http:response>
             <http:error-response statusCode="#[vars.httpStatus default 500]">
-                <http:body><![CDATA[#[payload]]]></http:body>
-                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+                <http:body>#[payload]</http:body>
+                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
             </http:error-response>
         </http:listener>
-        <apikit:console config-ref="customer-sys-api-config" />
+        <apikit:console config-ref="customer-sys-api-2-config" />
         <error-handler>
             <on-error-propagate type="APIKIT:NOT_FOUND">
                 <ee:transform>
@@ -120,10 +123,61 @@ output application/json
             </on-error-propagate>
         </error-handler>
     </flow>
-    <flow name="get:\customers:customer-sys-api-config">
-        <flow-ref doc:name="Flow Reference to getCustomers" doc:id="ee45cc3f-7fb7-4a66-9a68-aa43e8ae32c2" name="get-customers-sapi-flow"/>
+    <flow name="get:\customers:customer-sys-api-2-config">
+        <ee:transform>
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+[
+  {
+    customerID: "PULP",
+    companyName: "Iidas juice bar",
+    contactName: "Iida Pöntinen"
+  }, 
+  {
+    customerID: "FRESH",
+    companyName: "Jungle Juice Bar",
+    contactName: "Olly Orange"
+  }
+]]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
     </flow>
-	<flow name="post:\customers:application\json:customer-sys-api-config">
-        <flow-ref doc:name="Flow Reference to postCustomers" doc:id="ace566c0-c213-4a00-9b39-e9df206267b5" name="post-customers-sapi-flow"/>
+    <flow name="get:\customers\(customerID):customer-sys-api-2-config">
+        <ee:transform>
+            <ee:variables>
+                <ee:set-variable variableName="customerID">attributes.uriParams.'customerID'</ee:set-variable>
+            </ee:variables>
+        </ee:transform>
+        <ee:transform>
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  customerID: "PULP",
+  companyName: "Iidas juice bar",
+  contactName: "Iida Pöntinen",
+  contactTitle: "juicer",
+  address: "Eerikinkatu 1 a 5",
+  postalcode: "00100",
+  country: "Finland",
+  phone: "044123123"
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+    <flow name="post:\customers:application\json:customer-sys-api-2-config">
+        <ee:transform>
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  message: "Customer added successfully."
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
     </flow>
 </mule>

@@ -1,0 +1,110 @@
+#%RAML 1.0
+title: customer-exp-api
+
+types:
+  Customer: !include data-types/customer-data-type.raml
+  Offer: !include data-types/offer-data-type.raml
+  Inquiry: !include data-types/inquiry-data-type.raml
+  
+/customers:
+  get:
+    description: Retrieve all customer data
+    responses:
+      200:
+        body:
+          application/xml:
+            type: Customer[]
+            xml:
+              name: customers
+            examples:
+              output: !include examples/customers-example.raml
+  /{customerID}:
+    get:
+      description: Retrieve customer by ID
+      responses:
+        200:
+          body:
+            application/xml:
+              type: Customer
+              examples:
+                output: !include  examples/customer-example.raml         
+  post:
+    description: Register Customer Data
+    body:
+      application/xml:
+        type: Customer
+        examples:
+          input: !include examples/customer-example.raml
+    responses:
+      201:
+        body:
+          application/xml:
+            xml:
+              name: message
+            example:
+              value: "Customer added successfully."
+/inquiries:
+  post:
+    description: customer sends an offer request with customerID, prodID and quantity
+    body:
+      application/xml:
+        type: Inquiry
+        examples:
+          input: !include examples/inquiry-example.raml
+    responses:
+      201:
+        body:
+          application/xml:
+            xml:
+              name: message
+            example:
+              value: "Thank you for your inquiry. We will get back to you shortly"
+  /{customerID}:
+      get:
+        description: get a list of customers' own accepted offers
+        queryParameters:
+          status:
+            enum:
+              - Accepted
+        responses:
+          200:
+            body:
+              application/xml:
+                type: Offer[]
+                xml:
+                  name: offers
+                examples:
+                  output: !include examples/offers-example.raml 
+/proposedoffers:
+  /{customerID}:
+    get: 
+      description: get a list of proposed offers to be able to accept an offer later down the line.
+      queryParameters:
+          status:
+            enum:
+              - Proposed
+      responses:
+        200:
+          body:
+            application/xml:
+              type: Offer[]
+              xml:
+                name: offers  
+              examples:
+                output: !include examples/offers-example.raml        
+    /{offerID}:
+      patch:
+        description: partially update customers' offer. 
+        body:
+          application/xml:
+            type: Offer
+            examples:
+                  output: !include examples/offer-example.raml
+        responses:
+          201:
+            body:
+              application/xml:
+                xml:
+                  name: message
+                example:
+                  value: "Updated offer succesfully."

@@ -1,0 +1,19 @@
+#%RAML 1.0 NamedExample
+-
+  orderID: 34567
+  offerID: 12345
+  employeeID: 45454
+  shipperID: 54656
+  customerID: ALFKI
+  acceptedDate: 2016-02-28
+  shippedDate: 2016-02-28
+  shipVia: 54656
+-
+  orderID: 75874
+  offerID: 63245
+  employeeID: 68584
+  shipperID: 76889
+  customerID: FLGKH
+  acceptedDate: 2022-12-21
+  shippedDate: 2023-01-23
+  shipVia: 76889
