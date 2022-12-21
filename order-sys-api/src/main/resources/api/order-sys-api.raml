@@ -1,0 +1,39 @@
+#%RAML 1.0
+title: order-sys-api
+description: System-level API to get orders & order by orderID and post a new order to the database
+
+types:
+  Order: !include data-types/order-data-type.raml
+
+/orders:
+  get:
+    responses:
+      200:
+        body:
+          application/json:
+            type: Order[]
+            examples:
+              output: !include examples/orders-example.raml
+    
+  /{orderID}:
+    get:
+      responses:
+        200:
+          body:
+            application/json:
+              type: Order
+              examples:
+                output: !include examples/order-example.raml
+
+  post:
+    body:
+      application/json:
+        type: Order
+        example: !include examples/order-example.raml
+                
+    responses:
+      201:
+        body:
+          application/json:
+            example:
+              message: "Order registered."
