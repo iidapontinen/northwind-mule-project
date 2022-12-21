@@ -1,0 +1,38 @@
+#%RAML 1.0
+title: customer-sys-api
+
+types:
+  Customer: !include data-types/customer-data-type.raml
+
+/customers:
+  get:
+    description: Retrieve Customer Data
+    responses:
+      200:
+        body:
+          application/json:
+            type: Customer[]
+            examples:
+              output: !include examples/customers-example.raml
+  /{customerID}:
+    get:
+      description: Retrieve customer data based on id.
+      responses:
+        200:
+          body:
+            application/json:
+              type: Customer
+              examples:
+                output: !include examples/customer-example.raml
+  post:
+    description: Register Customer Data
+    body:
+      application/json:
+        examples:
+          input: !include examples/customer-example.raml 
+    responses:
+      201:
+        body:
+          application/json:
+            example:
+              message: Customer added successfully.
