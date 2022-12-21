@@ -9,7 +9,7 @@ http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/cu
 http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd">
 	<flow name="get-customers-sapi-flow" doc:id="b43c1aee-7466-4d48-a4f8-f825704590bc" >
 		<logger level="INFO" doc:name="Entering sapi get-customers flow" doc:id="59d0b38a-04d4-4512-b7d0-56e9ee5c82fe" message="Entered GET customers flow"/>
-		<db:select doc:name="Select from database" doc:id="616ad71f-1c8a-4787-ac61-acb0b5444a7c" config-ref="Database_Config1">
+		<db:select doc:name="From DB NW" doc:id="0f68d1be-3e84-413e-9bc4-2a2668d63cac" config-ref="Database_Config">
 			<db:sql ><![CDATA[SELECT CustomerID, CompanyName, ContactName FROM customers]]></db:sql>
 		</db:select>
 		<ee:transform doc:name="Transform Message from java to json" doc:id="e912641b-c61a-4ee6-a459-5b43041a0777">
@@ -22,7 +22,7 @@ http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mu
 	</flow>
 	<flow name="post-customers-sapi-flow" doc:id="ec321116-b95c-4e0e-a5e1-fa46f06fcadc" >
 		<logger level="INFO" doc:name="Entering sapi post-customers flow" doc:id="7edecce4-6f36-49c9-be54-2fc228d95501" message="Entering postCustomers flow"/>
-		<db:insert doc:name="Insert into database" doc:id="3df46aa9-eb4f-4639-9d98-76846d2416c0" config-ref="Database_Config1">
+		<db:insert doc:name="Into DB NW" doc:id="9488b1a8-2f42-459c-b52d-537e5fc91f06" config-ref="Database_Config">
 			<db:sql ><![CDATA[INSERT INTO customers
 VALUES(:CustomerID, :CompanyName, :ContactName, :ContactTitle, :Address, :City, :Region, :PostalCode, :Country, :Phone, :Fax)]]></db:sql>
 			<db:input-parameters ><![CDATA[#[{'CustomerID':payload.customerID, 'CompanyName':payload.companyName, 'ContactName':payload.contactName, 'ContactTitle':payload.contactTitle, 'Address':payload.address, 'City':payload.city, 'Region':payload.region, 'PostalCode':payload.postalCode, 'Country':payload.country, 'Phone':payload.phone,  'Fax':payload.fax}]]]></db:input-parameters>
