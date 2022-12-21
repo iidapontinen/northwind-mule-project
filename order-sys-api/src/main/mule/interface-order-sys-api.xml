@@ -178,15 +178,16 @@ output application/json
         </ee:transform> [STUDIO] -->
     </flow>
     <flow name="post:\orders:application\json:order-sys-api-config">
-        <ee:transform>
+        <flow-ref doc:name="Flow Reference" doc:id="29e56ada-121d-4d6b-b560-ae51eedb9c17" name="post-order-to-db-flow"/>
+<!-- [STUDIO:"Transform Message"]		<ee:transform>
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
----
+&#45;&#45;-
 {
   message: "Order registered."
 }]]></ee:set-payload>
             </ee:message>
-        </ee:transform>
+        </ee:transform> [STUDIO] -->
     </flow>
 </mule>
