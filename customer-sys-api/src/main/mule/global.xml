@@ -11,7 +11,7 @@ http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/cu
 		<http:listener-connection host="0.0.0.0" port="${http.port}" />
 	</http:listener-config>
 	<configuration doc:name="Configuration" doc:id="dc60ff15-1176-48b1-8d9e-ec28f5dba265" defaultErrorHandler-ref="globalError_Handler" />
-	<db:config name="Database_Config1" doc:name="Database Config" doc:id="c7a97727-a8bb-48b2-b150-71a739d06ce2" >
+	<db:config name="Database_Config" doc:name="Database Config" doc:id="632a6ee8-a194-411d-b91b-01b7b13244ee" >
 		<db:my-sql-connection host="${db.host}" port="${db.port}" user="${db.user}" password="${db.password}" database="${db.database}" />
 	</db:config>
 	<error-handler name="globalError_Handler" doc:id="1af72b89-af9b-404e-b71e-a488f39bfa8b" >
