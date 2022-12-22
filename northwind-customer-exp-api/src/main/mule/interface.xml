@@ -243,16 +243,17 @@ output application/json
         </ee:transform>
     </flow>
     <flow name="get:\customers\(customerID):customer-exp-api-config">
-        <ee:transform>
+        <flow-ref doc:name="Flow Reference" doc:id="6a9a3710-b356-4397-a885-773ca24ebf86" name="get-customers-byID-flow"/>
+<!-- [STUDIO:"Transform Message"]		<ee:transform>
             <ee:variables>
                 <ee:set-variable variableName="customerID">attributes.uriParams.'customerID'</ee:set-variable>
             </ee:variables>
-        </ee:transform>
-        <ee:transform>
+        </ee:transform> [STUDIO] -->
+<!-- [STUDIO:"Transform Message"]        <ee:transform>
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
----
+&#45;&#45;-
 {
   customerID: "PULP",
   companyName: "Iidas juice bar",
@@ -264,7 +265,7 @@ output application/json
   phone: "044123123"
 }]]></ee:set-payload>
             </ee:message>
-        </ee:transform>
+        </ee:transform> [STUDIO] -->
     </flow>
     <flow name="patch:\proposedoffers\(customerID)\(offerID):application\json:customer-exp-api-config">
         <ee:transform>

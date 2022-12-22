@@ -1,7 +1,0 @@
-http:
- port: "8082"
- 
-sapi:
-  host: "localhost"
-  port: "8083"
-  
