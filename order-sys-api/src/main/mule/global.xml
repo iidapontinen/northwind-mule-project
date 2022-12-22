@@ -11,5 +11,6 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="04908f3b-d33d-41b5-8e9c-c8ad60a60dd6" >
 		<http:listener-connection host="0.0.0.0" port="${http.port}" />
 	</http:listener-config>
-	<configuration-properties doc:name="Configuration properties" doc:id="4da96494-ee51-46d8-b955-a5f9a5c4ecd4" file="config.yaml" />
+	<configuration-properties doc:name="Configuration properties" doc:id="4da96494-ee51-46d8-b955-a5f9a5c4ecd4" file="${env}.yaml" />
+	<global-property doc:name="Global Property" doc:id="62130445-de20-44db-9fd7-1c84ff3c79e1" name="env" value="dev" />
 </mule>
