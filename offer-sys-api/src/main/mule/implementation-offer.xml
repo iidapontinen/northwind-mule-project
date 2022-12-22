@@ -52,7 +52,7 @@ VALUES (:OrderStatus,:DateCreated,:EmployeeID,:CustomerID,:ProductID,:Quantity,:
   "PaymentTransactionID": payload.paymentTransactionID
   }]]]></db:input-parameters>
 		</db:insert>
-		<ee:transform doc:name="Return messa" doc:id="86309fb8-82bd-4440-b8aa-08a889d85f50" >
+		<ee:transform doc:name="Return message" doc:id="86309fb8-82bd-4440-b8aa-08a889d85f50" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
