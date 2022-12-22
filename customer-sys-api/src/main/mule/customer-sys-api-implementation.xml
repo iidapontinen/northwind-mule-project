@@ -20,6 +20,28 @@ http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mu
 		<logger level="INFO" doc:name="Leaving sapi get-customers flow" doc:id="1a66ee8d-d0b8-4458-836b-60452f90a36b" message="Leaving getCustomers flow"/>
 
 	</flow>
+	<flow name="get-customers-byID-sapi-flow" doc:id="7be651f2-6791-49ac-82cf-bfd96950372d" >
+		<logger level="INFO" doc:name="Entering sapi get-customers by ID flow" doc:id="90a8e80b-2c73-491a-8a0f-2e80a2d0e7c6" />
+		<db:select doc:name="From DB NW" doc:id="7b00d705-25b4-41a9-baeb-625a030d557f" config-ref="Database_Config">
+			<db:sql ><![CDATA[SELECT CustomerID, CompanyName, ContactName
+FROM customers
+WHERE CustomerID = :CustomerID]]></db:sql>
+			<db:input-parameters ><![CDATA[#['CustomerID': attributes.uriParams.'customerID']]]></db:input-parameters>
+		</db:select>
+		<ee:transform doc:name="from java to json" doc:id="766021a3-afe6-49ca-bca7-be9683fa7ee5" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload map ( payload01 , indexOfPayload01 ) -> {
+	customerID: payload01.CustomerID,
+	companyName: payload01.CompanyName,
+	contactName: payload01.ContactName default ""
+} ]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Leavng sapi get-customers byID flow" doc:id="f3c5c547-a1e4-47d1-b6bb-6ce33a94dd8c" />
+	</flow>
 	<flow name="post-customers-sapi-flow" doc:id="ec321116-b95c-4e0e-a5e1-fa46f06fcadc" >
 		<logger level="INFO" doc:name="Entering sapi post-customers flow" doc:id="7edecce4-6f36-49c9-be54-2fc228d95501" message="Entering postCustomers flow"/>
 		<db:insert doc:name="Into DB NW" doc:id="9488b1a8-2f42-459c-b52d-537e5fc91f06" config-ref="Database_Config">
