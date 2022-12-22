@@ -258,7 +258,15 @@ type auto_56a72d94_d323_45d3_8600_e6bf9a63b9a0_Output_Variables_outboundHeaders 
 type: string]]></types:shape>
     </types:type>
   </types:catalog>
-  <types:enrichment select="#bfe16ce4-5b35-4ec0-838b-691885673470"/>
+  <types:enrichment select="#bfe16ce4-5b35-4ec0-838b-691885673470">
+    <types:processor-declaration>
+      <types:output-event>
+        <types:message>
+          <types:payload type="orders-example-json"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
   <types:enrichment select="#5d31c2e9-c6ba-4d15-bb98-7a9b8b03a7f6">
     <types:processor-declaration>
       <types:input-event>
