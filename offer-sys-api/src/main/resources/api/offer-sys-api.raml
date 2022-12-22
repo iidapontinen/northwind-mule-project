@@ -1,0 +1,26 @@
+#%RAML 1.0
+title: offer-sys-api
+types:
+  Offer: !include data types/offer-data-type.raml
+
+/offers:
+  post:
+    displayName: Create offer for client
+    body:
+      application/json:
+        example: !include examples/offer-example.raml
+    responses:
+      201: 
+        body: 
+          application/json:
+            example:
+              message: "Offer is created succesfully"
+     
+  get:
+    displayName: Get list of all  created offers
+    responses:
+        200:
+          body:
+            application/json:
+              type: object
+              example: !include examples/offer-examples.raml
