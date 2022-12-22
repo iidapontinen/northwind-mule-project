@@ -6,69 +6,50 @@
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
 http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
-	<configuration-properties doc:name="Configuration properties" doc:id="2153530b-45cd-4830-aca6-a3481cce190d" file="config.yaml" />
-	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="7ca5a4d9-9a34-46b3-99e2-0f9825350085" >
-		<http:request-connection host="localhost" port="8083" />
-	</http:request-config>
-	<http:listener-config name="HTTP_Listener_config2" doc:name="HTTP Listener config" doc:id="f8092a58-c10c-4a5e-9e14-a5a132d54470" >
-		<http:listener-connection host="0.0.0.0" port="8083" />
-	</http:listener-config>
-	<http:listener-config name="HTTP_Listener_config3" doc:name="HTTP Listener config" doc:id="b8a8bde2-1739-473d-b36f-e45312df6dd8" >
-		<http:listener-connection host="0.0.0.0" port="8088" />
-	</http:listener-config>
-	<flow name="implementation-offerFlow" doc:id="d852c80b-6268-4ed7-b3df-42606b3df73d" >
-		<http:listener doc:name="Listener" doc:id="8e12042a-1e8d-4424-b5d4-dacce6ca9e56" path="/offers" config-ref="HTTP_Listener_config1"/>
-		<logger level="INFO" doc:name="Logger" doc:id="fd2b8316-ddd3-403d-ae7c-d7e175dbe865" message="connecting to DB"/>
-		<flow-ref doc:name="Flow Reference" doc:id="8e872142-4611-4106-8d43-6c401ee8b839" name="get-all-offers-list"/>
-		<logger level="INFO" doc:name="Logger" doc:id="2dd204bc-924c-4e87-bb4a-d908b63281a7" />
-<!-- [STUDIO:"Flow Reference"]		<flow-ref doc:name="Flow Reference" doc:id="ae16bdd5-9c7a-431c-a867-721609752118" name="post-new-offer"/> [STUDIO] -->
-	
-</flow>
 	<flow name="get-all-offers-list" doc:id="79ef714a-80c9-4bd6-9c26-ffbee3d16a92" >
+		<logger level="INFO" doc:name="Logger" doc:id="b64c97d8-38b8-4523-bc86-cef954a8512d" />
 		<db:select doc:name="Select" doc:id="9576a68d-e888-4cab-a542-5b844bf930ff" config-ref="Database_Config">
 			<db:sql ><![CDATA[SELECT * FROM offers]]></db:sql>
 		</db:select>
-		<ee:transform doc:name="Transform Message" doc:id="3a918fc2-d053-4159-91d4-42c216b96fa1">
+		<ee:transform doc:name="java to json" doc:id="3a918fc2-d053-4159-91d4-42c216b96fa1">
 			<ee:message>
 				<ee:set-payload><![CDATA[%dw 2.0
 output application/json
 ---
-  {
-  offerID: payload.offerid,
-  orderStatus: payload.orderstatus,
-  dateCreated: payload.datecreated,
-  employeeID: payload.employeeid,
-  customerID: payload.customerid,
-  productID: payload.productid,
-  quantity: payload.quantity,
-  orderID: payload.orderid,
-  totalPrice: payload.totalprice,
-  priceDiscount: payload.pricediscount,
-  paymentTransactionID: payload.paymenttransactionid
-  }
-]]></ee:set-payload>
+payload map ( payload01 , indexOfPayload01 ) ->
+{
+	offerID: payload01.offerID,
+	orderStatus: payload01.orderStatus default "",
+	dateCreated: payload01.dateCreated as String default "",
+	employeeID: payload01.employeeID,
+	customerID: payload01.customerID,
+	productID: payload01.productID,
+	quantity: payload01.quantity default 0,
+	orderID: payload01.orderID,
+	totalPrice: payload01.totalPrice default 0,
+	priceDiscount: payload01.priceDiscount default 0,
+	paymentTransactionID: payload01.paymentTransactionID default 0
+}]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-<!-- [STUDIO:"Set Payload"]		<set-payload value="#[payload]" doc:name="Set Payload" doc:id="860c70f9-266f-47e9-a599-b85d98d215fc" /> [STUDIO] -->
 		<logger level="INFO" doc:name="Logger" doc:id="ac1ac888-cbb7-4da9-8ac6-9a928dcabcdc" />
 	</flow>
 	<flow name="post-new-offer" doc:id="e06d4da8-3601-469c-ac75-23c48da89c1d" >
-		<http:listener doc:name="Listener" doc:id="6c8625da-2e9e-49bc-b1cb-09592eb9381e" config-ref="HTTP_Listener_config3" path="/createoffers" allowedMethods="POST"/>
+		<logger level="INFO" doc:name="Logger" doc:id="6ad5932f-1e4f-468d-907c-c2517627de14" />
 		<db:insert doc:name="Insert" doc:id="9c02643e-9275-4a71-9609-4b4fe6b8f0c7" config-ref="Database_Config">
-			<db:sql ><![CDATA[INSERT INTO OFFERS (offerID,orderStatus,dateCreated,employeeID,customerID,productID,quantity,orderID,totalPrice,priceDiscount,paymentTransactionID)
-VALUES (:offerID,:orderStatus,:dateCreated,:employeeID,:customerID,:productID,:quantity,:orderID,:totalPrice,:priceDiscount,:paymentTransactionID)]]></db:sql>
+			<db:sql ><![CDATA[INSERT INTO OFFERS (OrderStatus,DateCreated,EmployeeID,CustomerID,ProductID,Quantity,OrderID,TotalPrice,PriceDiscount,PaymentTransactionID)
+VALUES (:OrderStatus,:DateCreated,:EmployeeID,:CustomerID,:ProductID,:Quantity,:OrderID,:TotalPrice,:PriceDiscount,:PaymentTransactionID)]]></db:sql>
 			<db:input-parameters ><![CDATA[#[{
-  'offerID':payload.offerid,
-  'orderStatus':payload.orderstatus,
-  'dateCreated':payload.datecreated,
-  'employeeID':payload.employeeid,
-  'customerID': payload.customerid,
-  'productID': payload.productid,
-  'quantity': payload.quantity,
-  'orderID': payload.orderid,
-  'totalPrice':payload.totalprice,
-  'priceDiscount':payload.pricediscount,
-  'paymentTransactionID':payload.paymenttransactionid
+  "OrderStatus": payload.orderStatus,
+  "DateCreated": payload.dateCreated,
+  "EmployeeID": payload.employeeID,
+  "CustomerID": payload.customerID,
+  "ProductID": payload.productID,
+  "Quantity": payload.quantity,
+  "OrderID": payload.orderID,
+  "TotalPrice": payload.totalPrice,
+  "PriceDiscount": payload.priceDiscount,
+  "PaymentTransactionID": payload.paymentTransactionID
   }]]]></db:input-parameters>
 		</db:insert>
 		<ee:transform doc:name="Transform Message" doc:id="86309fb8-82bd-4440-b8aa-08a889d85f50" >
@@ -81,7 +62,6 @@ output application/json
 }]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-<!-- [STUDIO:"Set Payload"]		<set-payload value="#[payload]" doc:name="Set Payload" doc:id="20f549e9-4d9c-4137-84df-f57c95171bc6" /> [STUDIO] -->
 		<logger level="INFO" doc:name="Logger" doc:id="a87966f3-ea97-431e-a790-409eefdde836" />
 	</flow>
 </mule>

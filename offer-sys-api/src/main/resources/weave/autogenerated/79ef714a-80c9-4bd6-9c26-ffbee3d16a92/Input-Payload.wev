@@ -1,4 +1,6 @@
 %dw 2.0
 
-type auto_79ef714a_80c9_4bd6_9c26_ffbee3d16a92_Input_Payload = Any
+type auto_79ef714a_80c9_4bd6_9c26_ffbee3d16a92_Input_Payload = {|
+  "offer-examples": Array<{|    offerID: Number,     Status: String,     dateCreated: String,     employeeID: Number,     customerID: String,     productID: Number,     quantity: Number,     orderID: Number,     totalPrice: Number,     priceDiscount: Number,     paymentTransactionID: Number  |}>
+|}
 
