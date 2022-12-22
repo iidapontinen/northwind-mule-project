@@ -6,7 +6,6 @@
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
 http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
-	<configuration-properties doc:name="Configuration properties" doc:id="c652eb85-f0f0-4cb5-bf13-a50694e87f1b" file="config.yaml" />
 	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="41774b6a-d1c3-4d0e-9852-928d012bc09a" >
 		<http:listener-connection host="0.0.0.0" port="${http.port}" />
 	</http:listener-config>
@@ -14,6 +13,8 @@ http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/cu
 	<db:config name="Database_Config" doc:name="Database Config" doc:id="632a6ee8-a194-411d-b91b-01b7b13244ee" >
 		<db:my-sql-connection host="${db.host}" port="${db.port}" user="${db.user}" password="${db.password}" database="${db.database}" />
 	</db:config>
+	<configuration-properties doc:name="Configuration properties" doc:id="cf76878b-bcfc-409b-b5b0-a09953c99835" file="${env}.yaml" />
+	<global-property doc:name="Global Property" doc:id="b3c33eb1-4915-429b-ae14-76f3a1674c16" name="env" value="dev" />
 	<error-handler name="globalError_Handler" doc:id="1af72b89-af9b-404e-b71e-a488f39bfa8b" >
 			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="8ab80dee-5b96-4381-a607-96eb05faefc8" type="DB:CONNECTIVITY">
 				<ee:transform doc:name="Transform Message" doc:id="16878388-2095-4629-8d25-33f69bc8e7b8" >

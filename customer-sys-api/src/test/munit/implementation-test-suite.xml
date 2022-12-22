@@ -72,7 +72,7 @@
 		<munit:behavior>
 			<munit-tools:mock-when doc:name="Mock when" doc:id="6e3f3888-197f-4137-99eb-4d02d68c6b5c" processor="db:select">
 				<munit-tools:with-attributes >
-					<munit-tools:with-attribute whereValue="616ad71f-1c8a-4787-ac61-acb0b5444a7c" attributeName="doc:id" />
+					<munit-tools:with-attribute whereValue="0f68d1be-3e84-413e-9bc4-2a2668d63cac" attributeName="doc:id" />
 				</munit-tools:with-attributes>
 				<munit-tools:then-return >
 					<munit-tools:error typeId="DB:CONNECTIVITY" />
@@ -94,7 +94,7 @@
 		<munit:behavior >
 			<munit-tools:mock-when doc:name="Mock when" doc:id="33bfebf8-26b9-4f79-801d-1615e4fe95be" processor="db:insert" >
 				<munit-tools:with-attributes >
-					<munit-tools:with-attribute whereValue="3df46aa9-eb4f-4639-9d98-76846d2416c0" attributeName="doc:id" />
+					<munit-tools:with-attribute whereValue="9488b1a8-2f42-459c-b52d-537e5fc91f06" attributeName="doc:id" />
 				</munit-tools:with-attributes>
 				<munit-tools:then-return >
 					<munit-tools:error typeId="DB:QUERY_EXECUTION" />
