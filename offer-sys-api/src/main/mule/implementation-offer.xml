@@ -36,7 +36,7 @@ payload map ( payload01 , indexOfPayload01 ) ->
 	</flow>
 	<flow name="post-new-offer" doc:id="e06d4da8-3601-469c-ac75-23c48da89c1d" >
 		<logger level="INFO" doc:name="Logger" doc:id="6ad5932f-1e4f-468d-907c-c2517627de14" />
-		<db:insert doc:name="Insert" doc:id="9c02643e-9275-4a71-9609-4b4fe6b8f0c7" config-ref="Database_Config">
+		<db:insert doc:name="Insert offer details to DB" doc:id="9c02643e-9275-4a71-9609-4b4fe6b8f0c7" config-ref="Database_Config">
 			<db:sql ><![CDATA[INSERT INTO OFFERS (OrderStatus,DateCreated,EmployeeID,CustomerID,ProductID,Quantity,OrderID,TotalPrice,PriceDiscount,PaymentTransactionID)
 VALUES (:OrderStatus,:DateCreated,:EmployeeID,:CustomerID,:ProductID,:Quantity,:OrderID,:TotalPrice,:PriceDiscount,:PaymentTransactionID)]]></db:sql>
 			<db:input-parameters ><![CDATA[#[{
@@ -52,7 +52,7 @@ VALUES (:OrderStatus,:DateCreated,:EmployeeID,:CustomerID,:ProductID,:Quantity,:
   "PaymentTransactionID": payload.paymentTransactionID
   }]]]></db:input-parameters>
 		</db:insert>
-		<ee:transform doc:name="Transform Message" doc:id="86309fb8-82bd-4440-b8aa-08a889d85f50" >
+		<ee:transform doc:name="Return messa" doc:id="86309fb8-82bd-4440-b8aa-08a889d85f50" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
