@@ -12,10 +12,8 @@ types:
     responses:
       200:
         body:
-          application/xml:
+          application/json:
             type: Customer[]
-            xml:
-              name: customers
             examples:
               output: !include examples/customers-example.raml
   /{customerID}:
@@ -24,41 +22,37 @@ types:
       responses:
         200:
           body:
-            application/xml:
+            application/json:
               type: Customer
               examples:
                 output: !include  examples/customer-example.raml         
   post:
     description: Register Customer Data
     body:
-      application/xml:
+      application/json:
         type: Customer
         examples:
           input: !include examples/customer-example.raml
     responses:
       201:
         body:
-          application/xml:
-            xml:
-              name: message
+          application/json:
             example:
-              value: "Customer added successfully."
+              message: "Customer added successfully."
 /inquiries:
   post:
     description: customer sends an offer request with customerID, prodID and quantity
     body:
-      application/xml:
+      application/json:
         type: Inquiry
         examples:
           input: !include examples/inquiry-example.raml
     responses:
       201:
         body:
-          application/xml:
-            xml:
-              name: message
+          application/json:
             example:
-              value: "Thank you for your inquiry. We will get back to you shortly"
+              message: "Thank you for your inquiry. We will get back to you shortly"
   /{customerID}:
       get:
         description: get a list of customers' own accepted offers
@@ -69,10 +63,8 @@ types:
         responses:
           200:
             body:
-              application/xml:
+              application/json:
                 type: Offer[]
-                xml:
-                  name: offers
                 examples:
                   output: !include examples/offers-example.raml 
 /proposedoffers:
@@ -86,25 +78,21 @@ types:
       responses:
         200:
           body:
-            application/xml:
-              type: Offer[]
-              xml:
-                name: offers  
+            application/json:
+              type: Offer[] 
               examples:
                 output: !include examples/offers-example.raml        
     /{offerID}:
       patch:
         description: partially update customers' offer. 
         body:
-          application/xml:
+          application/json:
             type: Offer
             examples:
-                  output: !include examples/offer-example.raml
+              output: !include examples/offer-example.raml
         responses:
           201:
             body:
-              application/xml:
-                xml:
-                  name: message
+              application/json:
                 example:
-                  value: "Updated offer succesfully."
+                  message: "Updated offer succesfully."

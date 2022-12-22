@@ -30,7 +30,7 @@ VALUES(:CustomerID, :CompanyName, :ContactName, :ContactTitle, :Address, :City, 
 		<ee:transform doc:name="Transform Message - customer added" doc:id="4951a414-cee0-4651-90ad-c7edd023ef91" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
-output application/xml
+output application/json
 ---
 "message": "Customer added successfully."]]></ee:set-payload>
 			</ee:message>

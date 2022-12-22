@@ -22,9 +22,12 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 			<ee:transform doc:name="Transform Message" doc:id="8be208c0-d9dd-466c-91c2-1ee3cd57de8c" >
 				<ee:message >
 					<ee:set-payload ><![CDATA[%dw 2.0
-output application/xml
+output application/json
 ---
-"message": "Connectivity error. Try again later." ++ error.description as String
+{
+	"message": "Connectivity error. Try again later." ++ error.description as String
+	
+}
 ]]></ee:set-payload>
 				</ee:message>
 			</ee:transform>
@@ -34,9 +37,11 @@ output application/xml
 			<ee:transform doc:name="Transform Message" doc:id="8616e888-8454-40e4-a0c8-d9c489af0528" >
 				<ee:message >
 					<ee:set-payload ><![CDATA[%dw 2.0
-output application/xml
+output application/json
 ---
-"message": error.muleMessage.payload.message
+{
+	"message": error.muleMessage.payload.message
+}
 
 ]]></ee:set-payload>
 				</ee:message>
@@ -47,9 +52,11 @@ output application/xml
 			<ee:transform doc:name="Transform Message" doc:id="3fc397a0-1037-4fd7-af1c-0cfe9782a893" >
 				<ee:message >
 					<ee:set-payload ><![CDATA[%dw 2.0
-output application/xml
+output application/json
 ---
-"message": error.description]]></ee:set-payload>
+{
+	"message": error.description
+}]]></ee:set-payload>
 				</ee:message>
 			</ee:transform>
 			<set-variable value="500" doc:name="httpStatus" doc:id="7f7bbb8b-eb6f-425b-b143-08c06227b341" variableName="httpStatus"/>
