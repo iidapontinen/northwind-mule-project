@@ -74,13 +74,6 @@
 			<classifier>mule-plugin</classifier>
 		</dependency>
 		<dependency>
-			<groupId>1ec1ffdf-e401-497e-9db2-a6e7c3152165</groupId>
-			<artifactId>customers-exp-api</artifactId>
-			<version>1.0.1</version>
-			<classifier>raml</classifier>
-			<type>zip</type>
-		</dependency>
-		<dependency>
 			<groupId>org.mule.modules</groupId>
 			<artifactId>mule-apikit-module</artifactId>
 			<version>1.6.1</version>
@@ -105,6 +98,12 @@
 			<artifactId>assertions</artifactId>
 			<version>1.0.2</version>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mule.connectors</groupId>
+			<artifactId>mule-db-connector</artifactId>
+			<version>1.13.8</version>
+			<classifier>mule-plugin</classifier>
 		</dependency>
 	</dependencies>
 

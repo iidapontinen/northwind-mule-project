@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mule xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd ">
-    <apikit:config name="customer-sys-api-2-config" api="customer-sys-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
-    <flow name="customer-sys-api-2-main">
-        <http:listener config-ref="HTTP_Listener_config" path="/api/*">
+    <apikit:config name="order-sys-api-config" api="order-sys-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
+    <flow name="order-sys-api-main">
+        <http:listener path="/api/*" config-ref="HTTP_Listener_config">
             <http:response statusCode="#[vars.httpStatus default 200]">
                 <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
             </http:response>
@@ -11,7 +11,7 @@
                 <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
             </http:error-response>
         </http:listener>
-        <apikit:router config-ref="customer-sys-api-2-config" />
+        <apikit:router config-ref="order-sys-api-config" />
         <error-handler>
             <on-error-propagate type="APIKIT:BAD_REQUEST">
                 <ee:transform>
@@ -93,7 +93,7 @@ output application/json
             </on-error-propagate>
         </error-handler>
     </flow>
-    <flow name="customer-sys-api-2-console">
+    <flow name="order-sys-api-console">
         <http:listener path="/console/*" config-ref="HTTP_Listener_config">
             <http:response statusCode="#[vars.httpStatus default 200]">
                 <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
@@ -103,7 +103,7 @@ output application/json
                 <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
             </http:error-response>
         </http:listener>
-        <apikit:console config-ref="customer-sys-api-2-config" />
+        <apikit:console config-ref="order-sys-api-config" />
         <error-handler>
             <on-error-propagate type="APIKIT:NOT_FOUND">
                 <ee:transform>
@@ -120,8 +120,8 @@ output application/json
             </on-error-propagate>
         </error-handler>
     </flow>
-    <flow name="get:\customers:customer-sys-api-2-config">
-        <flow-ref doc:name="Flow Reference" doc:id="2e0435c0-31d7-44f6-91ca-b89cbda3e4ea" name="get-customers-sapi-flow"/>
+    <flow name="get:\orders:order-sys-api-config">
+        <flow-ref doc:name="Flow Reference" doc:id="622a61a9-990d-46cc-a4b6-bb0993731aec" name="get-orders-flow"/>
 <!-- [STUDIO:"Transform Message"]		<ee:transform>
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
@@ -129,52 +129,63 @@ output application/json
 &#45;&#45;-
 [
   {
-    customerID: "PULP",
-    companyName: "Iidas juice bar",
-    contactName: "Iida Pöntinen"
+    orderID: 34567,
+    offerID: 12345,
+    employeeID: 45454,
+    shipperID: 54656,
+    customerID: "ALFKI",
+    acceptedDate: "2016-02-28",
+    shippedDate: "2016-02-28",
+    shipVia: 54656
   }, 
   {
-    customerID: "FRESH",
-    companyName: "Jungle Juice Bar",
-    contactName: "Olly Orange"
+    orderID: 75874,
+    offerID: 63245,
+    employeeID: 68584,
+    shipperID: 76889,
+    customerID: "FLGKH",
+    acceptedDate: "2022-12-21",
+    shippedDate: "2023-01-23",
+    shipVia: 76889
   }
 ]]]></ee:set-payload>
             </ee:message>
         </ee:transform> [STUDIO] -->
     </flow>
-    <flow name="get:\customers\(customerID):customer-sys-api-2-config">
+    <flow name="get:\orders\(orderID):order-sys-api-config">
         <ee:transform>
             <ee:variables>
-                <ee:set-variable variableName="customerID">attributes.uriParams.'customerID'</ee:set-variable>
+                <ee:set-variable variableName="orderID">attributes.uriParams.'orderID'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <ee:transform>
+<flow-ref doc:name="Flow Reference" doc:id="39a5d9f3-2ff2-4883-96bb-7c2c53048fea" name="get-order-by-ID-flow"/>
+		<!-- [STUDIO:"Transform Message"]        <ee:transform>
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
----
+&#45;&#45;-
 {
-  customerID: "PULP",
-  companyName: "Iidas juice bar",
-  contactName: "Iida Pöntinen",
-  contactTitle: "juicer",
-  address: "Eerikinkatu 1 a 5",
-  postalcode: "00100",
-  country: "Finland",
-  phone: "044123123"
+  orderID: 34567,
+  offerID: 12345,
+  employeeID: 45454,
+  shipperID: 54656,
+  customerID: "ALFKI",
+  acceptedDate: "2022-12-20",
+  shippedDate: "2023-01-29",
+  shipVia: 54656
 }]]></ee:set-payload>
             </ee:message>
-        </ee:transform>
+        </ee:transform> [STUDIO] -->
     </flow>
-    <flow name="post:\customers:application\json:customer-sys-api-2-config">
-        <flow-ref doc:name="Flow Reference" doc:id="23a2fca1-cc59-4164-ad3b-378449f21023" name="post-customers-sapi-flow"/>
+    <flow name="post:\orders:application\json:order-sys-api-config">
+        <flow-ref doc:name="Flow Reference" doc:id="29e56ada-121d-4d6b-b560-ae51eedb9c17" name="post-order-to-db-flow"/>
 <!-- [STUDIO:"Transform Message"]		<ee:transform>
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
 &#45;&#45;-
 {
-  message: "Customer added successfully."
+  message: "Order registered."
 }]]></ee:set-payload>
             </ee:message>
         </ee:transform> [STUDIO] -->

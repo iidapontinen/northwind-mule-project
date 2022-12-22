@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="get-orders-flow" doc:id="5d31c2e9-c6ba-4d15-bb98-7a9b8b03a7f6" >
+		<logger level="INFO" doc:name="Entering get-orders-flow" doc:id="02188188-e165-4cd3-86a8-e4429455df5c" />
+		<db:select doc:name="orders from Northwind" doc:id="17408d2d-4bc5-48ca-931f-e8ef66c419f4" config-ref="Northwind_database_Config">
+			<db:sql ><![CDATA[SELECT orders.*, offers.offerID, offers.dateApproved
+FROM orders, offers
+WHERE orders.orderID = offers.orderID
+]]></db:sql>
+		</db:select>
+		<ee:transform doc:name="Transform Message from db-java -&gt; json" doc:id="bfe16ce4-5b35-4ec0-838b-691885673470" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload map ( payload01 , indexOfPayload01 ) -> {
+	orderID: payload01.OrderID,
+	offerID: payload01.offerID,
+	employeeID: payload01.EmployeeID default 0,
+	shipperID: payload01.ShipVia default 0,
+	customerID: payload01.CustomerID default "",
+	acceptedDate: payload01.dateApproved as String default "",
+	shippedDate: payload01.ShippedDate as String default ""
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Exiting get-orders-flow" doc:id="5298d38b-ac39-4ddf-bb11-521c0c5d478f"/>
+	</flow>
+	<flow name="get-order-by-ID-flow" doc:id="d7a6f37e-1e46-465d-92e0-5fbf288e8879" >
+		<logger level="INFO" doc:name="Entering get-order-by-ID-flow" doc:id="0e8175b5-c059-4241-bc82-2a174004710a" />
+		<db:select doc:name="order by ID from Northwind" doc:id="8fbfd2b6-6e2f-43e4-a0ba-b39c62636bb4" config-ref="Northwind_database_Config">
+			<db:sql ><![CDATA[SELECT orders.orderID, orders.employeeID, orders.shipVia, orders.customerID, 
+orders.shippedDate, offers.offerID, offers.dateApproved
+FROM orders, offers
+WHERE orders.orderID = offers.orderID AND orders.orderID = :orderID]]></db:sql>
+			<db:input-parameters ><![CDATA[#['orderID': attributes.uriParams.'orderID']]]></db:input-parameters>
+		</db:select>
+		<ee:transform doc:name="from db-java -&gt; json" doc:id="e4a07279-e56a-4d3b-b5e5-206bd862d25f" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload map ( payload01 , indexOfPayload01 ) -> {
+	orderID: payload01.orderID,
+	offerID: payload01.offerID,
+	employeeID: payload01.employeeID default 0,
+	shipperID: payload01.shipVia default 0,
+	customerID: payload01.customerID default "",
+	acceptedDate: payload01.dateApproved default "",
+	shippedDate: payload01.shippedDate default ""
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Exiting get-order-by-ID-flow" doc:id="83740679-406e-45e3-851f-f7d2dcfd5bb5" />
+	</flow>
+	<flow name="post-order-to-db-flow" doc:id="56a72d94-d323-45d3-8600-e6bf9a63b9a0" >
+		<logger level="INFO" doc:name="Entering post-order-flow" doc:id="cf3ee5e3-88a6-4aff-b6b2-1e13d4f25fae" />
+		<db:insert doc:name="a post into db" doc:id="c144338a-5ecf-463b-8251-eaadbe2a15fd" config-ref="Northwind_database_Config">
+			<db:sql ><![CDATA[INSERT INTO Orders (OrderID, CustomerID, EmployeeID, OrderDate, ShippedDate, ShipVia)
+VALUES (:OrderID, :CustomerID, :EmployeeID, :OrderDate, :ShippedDate, :ShipVia)]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+	OrderID: payload.OrderID,
+	CustomerID: payload.CustomerID,
+	OfferID: payload.OfferID,
+	EmployeeID: payload.EmployeeID,
+	OrderDate: payload.AcceptedDate,
+	ShippedDate: payload.ShippedDate,
+	ShipVia: payload.ShipVia
+}]]]></db:input-parameters>
+		</db:insert>
+		<ee:transform doc:name="Transform Message" doc:id="99ad2be1-a853-4f5e-ade8-b610f5924992" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{ message: payload.'OrderID' }
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Exiting post-order-to-db-flow" doc:id="0c5824f1-e7dd-4f23-8b93-b8242cfb3c39" />
+	</flow>
+</mule>

@@ -31,13 +31,13 @@
 				<version>${mule.maven.plugin.version}</version>
 				<extensions>true</extensions>
 				<configuration>
+					<classifier>mule-application</classifier>
 					<sharedLibraries>
 						<sharedLibrary>
 							<groupId>mysql</groupId>
 							<artifactId>mysql-connector-java</artifactId>
 						</sharedLibrary>
 					</sharedLibraries>
-					<classifier>mule-application</classifier>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -80,13 +80,6 @@
 			<classifier>mule-plugin</classifier>
 		</dependency>
 		<dependency>
-			<groupId>1ec1ffdf-e401-497e-9db2-a6e7c3152165</groupId>
-			<artifactId>customer-sys-api</artifactId>
-			<version>1.0.0</version>
-			<classifier>raml</classifier>
-			<type>zip</type>
-		</dependency>
-		<dependency>
 			<groupId>org.mule.modules</groupId>
 			<artifactId>mule-apikit-module</artifactId>
 			<version>1.7.3</version>
@@ -97,11 +90,6 @@
 			<artifactId>mule-db-connector</artifactId>
 			<version>1.13.8</version>
 			<classifier>mule-plugin</classifier>
-		</dependency>
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>8.0.30</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mule.modules</groupId>
@@ -128,6 +116,11 @@
 			<artifactId>assertions</artifactId>
 			<version>1.0.2</version>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>8.0.30</version>
 		</dependency>
 	</dependencies>
 

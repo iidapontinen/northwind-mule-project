@@ -1,0 +1,10 @@
+#%RAML 1.0 NamedExample
+customers-example:
+  -
+    customerID: PULP
+    companyName: Iidas juice bar
+    contactName: Iida Pöntinen
+  -
+    customerID: FRESH
+    companyName: Jungle Juice Bar
+    contactName: Olly Orange
