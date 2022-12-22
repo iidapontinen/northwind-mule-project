@@ -61,25 +61,41 @@ payload map ( payload01 , indexOfPayload01 ) -> {
 	</flow>
 	<flow name="post-order-to-db-flow" doc:id="56a72d94-d323-45d3-8600-e6bf9a63b9a0" >
 		<logger level="INFO" doc:name="Entering post-order-flow" doc:id="cf3ee5e3-88a6-4aff-b6b2-1e13d4f25fae" />
-		<db:insert doc:name="a post into db" doc:id="c144338a-5ecf-463b-8251-eaadbe2a15fd" config-ref="Northwind_database_Config">
-			<db:sql ><![CDATA[INSERT INTO Orders (OrderID, CustomerID, EmployeeID, OrderDate, ShippedDate, ShipVia)
-VALUES (:OrderID, :CustomerID, :EmployeeID, :OrderDate, :ShippedDate, :ShipVia)]]></db:sql>
+		<set-variable value="#[payload.customerID]" doc:name="Set customerID" doc:id="38b46cd8-1490-419c-918c-a53f056670ca" variableName="customerID"/>
+		<db:select doc:name="Select Shipping Address from customers" doc:id="1737536d-06fc-4ec7-82dd-885ac3f3be2d" config-ref="Northwind_database_Config" target="shippingAddress" targetValue="#[payload.Address]">
+			<db:sql ><![CDATA[SELECT Address from customers
+WHERE CustomerID = :customerID]]></db:sql>
+			<db:parameter-types />
 			<db:input-parameters ><![CDATA[#[{
-	OrderID: payload.OrderID,
-	CustomerID: payload.CustomerID,
-	OfferID: payload.OfferID,
-	EmployeeID: payload.EmployeeID,
-	OrderDate: payload.AcceptedDate,
-	ShippedDate: payload.ShippedDate,
-	ShipVia: payload.ShipVia
+	customerID: vars.customerID
+}]]]></db:input-parameters>
+		</db:select>
+		<db:insert doc:name="Insert a post into db" doc:id="c144338a-5ecf-463b-8251-eaadbe2a15fd" config-ref="Northwind_database_Config">
+			<db:sql ><![CDATA[INSERT INTO Orders (CustomerID, EmployeeID, OrderDate, ShippedDate, ShipVia, ShipAddress)
+VALUES (:CustomerID, :EmployeeID, :OrderDate, :ShippedDate, :ShipVia, :ShipAddress)]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+	CustomerID: payload.customerID,
+	OfferID: payload.offerID,
+	EmployeeID: payload.employeeID,
+	OrderDate: payload.acceptedDate,
+	ShippedDate: payload.shippedDate,
+	ShipVia: payload.shipVia,
+	ShipAddress: vars.shippingAddress[0]
 }]]]></db:input-parameters>
 		</db:insert>
+		<db:select doc:name="Select OrderID" doc:id="6b2f40c4-5d99-4240-9f70-1dfb439f0a58" config-ref="Northwind_database_Config">
+			<db:sql ><![CDATA[SELECT OrderID FROM orders
+WHERE CustomerID = :customerID]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+	customerID: vars.customerID
+}]]]></db:input-parameters>
+		</db:select>
 		<ee:transform doc:name="Transform Message" doc:id="99ad2be1-a853-4f5e-ade8-b610f5924992" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
 ---
-{ message: payload.'OrderID' }
+{ "OrderID's with the customerID": payload.'OrderID' }
 ]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
