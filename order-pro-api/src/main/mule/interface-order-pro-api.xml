@@ -254,11 +254,11 @@ output application/json
     </flow>
     <flow name="get:\orders\(orderID):order-pro-api-config">
         <flow-ref doc:name="Flow Reference" doc:id="3c7c6065-e7a2-44c7-8deb-b5f045800d2e" name="get-orders-by-ID"/>
-		<ee:transform>
+<!-- [STUDIO:"Transform Message"]		<ee:transform>
             <ee:variables>
                 <ee:set-variable variableName="orderID">attributes.uriParams.'orderID'</ee:set-variable>
             </ee:variables>
-        </ee:transform>
+        </ee:transform> [STUDIO] -->
 <!-- [STUDIO:"Transform Message"]        <ee:transform>
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
