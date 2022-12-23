@@ -4,3 +4,7 @@ db:
  user: "group01"
  password: "@Br1ghtsGr0up01!"
  database: "northwind01"
+ 
+shipping.ext:
+ host: "20.224.50.155"
+ port: "8081"

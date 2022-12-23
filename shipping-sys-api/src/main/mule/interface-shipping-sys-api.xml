@@ -2,7 +2,7 @@
 <mule xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd ">
     <apikit:config name="shipping-sys-api-config" api="shipping-sys-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
     <flow name="shipping-sys-api-main">
-        <http:listener path="/api/*">
+        <http:listener path="/api/*" config-ref="HTTP_Listener_config">
             <http:response statusCode="#[vars.httpStatus default 200]">
                 <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
             </http:response>
@@ -94,7 +94,7 @@ output application/json
         </error-handler>
     </flow>
     <flow name="shipping-sys-api-console">
-        <http:listener path="/console/*">
+        <http:listener path="/console/*" config-ref="HTTP_Listener_config">
             <http:response statusCode="#[vars.httpStatus default 200]">
                 <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
             </http:response>
@@ -120,8 +120,8 @@ output application/json
             </on-error-propagate>
         </error-handler>
     </flow>
-    <flow name="post:\shippingdetails:application\json:shipping-sys-api-config">
-        <flow-ref doc:name="Flow Reference" doc:id="730e3449-452f-45fa-8320-e9312d40cca9" />
+    <flow name="post:\shippingdetails:application\json:shipping-sys-api-config" doc:id="85611b42-5391-4b1e-b26c-3cd0507cb65d">
+        <flow-ref doc:name="Flow Reference" doc:id="730e3449-452f-45fa-8320-e9312d40cca9" name="impl-shipping-sys-apiFlow"/>
 <!-- [STUDIO:"Transform Message"]		<ee:transform>
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
