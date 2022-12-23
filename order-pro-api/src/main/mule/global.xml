@@ -15,8 +15,15 @@ http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/cu
 	</db:config>
 	<http:request-config name="HTTP_Request_configuration1" doc:name="HTTP Request configuration" doc:id="3911edba-5591-4828-8152-d6bb95b55552">
 		<http:request-connection host="${sapi.offers.host}" port="${sapi.offers.port}" />
+<<<<<<< HEAD
 </http:request-config>
 	<http:request-config name="order_sapi_HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="87752a4a-b982-4ba0-91cb-25469ad18b59" >
 		<http:request-connection host="${sapi.orders.host}" port="${sapi.orders.port}" />
 </http:request-config>
+=======
+	</http:request-config>
+	<http:request-config name="order_sapi_HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="87752a4a-b982-4ba0-91cb-25469ad18b59" >
+		<http:request-connection host="${sapi.orders.host}" port="${sapi.orders.port}" />	
+    </http:request-config>
+>>>>>>> 511d31127f2d22bd20ec20498ad44b380f62d962
 </mule>

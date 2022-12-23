@@ -13,4 +13,7 @@ http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/cu
 	<db:config name="Database_Config" doc:name="Database Config" doc:id="422dc0b6-1a4c-4b9f-b483-0022b3e1da19" >
 		<db:my-sql-connection host="${db.host}" port="${db.port}" user="${db.user}" password="${db.password}" database="${db.database}" />
 	</db:config>
+	<http:request-config name="HTTP_Request_configuration_shipping_ext" doc:name="HTTP Request configuration" doc:id="52717562-d7b5-42e6-9464-b0f73acc019e" >
+		<http:request-connection host="${shipping.ext.host}" port="${shipping.ext.port}" />
+	</http:request-config>
 </mule>

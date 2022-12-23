@@ -1,17 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns="http://www.mulesoft.org/schema/mule/core"
-	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
-http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
 	<flow name="impl-shipping-sys-apiFlow" doc:id="693ed158-14ec-4115-8445-acd8573b8b69" >
 		<logger level="INFO" doc:name="Logger" doc:id="06f7db86-a447-4038-a178-7254e7520a10" />
-		<db:select doc:name="Select" doc:id="81f5c74c-7d38-40dd-8a58-96df444543d8" target="postalCode" config-ref="Database_Config">
-			<db:sql ><![CDATA[SELECT c.PostalCode, c.CustomerID, o.OfferID
+<!-- [STUDIO:"temporary payload for testing"]		<set-payload value='#[output application/json&#10;&#45;&#45;-&#10;{&#10;	"offerID": "1",&#10;	"dateApproved": "2022-04-11 00:00:00",&#10;	"shipperID": "1"&#10;}]' doc:name="temporary payload for testing" doc:id="f8cea91b-b014-44dd-a3e5-a258b3cc18f7" /> [STUDIO] -->
+		<set-variable value="#[payload.offerID]" doc:name="offerID" doc:id="0c357448-a3b4-43f4-9767-4f0485a1a896" variableName="offerID"/>
+		<db:select doc:name="CustomerID based on OfferID" doc:id="144be8fe-224a-45ef-ae68-7961334f0241" target="customerID" config-ref="Database_Config" targetValue="#[output application/json&#10;---&#10;payload.CustomerID]">
+			<db:sql ><![CDATA[SELECT CustomerID
+FROM offers
+WHERE OfferID = :OfferID]]></db:sql>
+			<db:input-parameters ><![CDATA[#['OfferID': payload.'offerID']]]></db:input-parameters>
+		</db:select>
+		<db:select doc:name="PostalCode based on CustomerID" doc:id="81f5c74c-7d38-40dd-8a58-96df444543d8" target="postalCode" config-ref="Database_Config" targetValue="#[output application/json&#10;---&#10;payload.'PostalCode']">
+			<db:sql ><![CDATA[SELECT distinct c.PostalCode
 FROM customers AS c
 INNER JOIN
 offers AS o
 WHERE c.CustomerID = o.CustomerID AND c.CustomerID = :CustomerID]]></db:sql>
+			<db:input-parameters ><![CDATA[#['CustomerID': vars.customerID[0]]]]></db:input-parameters>
 		</db:select>
+		<db:select doc:name="CategoryName" doc:id="c37091d8-6a9c-4197-9f7f-f542c83365bc" config-ref="Database_Config" target="categoryName" targetValue="#[output application/json&#10;---&#10;payload.'CategoryName']">
+			<db:sql ><![CDATA[SELECT CategoryName
+FROM categories AS c
+INNER JOIN 
+products AS p
+ON c.CategoryID = p.CategoryID
+INNER JOIN
+offers AS o
+ON o.ProductID = p.ProductID 
+WHERE OfferID = :OfferID ]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{'OfferID': vars.'offerID'}]]]></db:input-parameters>
+		</db:select>
+<set-payload value='#[output applicatio/json&#10;---&#10;{&#10;	"categoryName": vars.categoryName[0],&#10;	"postalCode": vars.postalCode[0],&#10;	"shipperID": payload.shipVia[0]&#10;}]' doc:name="payload to post to ext ship" doc:id="4e13d090-4a9b-4c85-a3cf-5dbc4a8be133" />
+		<logger level="INFO" doc:name="Logger" doc:id="12ea56c2-f1f9-4f2f-980f-b180690d1fed" />
+		<!-- [STUDIO:"POST ext ship api"]		<http:request method="POST" doc:name="POST ext ship api" doc:id="e22ae25c-322f-4f93-9930-a6900ee55487" config-ref="HTTP_Request_configuration_shipping_ext" path="/ship"/> [STUDIO] -->
 	</flow>
+<!-- [STUDIO:"impl-shipping-sys-apiFlow1"]	<flow name="impl-shipping-sys-apiFlow1" doc:id="4d58ca6a-86a1-4541-9dc7-fdfdfe2a22b0" >
+		<http:listener doc:name="Listener" doc:id="d93e1440-1af5-4c67-8ab1-d21223f37b89" config-ref="HTTP_Listener_config" path="/testi"/>
+		<logger level="INFO" doc:name="Logger" doc:id="e0dc150a-1752-4ea9-9398-4df6c9c0a0ca" />
+		<db:select doc:name="Select" doc:id="325667df-56c2-4d51-8386-c2e28ec60a13" config-ref="Database_Config">
+			<db:sql ><![CDATA[SELECT * FROM offers]]></db:sql>
+		</db:select>
+		<ee:transform doc:name="Transform Message" doc:id="ed9553c5-cb9c-4754-a405-79d63f5490c0" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+&#45;&#45;-
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow> [STUDIO] -->
 </mule>
