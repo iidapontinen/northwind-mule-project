@@ -1,0 +1,28 @@
+#%RAML 1.0
+title: shipping-sys-api
+  
+/shippingdetails:
+  post:
+    description: receives customerID, offerID, dateAccepted and shipperID in request body 
+    body:
+      application/json:
+        examples:
+          offerID:
+            example: 56545
+            type: integer
+          dateAccepted:
+            example: 2022-12-22
+            type: date-only
+          shipVia:
+            example: 1
+            type: integer
+    responses:
+      201:
+        body:
+          application/json:
+            examples:
+              shipperID: 1
+              categoryName: Seafood
+              postalCode: "20063"
+              shippingDate: 2022-12-22
+      

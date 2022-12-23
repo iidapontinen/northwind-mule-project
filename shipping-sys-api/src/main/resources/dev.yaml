@@ -1,0 +1,11 @@
+db:
+ host: "localhost"
+ port: "3306"
+ user: "iida"
+ password: "iidaiida"
+ database: "northwind"
+ 
+http:
+ host: "localhost"
+ port: "8081"
+ 
