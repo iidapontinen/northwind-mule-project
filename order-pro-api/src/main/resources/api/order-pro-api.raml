@@ -1,0 +1,169 @@
+#%RAML 1.0
+title: order-pro-api
+
+types:
+  Inquiry: !include data-types/inquiry-data-type.raml
+  Offer: !include data-types/offer-data-type.raml
+  Customer: !include data-types/customer-data-type.raml
+  Order: !include data-types/order-data-type.raml
+
+/inquiries:
+  /{customerID}:
+    get:
+      description: "Get a list of customers' own accepted offers"
+      queryParameters:
+        status:
+          enum:
+            - Accepted
+      responses:
+        200:
+          body:
+            application/json:
+              type: Inquiry
+    
+  post:
+    description: Post a new inquiry of a product.
+    body:
+      application/json:
+        example: |
+          { 
+            "productID": 12,
+            "quantity": 33
+          }
+    responses:
+      201:
+        body:
+          application/json:
+            example:
+              message: "Inquiry placed successfully."
+
+/proposedoffers:
+  /{customerID}:
+    /{offerID}:
+      patch:
+        description: Modify the state of the proposed offer (Accepted/Rejected)
+        body:
+          application/json:
+            type: Offer
+            examples: !include examples/offer-example.raml
+
+/offers:
+  get:
+    description: Get all offers
+    responses:
+      200:
+        body:
+          application/json:
+            type: Offer[]
+            examples:
+              output: !include examples/offer-examples.raml
+              
+  post:
+    description: Salesperson creates an offer and proposes discount
+    body:
+      application/json:
+        type: Offer
+        examples: !include examples/offer-example.raml
+    responses:
+      201:
+        body:
+          application/json:
+            example:
+              message: "Offer created successfully."
+
+/shippingdetails:
+  post:
+    description: Post shippingdetails to shipping-sys-api
+    body:
+      application/json:
+        examples: 
+          offerID:
+            example: 56545
+            type: integer
+          dateAccepted:
+            example: 2022-12-22
+            type: date-only
+          shipVia:
+            example: 1
+            type: integer
+    responses:
+      201:
+        body:
+          application/json:
+            example:
+              message: "Shipping details posted successfully."
+                          
+/customers:
+  get:
+    description: Get information about customers from db
+    responses:
+      200:
+        body:
+          application/json:
+            type: Customer[]
+            examples: !include examples/customers-example.raml
+        
+  /{customerID}:
+    get:
+      description: Get information about a specific customer by ID
+      responses:
+        200:
+          body:
+            application/json:
+              type: Customer
+              examples:
+                output: !include examples/customer-example.raml
+  
+  post:
+    description: Add a new customer into db
+    body:
+      application/json:
+        type: Customer
+        examples: 
+          input: !include examples/customer-example.raml
+
+    responses:
+      201:
+        body:
+          application/json:
+            example:
+              message: "Customer added successfully."
+
+/orders:
+  get:
+    description: Get orders
+    responses:
+      200:
+        body:
+          application/json:
+            type: Order[]
+            examples:
+              output: !include examples/orders-example.raml
+  
+  /{orderID}:
+    description: Get a specific order by orderID
+    get:
+      responses:
+        200:
+          body:
+            application/json:
+              type: Order
+              examples:
+                output: !include examples/order-example.raml
+
+  post:
+    description: Post a new order into database
+    body:
+      application/json:
+        type: Order
+        examples:
+          input: !include examples/order-example.raml
+    responses:
+      201:
+        body:
+          application/json:
+            example:
+              message: "Order created successfully."
+            
+            
+    

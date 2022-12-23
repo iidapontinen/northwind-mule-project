@@ -1,0 +1,33 @@
+#%RAML 1.0 DataType
+properties: 
+  customerID:
+    type: string
+    minLength: 2
+    maxLength: 5
+  companyName:
+    type: string
+    maxLength: 40
+  contactName:
+    type: string
+    maxLength: 30
+    required: false
+  contactTitle:
+    type: string
+    maxLength: 30
+    required: false
+  address:
+    type: string
+    maxLength: 60
+    required: false
+  postalcode: 
+    type: string
+    maxLength: 10
+    required: false
+  country:
+    type: string
+    maxLength: 15
+    required: false
+  phone:
+    type: string
+    maxLength: 24
+    required: false
