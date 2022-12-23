@@ -253,16 +253,17 @@ output application/json
         </ee:transform>
     </flow>
     <flow name="get:\orders\(orderID):order-pro-api-config">
-        <ee:transform>
+        <flow-ref doc:name="Flow Reference" doc:id="3c7c6065-e7a2-44c7-8deb-b5f045800d2e" name="get-orders-by-ID"/>
+		<ee:transform>
             <ee:variables>
                 <ee:set-variable variableName="orderID">attributes.uriParams.'orderID'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <ee:transform>
+<!-- [STUDIO:"Transform Message"]        <ee:transform>
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
----
+&#45;&#45;-
 {
   orderID: 34567,
   offerID: 12345,
@@ -274,7 +275,7 @@ output application/json
   shipVia: 54656
 }]]></ee:set-payload>
             </ee:message>
-        </ee:transform>
+        </ee:transform> [STUDIO] -->
     </flow>
     <flow name="post:\customers:application\json:order-pro-api-config">
         <ee:transform>
