@@ -78,18 +78,17 @@ type auto_5d31c2e9_c6ba_4d15_bb98_7a9b8b03a7f6_Output_Variables_outboundHeaders 
 type: string]]></types:shape>
     </types:type>
     <types:type name="order-example-json" format="json">
-      <types:shape format="weave" example="examples/order_example.json"><![CDATA[%dw 2.0
+      <types:shape format="weave" example="examples/order_example-1.json"><![CDATA[%dw 2.0
 
 type order_example_json = {|
   orderID: Number {"typeId": "int"}, 
   offerID: Number {"typeId": "int"}, 
   employeeID: Number {"typeId": "int"}, 
-  shipperID: Number {"typeId": "int"}, 
   customerID: String, 
   acceptedDate: String, 
   shippedDate: String, 
   shipVia: Number {"typeId": "int"}
-|} {"example": "{\\\"orderID\\\":34567,\\\"offerID\\\":12345,\\\"employeeID\\\":45454,\\\"shipperID\\\":54656,\\\"customerID\\\":\\\"ALFKI\\\",\\\"acceptedDate\\\":\\\"2022-12-20\\\",\\\"shippedDate\\\":\\\"2023-01-29\\\",\\\"shipVia\\\":54656}"}
+|} {"example": "{\\\"orderID\\\":34567,\\\"offerID\\\":12345,\\\"employeeID\\\":45454,\\\"customerID\\\":\\\"ALFKI\\\",\\\"acceptedDate\\\":\\\"2022-12-20\\\",\\\"shippedDate\\\":\\\"2023-01-29\\\",\\\"shipVia\\\":54656}"}
 
 ]]></types:shape>
     </types:type>
