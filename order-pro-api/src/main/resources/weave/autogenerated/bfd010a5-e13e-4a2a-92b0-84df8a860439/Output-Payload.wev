@@ -1,0 +1,4 @@
+%dw 2.0
+
+type auto_bfd010a5_e13e_4a2a_92b0_84df8a860439_Output_Payload = Array<{  shipVia?: Number,   orderID?: Number,   customerID: String,   offerID: Number,   employeeID: Number,   acceptedDate: String,   shippedDate?: String,   _?: Any}>
+
