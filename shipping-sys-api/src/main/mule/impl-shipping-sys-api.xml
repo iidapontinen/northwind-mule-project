@@ -36,9 +36,10 @@ ON o.ProductID = p.ProductID
 WHERE OfferID = :OfferID ]]></db:sql>
 			<db:input-parameters ><![CDATA[#[{'OfferID': vars.'offerID'}]]]></db:input-parameters>
 		</db:select>
-<set-payload value='#[output applicatio/json&#10;---&#10;{&#10;	"categoryName": vars.categoryName[0],&#10;	"postalCode": vars.postalCode[0],&#10;	"shipperID": payload.shipVia[0]&#10;}]' doc:name="payload to post to ext ship" doc:id="4e13d090-4a9b-4c85-a3cf-5dbc4a8be133" />
-		<logger level="INFO" doc:name="Logger" doc:id="12ea56c2-f1f9-4f2f-980f-b180690d1fed" />
-		<!-- [STUDIO:"POST ext ship api"]		<http:request method="POST" doc:name="POST ext ship api" doc:id="e22ae25c-322f-4f93-9930-a6900ee55487" config-ref="HTTP_Request_configuration_shipping_ext" path="/ship"/> [STUDIO] -->
+<set-payload value='#[output application/json&#10;---&#10;{&#10;	"categoryName": vars.categoryName[0],&#10;	"postalCode": vars.postalCode[0],&#10;	"shipperID": payload.shipVia[0] as Number&#10;}]' doc:name="payload to post to ext ship" doc:id="4e13d090-4a9b-4c85-a3cf-5dbc4a8be133" />
+		<logger level="INFO" doc:name="Logger" doc:id="12ea56c2-f1f9-4f2f-980f-b180690d1fed" message="#[payload]"/>
+				<http:request method="POST" doc:name="POST ext ship api" doc:id="e22ae25c-322f-4f93-9930-a6900ee55487" config-ref="HTTP_Request_configuration_shipping_ext" path="/ship"/>
+		<logger level="INFO" doc:name="Logger" doc:id="d651321d-5a56-4b6e-852e-3a3ed3a4f8d2" />
 	</flow>
 <!-- [STUDIO:"impl-shipping-sys-apiFlow1"]	<flow name="impl-shipping-sys-apiFlow1" doc:id="4d58ca6a-86a1-4541-9dc7-fdfdfe2a22b0" >
 		<http:listener doc:name="Listener" doc:id="d93e1440-1af5-4c67-8ab1-d21223f37b89" config-ref="HTTP_Listener_config" path="/testi"/>
