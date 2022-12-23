@@ -8,10 +8,10 @@ http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/cu
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
 	<flow name="get-all-offers-list" doc:id="79ef714a-80c9-4bd6-9c26-ffbee3d16a92" >
 		<logger level="INFO" doc:name="Logger" doc:id="b64c97d8-38b8-4523-bc86-cef954a8512d" />
-		<db:select doc:name="Select" doc:id="9576a68d-e888-4cab-a542-5b844bf930ff" config-ref="Database_Config">
+		<db:select doc:name="Get list of created offers" doc:id="9576a68d-e888-4cab-a542-5b844bf930ff" config-ref="Database_Config">
 			<db:sql ><![CDATA[SELECT * FROM offers]]></db:sql>
 		</db:select>
-		<ee:transform doc:name="java to json" doc:id="3a918fc2-d053-4159-91d4-42c216b96fa1">
+		<ee:transform doc:name="Java to json" doc:id="3a918fc2-d053-4159-91d4-42c216b96fa1">
 			<ee:message>
 				<ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -19,7 +19,7 @@ output application/json
 payload map ( payload01 , indexOfPayload01 ) ->
 {
 	offerID: payload01.offerID,
-	orderStatus: payload01.orderStatus default "",
+	offerStatus: payload01.offerStatus default "",
 	dateCreated: payload01.dateCreated as String default "",
 	employeeID: payload01.employeeID,
 	customerID: payload01.customerID,
@@ -36,11 +36,11 @@ payload map ( payload01 , indexOfPayload01 ) ->
 	</flow>
 	<flow name="post-new-offer" doc:id="e06d4da8-3601-469c-ac75-23c48da89c1d" >
 		<logger level="INFO" doc:name="Logger" doc:id="6ad5932f-1e4f-468d-907c-c2517627de14" />
-		<db:insert doc:name="Insert offer details to DB" doc:id="9c02643e-9275-4a71-9609-4b4fe6b8f0c7" config-ref="Database_Config">
-			<db:sql ><![CDATA[INSERT INTO OFFERS (OrderStatus,DateCreated,EmployeeID,CustomerID,ProductID,Quantity,OrderID,TotalPrice,PriceDiscount,PaymentTransactionID)
-VALUES (:OrderStatus,:DateCreated,:EmployeeID,:CustomerID,:ProductID,:Quantity,:OrderID,:TotalPrice,:PriceDiscount,:PaymentTransactionID)]]></db:sql>
+		<db:insert doc:name="Insert new offer to DB" doc:id="9c02643e-9275-4a71-9609-4b4fe6b8f0c7" config-ref="Database_Config">
+			<db:sql ><![CDATA[INSERT INTO OFFERS (OfferStatus,DateCreated,EmployeeID,CustomerID,ProductID,Quantity,OrderID,TotalPrice,PriceDiscount,PaymentTransactionID)
+VALUES (:OfferStatus,:DateCreated,:EmployeeID,:CustomerID,:ProductID,:Quantity,:OrderID,:TotalPrice,:PriceDiscount,:PaymentTransactionID)]]></db:sql>
 			<db:input-parameters ><![CDATA[#[{
-  "OrderStatus": payload.orderStatus,
+  "OfferStatus": payload.offerStatus,
   "DateCreated": payload.dateCreated,
   "EmployeeID": payload.employeeID,
   "CustomerID": payload.customerID,

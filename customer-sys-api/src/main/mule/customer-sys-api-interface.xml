@@ -143,16 +143,17 @@ output application/json
         </ee:transform> [STUDIO] -->
     </flow>
     <flow name="get:\customers\(customerID):customer-sys-api-2-config">
-        <ee:transform>
+        <flow-ref doc:name="Flow Reference" doc:id="74e81c73-2bd3-4ad8-b6ff-7105ceb346ae" name="get-customers-byID-sapi-flow"/>
+<!-- [STUDIO:"Transform Message"]		<ee:transform>
             <ee:variables>
                 <ee:set-variable variableName="customerID">attributes.uriParams.'customerID'</ee:set-variable>
             </ee:variables>
-        </ee:transform>
-        <ee:transform>
+        </ee:transform> [STUDIO] -->
+<!-- [STUDIO:"Transform Message"]        <ee:transform>
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
----
+&#45;&#45;-
 {
   customerID: "PULP",
   companyName: "Iidas juice bar",
@@ -164,7 +165,7 @@ output application/json
   phone: "044123123"
 }]]></ee:set-payload>
             </ee:message>
-        </ee:transform>
+        </ee:transform> [STUDIO] -->
     </flow>
     <flow name="post:\customers:application\json:customer-sys-api-2-config">
         <flow-ref doc:name="Flow Reference" doc:id="23a2fca1-cc59-4164-ad3b-378449f21023" name="post-customers-sapi-flow"/>

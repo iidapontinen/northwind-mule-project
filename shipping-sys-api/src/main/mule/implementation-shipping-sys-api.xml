@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd ">
-    <apikit:config name="customer-exp-api-config" api="customer-exp-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
-    <flow name="customer-exp-api-main">
-        <http:listener path="/api/*" config-ref="HTTP_Listener_config">
+<<<<<<< HEAD:order-pro-api/src/main/mule/order-pro-api.xml
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd ">
+    <http:listener-config name="order-pro-api-httpListenerConfig">
+        <http:listener-connection host="0.0.0.0" port="8081" />
+    </http:listener-config>
+    <apikit:config name="order-pro-api-config" api="order-pro-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
+    <flow name="order-pro-api-main">
+        <http:listener config-ref="order-pro-api-httpListenerConfig" path="/api/*">
             <http:response statusCode="#[vars.httpStatus default 200]">
-                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
             </http:response>
             <http:error-response statusCode="#[vars.httpStatus default 500]">
-                <http:body><![CDATA[#[payload]]]></http:body>
-                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+                <http:body>#[payload]</http:body>
+                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
             </http:error-response>
         </http:listener>
-        <apikit:router config-ref="customer-exp-api-config" />
+        <apikit:router config-ref="order-pro-api-config" />
         <error-handler>
             <on-error-propagate type="APIKIT:BAD_REQUEST">
                 <ee:transform>
@@ -93,17 +97,17 @@ output application/json
             </on-error-propagate>
         </error-handler>
     </flow>
-    <flow name="customer-exp-api-console">
-        <http:listener path="/console/*" config-ref="HTTP_Listener_config">
+    <flow name="order-pro-api-console">
+        <http:listener config-ref="order-pro-api-httpListenerConfig" path="/console/*">
             <http:response statusCode="#[vars.httpStatus default 200]">
-                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
             </http:response>
             <http:error-response statusCode="#[vars.httpStatus default 500]">
-                <http:body><![CDATA[#[payload]]]></http:body>
-                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+                <http:body>#[payload]</http:body>
+                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
             </http:error-response>
         </http:listener>
-        <apikit:console config-ref="customer-exp-api-config" />
+        <apikit:console config-ref="order-pro-api-config" />
         <error-handler>
             <on-error-propagate type="APIKIT:NOT_FOUND">
                 <ee:transform>
@@ -120,29 +124,21 @@ output application/json
             </on-error-propagate>
         </error-handler>
     </flow>
-    <flow name="patch:\proposedoffers\(customerID)\(offerID):application\xml:customer-exp-api-config">
+    <flow name="patch:\proposedoffers\(customerID)\(offerID):application\json:order-pro-api-config">
         <ee:transform>
             <ee:variables>
                 <ee:set-variable variableName="customerID">attributes.uriParams.'customerID'</ee:set-variable>
                 <ee:set-variable variableName="offerID">attributes.uriParams.'offerID'</ee:set-variable>
             </ee:variables>
         </ee:transform>
+        <logger level="INFO" message="patch:\proposedoffers\(customerID)\(offerID):application\json:order-pro-api-config" />
+    </flow>
+    <flow name="get:\customers:order-pro-api-config">
         <ee:transform>
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
 ---
-"Updated offer succesfully."]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
-    </flow>
-    <flow name="get:\customers:customer-exp-api-config">
-        <flow-ref doc:name="get-customers-eapi-flow" doc:id="371799d9-772b-4677-bb1d-539441a028c6" name="get-customers-eapi-flow" />
-        <!-- [STUDIO:"Transform Message"]		<ee:transform>
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
-&#45;&#45;-
 [
   {
     customerID: "PULP",
@@ -156,14 +152,9 @@ output application/json
   }
 ]]]></ee:set-payload>
             </ee:message>
-        </ee:transform> [STUDIO] -->
-    </flow>
-    <flow name="get:\inquiries\(customerID):customer-exp-api-config">
-        <ee:transform>
-            <ee:variables>
-                <ee:set-variable variableName="customerID">attributes.uriParams.'customerID'</ee:set-variable>
-            </ee:variables>
         </ee:transform>
+    </flow>
+    <flow name="get:\offers:order-pro-api-config">
         <ee:transform>
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
@@ -173,7 +164,7 @@ output application/json
   {
     offerID: 56678,
     Status: "Pending",
-    dateCreated: 1671494400000,
+    dateCreated: "2022-12-20",
     employeeID: 595959,
     customerID: "SALIS",
     productID: 595957,
@@ -186,7 +177,7 @@ output application/json
   {
     offerID: 56678,
     Status: "Pending",
-    dateCreated: 1671494400000,
+    dateCreated: "2022-12-20",
     employeeID: 595959,
     customerID: "SALIS",
     productID: 595957,
@@ -200,7 +191,46 @@ output application/json
             </ee:message>
         </ee:transform>
     </flow>
-    <flow name="get:\proposedoffers\(customerID):customer-exp-api-config">
+    <flow name="get:\orders:order-pro-api-config">
+        <ee:transform>
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+[
+  {
+    orderID: 34567,
+    offerID: 12345,
+    employeeID: 45454,
+    shipperID: 54656,
+    customerID: "ALFKI",
+    acceptedDate: "2016-02-28",
+    shippedDate: "2016-02-28",
+    shipVia: 54656
+  }, 
+  {
+    orderID: 75874,
+    offerID: 63245,
+    employeeID: 68584,
+    shipperID: 76889,
+    customerID: "FLGKH",
+    acceptedDate: "2022-12-21",
+    shippedDate: "2023-01-23",
+    shipVia: 76889
+  }
+]]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+    <flow name="get:\inquiries\(customerID):order-pro-api-config">
+        <ee:transform>
+            <ee:variables>
+                <ee:set-variable variableName="customerID">attributes.uriParams.'customerID'</ee:set-variable>
+            </ee:variables>
+        </ee:transform>
+        <logger level="INFO" message="get:\inquiries\(customerID):order-pro-api-config" />
+    </flow>
+    <flow name="get:\customers\(customerID):order-pro-api-config">
         <ee:transform>
             <ee:variables>
                 <ee:set-variable variableName="customerID">attributes.uriParams.'customerID'</ee:set-variable>
@@ -211,49 +241,6 @@ output application/json
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
 ---
-[
-  {
-    offerID: 56678,
-    Status: "Pending",
-    dateCreated: 1671494400000,
-    employeeID: 595959,
-    customerID: "SALIS",
-    productID: 595957,
-    quantity: 1,
-    orderID: 565656,
-    totalPrice: 1000,
-    priceDiscount: 30,
-    paymentTransactionID: 989898
-  }, 
-  {
-    offerID: 56678,
-    Status: "Pending",
-    dateCreated: 1671494400000,
-    employeeID: 595959,
-    customerID: "SALIS",
-    productID: 595957,
-    quantity: 1,
-    orderID: 565656,
-    totalPrice: 1000,
-    priceDiscount: 30,
-    paymentTransactionID: 989898
-  }
-]]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
-    </flow>
-    <flow name="get:\customers\(customerID):customer-exp-api-config">
-        <flow-ref doc:name="Flow Reference" doc:id="6a9a3710-b356-4397-a885-773ca24ebf86" name="get-customers-byID-flow"/>
-<!-- [STUDIO:"Transform Message"]		<ee:transform>
-            <ee:variables>
-                <ee:set-variable variableName="customerID">attributes.uriParams.'customerID'</ee:set-variable>
-            </ee:variables>
-        </ee:transform> [STUDIO] -->
-<!-- [STUDIO:"Transform Message"]        <ee:transform>
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
-&#45;&#45;-
 {
   customerID: "PULP",
   companyName: "Iidas juice bar",
@@ -265,13 +252,12 @@ output application/json
   phone: "044123123"
 }]]></ee:set-payload>
             </ee:message>
-        </ee:transform> [STUDIO] -->
+        </ee:transform>
     </flow>
-    <flow name="patch:\proposedoffers\(customerID)\(offerID):application\json:customer-exp-api-config">
+    <flow name="get:\orders\(orderID):order-pro-api-config">
         <ee:transform>
             <ee:variables>
-                <ee:set-variable variableName="customerID">attributes.uriParams.'customerID'</ee:set-variable>
-                <ee:set-variable variableName="offerID">attributes.uriParams.'offerID'</ee:set-variable>
+                <ee:set-variable variableName="orderID">attributes.uriParams.'orderID'</ee:set-variable>
             </ee:variables>
         </ee:transform>
         <ee:transform>
@@ -280,34 +266,82 @@ output application/json
 output application/json
 ---
 {
-  message: "Updated offer succesfully."
+  orderID: 34567,
+  offerID: 12345,
+  employeeID: 45454,
+  shipperID: 54656,
+  customerID: "ALFKI",
+  acceptedDate: "2022-12-20",
+  shippedDate: "2023-01-29",
+  shipVia: 54656
 }]]></ee:set-payload>
             </ee:message>
         </ee:transform>
     </flow>
-    <flow name="post:\customers:application\json:customer-exp-api-config">
-        <flow-ref doc:name="post-customers-eapi-flow" doc:id="72638e8a-a281-4bc9-88f3-d5e2a9af820e" name="post-customers-eapi-flow" />
-<!-- [STUDIO:"Transform Message"]		<ee:transform>
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
-&#45;&#45;-
-{
-  message: "Customer added successfully."
-}]]></ee:set-payload>
-            </ee:message>
-        </ee:transform> [STUDIO] -->
-    </flow>
-    <flow name="post:\inquiries:application\json:customer-exp-api-config">
+    <flow name="post:\customers:application\json:order-pro-api-config">
         <ee:transform>
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
 ---
 {
-  message: "Thank you for your inquiry. We will get back to you shortly"
+  message: "Customer added successfully."
 }]]></ee:set-payload>
             </ee:message>
         </ee:transform>
     </flow>
+    <flow name="post:\inquiries:application\json:order-pro-api-config">
+        <ee:transform>
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  message: "Inquiry placed successfully."
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+    <flow name="post:\offers:application\json:order-pro-api-config">
+        <ee:transform>
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  message: "Offer created successfully."
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+    <flow name="post:\orders:application\json:order-pro-api-config">
+        <ee:transform>
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  message: "Order created successfully."
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+    <flow name="post:\shippingdetails:application\json:order-pro-api-config">
+        <ee:transform>
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  message: "Shipping details posted successfully."
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+=======
+
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
+>>>>>>> 99f9cb3cf1f5e7466aee70da55b675fe5384354c:shipping-sys-api/src/main/mule/implementation-shipping-sys-api.xml
 </mule>
