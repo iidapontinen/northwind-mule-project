@@ -189,7 +189,7 @@ output application/json
 		<flow-ref doc:name="Flow Reference" doc:id="851664e5-804f-43f0-bedf-de04e6928a75" name="implement-orders-pro-offers-GET"/>
     </flow>
     <flow name="get:\orders:order-pro-api-config">
-        <flow-ref doc:name="Flow Reference" doc:id="04512d83-ef8b-458f-97f5-728ddc4294b3" name="get"/>
+        <flow-ref doc:name="Flow Reference" doc:id="04512d83-ef8b-458f-97f5-728ddc4294b3" name="get-orders-flow"/>
 <!-- [STUDIO:"Transform Message"]		<ee:transform>
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0

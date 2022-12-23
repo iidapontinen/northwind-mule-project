@@ -1,23 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:db="http://www.mulesoft.org/schema/mule/db"
-	xmlns="http://www.mulesoft.org/schema/mule/core"
-	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
-http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
-	<flow name="get" doc:id="bfd010a5-e13e-4a2a-92b0-84df8a860439" >
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<flow name="get-orders-flow" doc:id="bfd010a5-e13e-4a2a-92b0-84df8a860439" >
 		<logger level="INFO" doc:name="Logger" doc:id="0d735649-8f08-4841-9807-d14849c8df9e" />
-		<db:select doc:name="Select" doc:id="d5103124-06d0-463c-b93b-070432d10e0c" config-ref="Database_Config">
-			<db:sql ><![CDATA[SELECT * from offers]]></db:sql>
-		</db:select>
-		<ee:transform doc:name="Transform Message" doc:id="f9020c65-b136-4cab-a975-9325de20d93b" >
-			<ee:message >
-				<ee:set-payload ><![CDATA[%dw 2.0
-output application/json
----
-payload]]></ee:set-payload>
-			</ee:message>
-		</ee:transform>
+		<http:request method="GET" doc:name="Request" doc:id="a6a0b71d-3dab-4fa1-bb93-345285413c4d" config-ref="order_sapi_HTTP_Request_configuration" path="/api/orders"/>
 		<logger level="INFO" doc:name="Logger" doc:id="fe5731c5-54e3-459f-9152-e8ca34ac1b69" />
 	</flow>
 </mule>

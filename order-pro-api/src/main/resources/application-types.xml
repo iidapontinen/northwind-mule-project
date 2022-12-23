@@ -114,6 +114,7 @@ type: string]]></types:shape>
       </types:output-event>
     </types:processor-declaration>
   </types:enrichment>
+<<<<<<< HEAD
   <types:enrichment select="#44de601c-ab58-4837-a6b7-600eeb46e86e">
     <types:processor-declaration>
       <types:output-event>
@@ -123,4 +124,6 @@ type: string]]></types:shape>
       </types:output-event>
     </types:processor-declaration>
   </types:enrichment>
+=======
+>>>>>>> 54aa0a498a4c1439fed33b0aceee483ee20bf7f5
 </types:mule>
