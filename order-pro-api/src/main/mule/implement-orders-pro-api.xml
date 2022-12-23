@@ -8,7 +8,7 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
 	<flow name="get-orders-flow" doc:id="bfd010a5-e13e-4a2a-92b0-84df8a860439" >
 		<logger level="INFO" doc:name="Entering get-orders-flow" doc:id="0d735649-8f08-4841-9807-d14849c8df9e" />
-		<http:request method="GET" doc:name="Contact order-sapi" doc:id="a6a0b71d-3dab-4fa1-bb93-345285413c4d" config-ref="orders_sapi_HTTP_Request_configuration" path="/api/orders"/>
+		<http:request method="GET" doc:name="Contact order-sapi" doc:id="a6a0b71d-3dab-4fa1-bb93-345285413c4d" config-ref="order_sapi_HTTP_Request_configuration" path="/api/orders"/>
 		<ee:transform doc:name="Transform Message" doc:id="60b56472-67d3-4968-8672-b573a59d7cce" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
@@ -21,7 +21,7 @@ payload]]></ee:set-payload>
 	</flow>
 	<flow name="get-orders-by-ID" doc:id="f0fabec2-11cc-44ef-9b86-45383794e76f" >
 		<logger level="INFO" doc:name="Entering get-orders-by-ID-flow" doc:id="fb0bfd0b-3861-4092-b0ec-033d53b82c5d" />
-		<http:request method="GET" doc:name="Contact order-sapi-ID" doc:id="a5c02bb0-b66d-40bc-9c9f-c633543e1367" config-ref="orders_sapi_HTTP_Request_configuration" path="/api/orders/{orderID}"/>
+		<http:request method="GET" doc:name="Contact order-sapi-ID" doc:id="a5c02bb0-b66d-40bc-9c9f-c633543e1367" config-ref="order_sapi_HTTP_Request_configuration" path="/api/orders/{orderID}"/>
 		<logger level="INFO" doc:name="Exiting get-orders-by-ID-flow" doc:id="95461c43-c746-4a21-9b37-176bc023d658" />
 	</flow>
 </mule>
