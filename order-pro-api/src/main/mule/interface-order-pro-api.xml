@@ -302,16 +302,16 @@ output application/json
         </ee:transform>
     </flow>
     <flow name="post:\offers:application\json:order-pro-api-config">
-<!-- [STUDIO:"Transform Message"]        <ee:transform>
+        <ee:transform>
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
-&#45;&#45;-
+---
 {
   message: "Offer created successfully."
 }]]></ee:set-payload>
             </ee:message>
-        </ee:transform> [STUDIO] -->
+        </ee:transform>
 <!-- [STUDIO:"Flow Reference"]		<flow-ref doc:name="Flow Reference" doc:id="e233c4fd-df33-4edb-ad8b-a509c96481ab" name="implement-orders-pro-offers-POST"/> [STUDIO] -->
     </flow>
     <flow name="post:\orders:application\json:order-pro-api-config">
