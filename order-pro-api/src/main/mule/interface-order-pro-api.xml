@@ -151,11 +151,11 @@ output application/json
         </ee:transform>
     </flow>
     <flow name="get:\offers:order-pro-api-config">
-        <ee:transform>
+<!-- [STUDIO:"Transform Message"]        <ee:transform>
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
----
+&#45;&#45;-
 [
   {
     offerID: 56678,
@@ -185,7 +185,8 @@ output application/json
   }
 ]]]></ee:set-payload>
             </ee:message>
-        </ee:transform>
+        </ee:transform> [STUDIO] -->
+		<flow-ref doc:name="Flow Reference" doc:id="851664e5-804f-43f0-bedf-de04e6928a75" name="implement-orders-pro-offers-GET"/>
     </flow>
     <flow name="get:\orders:order-pro-api-config">
         <flow-ref doc:name="Flow Reference" doc:id="04512d83-ef8b-458f-97f5-728ddc4294b3" name="get"/>
@@ -300,16 +301,17 @@ output application/json
         </ee:transform>
     </flow>
     <flow name="post:\offers:application\json:order-pro-api-config">
-        <ee:transform>
+<!-- [STUDIO:"Transform Message"]        <ee:transform>
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
----
+&#45;&#45;-
 {
   message: "Offer created successfully."
 }]]></ee:set-payload>
             </ee:message>
-        </ee:transform>
+        </ee:transform> [STUDIO] -->
+<!-- [STUDIO:"Flow Reference"]		<flow-ref doc:name="Flow Reference" doc:id="e233c4fd-df33-4edb-ad8b-a509c96481ab" name="implement-orders-pro-offers-POST"/> [STUDIO] -->
     </flow>
     <flow name="post:\orders:application\json:order-pro-api-config">
         <ee:transform>
