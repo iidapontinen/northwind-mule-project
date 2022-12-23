@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
+	<flow name="impl-shipping-sys-apiFlow" doc:id="693ed158-14ec-4115-8445-acd8573b8b69" >
+		<logger level="INFO" doc:name="Logger" doc:id="06f7db86-a447-4038-a178-7254e7520a10" />
+		<db:select doc:name="Select" doc:id="81f5c74c-7d38-40dd-8a58-96df444543d8" target="postalCode" config-ref="Database_Config">
+			<db:sql ><![CDATA[SELECT c.PostalCode, c.CustomerID, o.OfferID
+FROM customers AS c
+INNER JOIN
+offers AS o
+WHERE c.CustomerID = o.CustomerID AND c.CustomerID = :CustomerID]]></db:sql>
+		</db:select>
+	</flow>
+</mule>
