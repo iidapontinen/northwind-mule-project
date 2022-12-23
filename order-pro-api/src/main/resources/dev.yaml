@@ -1,4 +1,8 @@
 http:
+ port: "8082"
+ 
+sapi.orders:
+ host: "localhost"
  port: "8081"
 
 db:

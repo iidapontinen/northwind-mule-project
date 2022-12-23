@@ -13,4 +13,7 @@ http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/cu
 	<db:config name="Database_Config" doc:name="Database Config" doc:id="f9dd9546-0895-4118-8772-1d3b84566f7d" >
 		<db:my-sql-connection host="${db.host}" port="${db.port}" user="${db.user}" password="${db.password}" database="${db.database}" />
 	</db:config>
+	<http:request-config name="order_sapi_HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="87752a4a-b982-4ba0-91cb-25469ad18b59" >
+		<http:request-connection host="${sapi.orders.host}" port="${sapi.orders.port}" />
+	</http:request-config>
 </mule>

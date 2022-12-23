@@ -95,5 +95,4 @@ type auto_bfd010a5_e13e_4a2a_92b0_84df8a860439_Output_Payload = Array<{  shipVia
       </types:output-event>
     </types:processor-declaration>
   </types:enrichment>
-  <types:enrichment select="#f9020c65-b136-4cab-a975-9325de20d93b"/>
 </types:mule>
