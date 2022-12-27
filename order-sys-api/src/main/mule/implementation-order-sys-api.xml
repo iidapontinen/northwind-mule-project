@@ -39,7 +39,7 @@ payload map ( payload01 , indexOfPayload01 ) -> {
 orders.ShipVia, offers.OfferID, offers.DateApproved
 FROM orders, offers
 WHERE orders.OrderID = offers.OrderID AND orders.OrderID = :orderID]]></db:sql>
-			<db:input-parameters ><![CDATA[#['orderID': attributes.uriParams.'orderID']]]></db:input-parameters>
+			<db:input-parameters ><![CDATA[#['OrderID': attributes.uriParams.'orderID']]]></db:input-parameters>
 		</db:select>
 		<ee:transform doc:name="from db-java -&gt; json" doc:id="e4a07279-e56a-4d3b-b5e5-206bd862d25f" >
 			<ee:message >
