@@ -17,6 +17,6 @@ http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/cu
 		<http:request-connection host="${sapi.offers.host}" port="${sapi.offers.port}" />
 </http:request-config>
 	<http:request-config name="order_sapi_HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="87752a4a-b982-4ba0-91cb-25469ad18b59" >
-		<http:request-connection host="${sapi.orders.host}" port="${sapi.orders.port}" />
+		<http:request-connection host="${sapi.orders.host}" port="${sapi.orders.port}"/>
 </http:request-config>
 </mule>

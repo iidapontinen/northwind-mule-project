@@ -21,7 +21,13 @@ payload]]></ee:set-payload>
 	</flow>
 	<flow name="get-orders-by-ID-flow" doc:id="f0fabec2-11cc-44ef-9b86-45383794e76f" >
 		<logger level="INFO" doc:name="Entering get-orders-by-ID-flow" doc:id="fb0bfd0b-3861-4092-b0ec-033d53b82c5d" />
-		<http:request method="GET" doc:name="Contact get-order-ID-sapi" doc:id="a5c02bb0-b66d-40bc-9c9f-c633543e1367" config-ref="order_sapi_HTTP_Request_configuration" path="/api/orders/{orderID}"/>
+		<http:request method="GET" doc:name="Contact get-order-ID-sapi" doc:id="a5c02bb0-b66d-40bc-9c9f-c633543e1367" config-ref="order_sapi_HTTP_Request_configuration" path="/api/orders/{orderID}">
+			<http:uri-params ><![CDATA[#[output application/java
+---
+{
+	'orderID' : message.attributes.uriParams.orderID
+}]]]></http:uri-params>
+		</http:request>
 		<logger level="INFO" doc:name="Exiting get-orders-by-ID-flow" doc:id="95461c43-c746-4a21-9b37-176bc023d658" />
 	</flow>
 	<flow name="post-orders-flow" doc:id="5c862079-5288-4e27-adef-8fe8bdf10916" >

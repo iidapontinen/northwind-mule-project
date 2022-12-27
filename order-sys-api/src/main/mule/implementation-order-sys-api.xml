@@ -39,7 +39,7 @@ payload map ( payload01 , indexOfPayload01 ) -> {
 orders.ShipVia, offers.OfferID, offers.DateApproved
 FROM orders, offers
 WHERE orders.OrderID = offers.OrderID AND orders.OrderID = :orderID]]></db:sql>
-			<db:input-parameters ><![CDATA[#['OrderID': attributes.uriParams.'orderID']]]></db:input-parameters>
+			<db:input-parameters ><![CDATA[#[orderID: attributes.uriParams.'orderID']]]></db:input-parameters>
 		</db:select>
 		<ee:transform doc:name="from db-java -&gt; json" doc:id="e4a07279-e56a-4d3b-b5e5-206bd862d25f" >
 			<ee:message >
@@ -71,7 +71,7 @@ WHERE CustomerID = :customerID]]></db:sql>
 }]]]></db:input-parameters>
 		</db:select>
 		<db:insert doc:name="Insert a post into db" doc:id="c144338a-5ecf-463b-8251-eaadbe2a15fd" config-ref="Northwind_database_Config">
-			<db:sql ><![CDATA[INSERT INTO Orders (CustomerID, EmployeeID, OrderDate, ShippedDate, ShipVia, ShipAddress)
+			<db:sql ><![CDATA[INSERT INTO orders (CustomerID, EmployeeID, OrderDate, ShippedDate, ShipVia, ShipAddress)
 VALUES (:CustomerID, :EmployeeID, :OrderDate, :ShippedDate, :ShipVia, :ShipAddress)]]></db:sql>
 			<db:input-parameters ><![CDATA[#[{
 	CustomerID: payload.customerID,
