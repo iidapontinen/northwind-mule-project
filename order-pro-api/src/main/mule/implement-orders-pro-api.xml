@@ -8,20 +8,25 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
 	<flow name="get-orders-flow" doc:id="bfd010a5-e13e-4a2a-92b0-84df8a860439" >
 		<logger level="INFO" doc:name="Entering get-orders-flow" doc:id="0d735649-8f08-4841-9807-d14849c8df9e" />
-		<http:request method="GET" doc:name="Contact order-sapi" doc:id="a6a0b71d-3dab-4fa1-bb93-345285413c4d" config-ref="order_sapi_HTTP_Request_configuration" path="/api/orders"/>
-		<ee:transform doc:name="Transform Message" doc:id="60b56472-67d3-4968-8672-b573a59d7cce" >
+		<http:request method="GET" doc:name="Contact get-order-sapi" doc:id="a6a0b71d-3dab-4fa1-bb93-345285413c4d" config-ref="order_sapi_HTTP_Request_configuration" path="/api/orders"/>
+<!-- [STUDIO:"Transform Message"]		<ee:transform doc:name="Transform Message" doc:id="60b56472-67d3-4968-8672-b573a59d7cce" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
----
+&#45;&#45;-
 payload]]></ee:set-payload>
 			</ee:message>
-		</ee:transform>
+		</ee:transform> [STUDIO] -->
 		<logger level="INFO" doc:name="Exiting get-orders-flow" doc:id="fe5731c5-54e3-459f-9152-e8ca34ac1b69"/>
 	</flow>
-	<flow name="get-orders-by-ID" doc:id="f0fabec2-11cc-44ef-9b86-45383794e76f" >
+	<flow name="get-orders-by-ID-flow" doc:id="f0fabec2-11cc-44ef-9b86-45383794e76f" >
 		<logger level="INFO" doc:name="Entering get-orders-by-ID-flow" doc:id="fb0bfd0b-3861-4092-b0ec-033d53b82c5d" />
-		<http:request method="GET" doc:name="Contact order-sapi-ID" doc:id="a5c02bb0-b66d-40bc-9c9f-c633543e1367" config-ref="order_sapi_HTTP_Request_configuration" path="/api/orders/{orderID}"/>
+		<http:request method="GET" doc:name="Contact get-order-ID-sapi" doc:id="a5c02bb0-b66d-40bc-9c9f-c633543e1367" config-ref="order_sapi_HTTP_Request_configuration" path="/api/orders/{orderID}"/>
 		<logger level="INFO" doc:name="Exiting get-orders-by-ID-flow" doc:id="95461c43-c746-4a21-9b37-176bc023d658" />
+	</flow>
+	<flow name="post-orders-flow" doc:id="5c862079-5288-4e27-adef-8fe8bdf10916" >
+		<logger level="INFO" doc:name="Entering post-orders-flow" doc:id="c47951c1-61e0-43cf-8132-76e482b97370" />
+		<http:request method="POST" doc:name="Contact post-order-sapi" doc:id="adb83aab-8a2d-4e75-b67c-f0925fd82b9e" config-ref="order_sapi_HTTP_Request_configuration" path="/api/orders"/>
+		<logger level="INFO" doc:name="Exiting post-orders-flow" doc:id="be9d5f8e-0a3b-4a75-a5c3-9a5d3d5399db" />
 	</flow>
 </mule>
