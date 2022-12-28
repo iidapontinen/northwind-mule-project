@@ -2,8 +2,8 @@ http:
   port: "8081"
 
 db:
-  host: "localhost"
-  port: "3306"
-  user: "root"
-  password: "Maria1234!"
-  database: "northwind"
+ host: "20.224.50.155"
+ port: "3306"
+ user: "group01"
+ password: "@Br1ghtsGr0up01!"
+ database: "northwind01"

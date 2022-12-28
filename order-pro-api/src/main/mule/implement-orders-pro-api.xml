@@ -9,14 +9,6 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 	<flow name="get-orders-flow" doc:id="bfd010a5-e13e-4a2a-92b0-84df8a860439" >
 		<logger level="INFO" doc:name="Entering get-orders-flow" doc:id="0d735649-8f08-4841-9807-d14849c8df9e" />
 		<http:request method="GET" doc:name="Contact get-order-sapi" doc:id="a6a0b71d-3dab-4fa1-bb93-345285413c4d" config-ref="order_sapi_HTTP_Request_configuration" path="/api/orders"/>
-<!-- [STUDIO:"Transform Message"]		<ee:transform doc:name="Transform Message" doc:id="60b56472-67d3-4968-8672-b573a59d7cce" >
-			<ee:message >
-				<ee:set-payload ><![CDATA[%dw 2.0
-output application/json
-&#45;&#45;-
-payload]]></ee:set-payload>
-			</ee:message>
-		</ee:transform> [STUDIO] -->
 		<logger level="INFO" doc:name="Exiting get-orders-flow" doc:id="fe5731c5-54e3-459f-9152-e8ca34ac1b69"/>
 	</flow>
 	<flow name="get-orders-by-ID-flow" doc:id="f0fabec2-11cc-44ef-9b86-45383794e76f" >
