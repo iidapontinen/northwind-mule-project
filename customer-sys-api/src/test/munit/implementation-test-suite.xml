@@ -8,19 +8,6 @@
 		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
 		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
 	<munit:config name="implementation-test-suite.xml" />
-<!-- [STUDIO:"sapi-implementation-test-suite-happy-path-successful-retrieval-db"]	<munit:test name="sapi-implementation-test-suite-happy-path-successful-retrieval-db" doc:id="f048b509-ec64-4d4b-ad3f-fc80e85ea0d2" description="Test">
-		<munit:behavior >
-			<munit:set-event doc:name="Set Event" doc:id="08d434ee-041e-4210-ac8c-d3fa39695ff9" >
-				<munit:payload value='#[[&#10;  {&#10;    "CustomerID": "QWERTQ",&#10;    "CompanyName": "id",&#10;    "ContactName": "aute"&#10;  },&#10;  {&#10;    "CustomerID": "ASDFA",&#10;    "CompanyName": "ratione",&#10;    "ContactName": "Quis"&#10;  }&#10;]]' />
-			</munit:set-event>
-		</munit:behavior>
-		<munit:execution >
-			<flow-ref doc:name="Flow-ref to get-customers-sapi-flow" doc:id="61d984d3-a0a9-4a34-ae51-1e325dd71724" name="get-customers-sapi-flow"/>
-		</munit:execution>
-		<munit:validation>
-			<munit-tools:assert doc:name="Assert expression" doc:id="fdafc10d-b7a4-4969-98bc-2c464e70b9c0" />
-		</munit:validation>
-	</munit:test> [STUDIO] -->
 	<munit:test name="sapi-implementation-test-suite-successful-get" doc:id="bd09c90e-d7f3-43a8-841d-5a438fe08ebf" description="Test">
 		<munit:behavior >
 			<munit-tools:mock-when doc:name="Mock when" doc:id="89c351d5-bbcf-443a-9d68-bab1f4bf3d71" processor="db:select">
@@ -60,14 +47,6 @@
 			<munit-tools:assert doc:name="Assert expression" doc:id="16e864b7-da60-4561-98c4-2ebc4de14ffe" />
 		</munit:validation>
 	</munit:test>
-<!-- [STUDIO:"sapi-implementation-test-suite-successful-post-db-connection"]	<munit:test name="sapi-implementation-test-suite-successful-post-db-connection" doc:id="e046682c-fd16-4cd8-8984-a2f063c93ff8" description="Test">
-		<munit:execution >
-			<flow-ref doc:name="Flow-ref to post-customers-sapi-flow" doc:id="1e781a2d-558c-4965-81dc-00b41af33782" name="post-customers-sapi-flow"/>
-		</munit:execution>
-		<munit:validation >
-			<munit-tools:assert doc:name="Assert expression" doc:id="d84acf31-5eba-428b-ae68-bd6fda00ed92" />
-		</munit:validation>
-	</munit:test> [STUDIO] -->
 	<munit:test name="sapi-implementation-test-suite-get-error-path-db-connectivity" doc:id="855220a5-2bdf-43fa-af55-04e58fa76ca3" description="Test" expectedErrorType="DB:CONNECTIVITY">
 		<munit:behavior>
 			<munit-tools:mock-when doc:name="Mock when" doc:id="6e3f3888-197f-4137-99eb-4d02d68c6b5c" processor="db:select">
@@ -92,6 +71,9 @@
 	</munit:test>
 	<munit:test name="sapi-implementation-test-suite-post-customers-DB-query-execution" doc:id="ece4b378-a270-4962-9732-113d9668d36e" description="Test">
 		<munit:behavior >
+			<munit:set-event doc:name="Set Event" doc:id="b466cf1d-32ce-445f-b42d-156273c3d992" >
+				<munit:payload value='#[output application/json&#10;---&#10;{&#10;  customer: {&#10;      CustomerID: "ID",&#10;      CompanyName: "myCompany",&#10;      ContactName: "John Larsen",&#10;      ContactTitle: "Manager",&#10;      Address: "Kapelvej 15",&#10;      City: "Copenhaguen",&#10;      Region: "SJ",&#10;      PostalCode: "2200",&#10;      Country: "Denmark",&#10;      Phone: "0045 29157586",&#10;      Fax: "265-4874195"&#10;    }&#10;}]' />
+			</munit:set-event>
 			<munit-tools:mock-when doc:name="Mock when" doc:id="33bfebf8-26b9-4f79-801d-1615e4fe95be" processor="db:insert" >
 				<munit-tools:with-attributes >
 					<munit-tools:with-attribute whereValue="9488b1a8-2f42-459c-b52d-537e5fc91f06" attributeName="doc:id" />
@@ -105,8 +87,8 @@
 			<flow-ref doc:name="Flow-ref to post-customers-sapi-flow" doc:id="f94d79d7-2354-4dd8-9390-40f4aad1d5c6" name="post-customers-sapi-flow"/>
 		</munit:execution>
 		<munit:validation >
-<!-- [STUDIO:"Assert equals"]			<munit-tools:assert-equals doc:name="Assert equals" doc:id="079ace3d-1081-4478-8adc-382a8ed3e3e5" actual="#[output application/json&#10;&#45;&#45;-&#10;payload.message]" expected='#[error.description]' message="Error message not received." /> [STUDIO] -->
-			<munit-tools:assert doc:name="Assert expression" doc:id="93e50404-2d15-47c3-85e0-6015b89d9c53" />
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="079ace3d-1081-4478-8adc-382a8ed3e3e5" actual="#[payload.message]" message="Error message not received." expected='#[""]'/>
+<!-- [STUDIO:"Assert expression"]			<munit-tools:assert doc:name="Assert expression" doc:id="93e50404-2d15-47c3-85e0-6015b89d9c53" /> [STUDIO] -->
 		</munit:validation>
 	</munit:test>
 	<munit:test name="sapi-implementation-test-suite-get-error-path-ANY" doc:id="702c462e-efa6-430c-a00d-5dc30bfabaa2" description="Test">
@@ -124,23 +106,10 @@
 			<flow-ref doc:name="Flow-ref to get-customers-sapi-flow" doc:id="e7efe3cd-8aa0-4c2c-9cb4-f7bf10e038c2" name="get-customers-sapi-flow" />
 		</munit:execution>
 		<munit:validation >
-			<!-- [STUDIO:"Assert equals"]			<munit-tools:assert-equals doc:name="Assert equals" doc:id="a83e43ca-e0b6-453f-933b-adbf22448574" actual="#[output application/json&#10;&#45;&#45;-&#10;payload.message]" expected='#["message": error.description]' message="Error message not received."/> [STUDIO] -->
+<!-- [STUDIO:"Assert equals"]						<munit-tools:assert-equals doc:name="Assert equals" doc:id="a83e43ca-e0b6-453f-933b-adbf22448574" actual="#[payload.message]" expected='#[output application/json&#10;&#45;&#45;-&#10;{&#10;	"message": error.description&#10;}]' message="Error message not received."/> [STUDIO] -->
 			<munit-tools:assert doc:name="Assert expression" doc:id="016f675a-6b51-4f98-af90-ff1b389a59eb" />
 		</munit:validation>
 	</munit:test>
-<!-- [STUDIO:"sapi-implementation-test-suite-successful-post"]	<munit:test name="sapi-implementation-test-suite-successful-post" doc:id="2da200e1-b560-4efd-8c30-ef88efec38bd" description="Test">
-		<munit:behavior >
-			<munit:set-event doc:name="Set Event" doc:id="35cc7875-0ba3-4b37-accd-3acada8d4ef0" >
-				<munit:payload value="#[output application/json&#10;&#45;&#45;-&#10;{&#10;  &quot;customerID&quot;: &quot;QWER&quot;,&#10;  &quot;companyName&quot;: &quot;Seb's Beer Bar&quot;,&#10;  &quot;contactName&quot;: &quot;Seb Anders&quot;,&#10;  &quot;contactTitle&quot;: &quot;Bar tender&quot;,&#10;  &quot;address&quot;: &quot;Timonkatu 57&quot;,&#10;  &quot;postalCode&quot;: &quot;12209&quot;,&#10;  &quot;country&quot;: &quot;Finland&quot;,&#10;  &quot;phone&quot;: &quot;030-0074321&quot;&#10;}]" />
-			</munit:set-event>
-		</munit:behavior>
-		<munit:execution >
-			<flow-ref doc:name="Flow-ref to post-customers-sapi-flow" doc:id="c5487ff2-1900-4300-8846-61ff485e48fe" name="post-customers-sapi-flow"/>
-		</munit:execution>
-		<munit:validation>
-			<munit-tools:assert doc:name="Assert expression" doc:id="4276f5e4-1fea-410f-a922-28e8fcd27451" />
-		</munit:validation>
-	</munit:test> [STUDIO] -->
 
 
 </mule>

@@ -12,15 +12,15 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 	<flow name="impl-shipping-sys-apiFlow" doc:id="693ed158-14ec-4115-8445-acd8573b8b69" >
 		<logger level="INFO" doc:name="Logger" doc:id="06f7db86-a447-4038-a178-7254e7520a10" />
 <!-- [STUDIO:"temporary payload for testing"]		<set-payload value='#[output application/json&#10;&#45;&#45;-&#10;{&#10;	"offerID": "1",&#10;	"dateApproved": "2022-04-11 00:00:00",&#10;	"shipperID": "1"&#10;}]' doc:name="temporary payload for testing" doc:id="f8cea91b-b014-44dd-a3e5-a258b3cc18f7" /> [STUDIO] -->
-		<set-variable value="#[payload.dateAccepted]" doc:name="Set Variable" doc:id="4b882926-22c1-4df8-9156-1e7524b40bb1" variableName="dateAccepted"/>
+		<set-variable value="#[payload.dateAccepted]" doc:name="dateAccepted" doc:id="4b882926-22c1-4df8-9156-1e7524b40bb1" variableName="dateAccepted"/>
 		<set-variable value="#[payload.offerID]" doc:name="offerID" doc:id="0c357448-a3b4-43f4-9767-4f0485a1a896" variableName="offerID"/>
-		<db:select doc:name="CustomerID based on OfferID" doc:id="144be8fe-224a-45ef-ae68-7961334f0241" target="customerID" config-ref="Database_Config" targetValue="#[output application/json&#10;---&#10;payload.CustomerID]">
+		<db:select doc:name="CustomerID and target" doc:id="144be8fe-224a-45ef-ae68-7961334f0241" target="customerID" config-ref="Database_Config" targetValue="#[output application/json&#10;---&#10;payload.CustomerID]">
 			<db:sql ><![CDATA[SELECT CustomerID
 FROM offers
 WHERE OfferID = :OfferID]]></db:sql>
 			<db:input-parameters ><![CDATA[#['OfferID': payload.'offerID']]]></db:input-parameters>
 		</db:select>
-		<db:select doc:name="PostalCode based on CustomerID" doc:id="81f5c74c-7d38-40dd-8a58-96df444543d8" target="postalCode" config-ref="Database_Config" targetValue="#[output application/json&#10;---&#10;payload.'PostalCode']">
+		<db:select doc:name="PostalCode and target" doc:id="81f5c74c-7d38-40dd-8a58-96df444543d8" target="postalCode" config-ref="Database_Config" targetValue="#[output application/json&#10;---&#10;payload.'PostalCode']">
 			<db:sql ><![CDATA[SELECT distinct c.PostalCode
 FROM customers AS c
 INNER JOIN
@@ -28,7 +28,7 @@ offers AS o
 WHERE c.CustomerID = o.CustomerID AND c.CustomerID = :CustomerID]]></db:sql>
 			<db:input-parameters ><![CDATA[#['CustomerID': vars.customerID[0]]]]></db:input-parameters>
 		</db:select>
-		<db:select doc:name="CategoryName" doc:id="c37091d8-6a9c-4197-9f7f-f542c83365bc" config-ref="Database_Config" target="categoryName" targetValue="#[output application/json&#10;---&#10;payload.'CategoryName']">
+		<db:select doc:name="CategoryName and target" doc:id="c37091d8-6a9c-4197-9f7f-f542c83365bc" config-ref="Database_Config" target="categoryName" targetValue="#[output application/json&#10;---&#10;payload.'CategoryName']">
 			<db:sql ><![CDATA[SELECT CategoryName
 FROM categories AS c
 INNER JOIN 
@@ -40,7 +40,7 @@ ON o.ProductID = p.ProductID
 WHERE OfferID = :OfferID ]]></db:sql>
 			<db:input-parameters ><![CDATA[#[{'OfferID': vars.'offerID'}]]]></db:input-parameters>
 		</db:select>
-<set-payload value='#[output application/json&#10;---&#10;{&#10;	"categoryName": vars.categoryName[0],&#10;	"postalCode": vars.postalCode[0],&#10;	"shipperID": payload.shipVia[0] as Number&#10;}]' doc:name="payload to post to ext ship" doc:id="4e13d090-4a9b-4c85-a3cf-5dbc4a8be133" />
+<set-payload value='#[output application/json&#10;---&#10;{&#10;	"categoryName": vars.categoryName[0],&#10;	"postalCode": vars.postalCode[0],&#10;	"shipperID": payload.shipVia[0] as Number&#10;}]' doc:name="payload to post to ext-ship-api" doc:id="4e13d090-4a9b-4c85-a3cf-5dbc4a8be133" />
 		<logger level="INFO" doc:name="Logger" doc:id="12ea56c2-f1f9-4f2f-980f-b180690d1fed" message="#[payload]"/>
 				<http:request method="POST" doc:name="POST ext ship api" doc:id="e22ae25c-322f-4f93-9930-a6900ee55487" config-ref="HTTP_Request_configuration_shipping_ext" path="/ship"/>
 		<logger level="INFO" doc:name="Logger" doc:id="d651321d-5a56-4b6e-852e-3a3ed3a4f8d2" />
