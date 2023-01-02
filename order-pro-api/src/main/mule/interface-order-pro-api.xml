@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mule xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd ">
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd ">
     <apikit:config name="order-pro-api-config" api="order-pro-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
     <flow name="order-pro-api-main">
         <http:listener path="/api/*" config-ref="HTTP_Listener_config">
@@ -151,7 +151,7 @@ output application/json
         </ee:transform>
     </flow>
     <flow name="get:\offers:order-pro-api-config">
-<!-- [STUDIO:"Transform Message"]        <ee:transform>
+        <!-- [STUDIO:"Transform Message"]        <ee:transform>
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -186,11 +186,11 @@ output application/json
 ]]]></ee:set-payload>
             </ee:message>
         </ee:transform> [STUDIO] -->
-		<flow-ref doc:name="Flow Reference" doc:id="851664e5-804f-43f0-bedf-de04e6928a75" name="implement-orders-pro-offers-GET"/>
+        <flow-ref doc:name="Flow Reference" doc:id="851664e5-804f-43f0-bedf-de04e6928a75" name="implement-orders-pro-offers-GET" />
     </flow>
     <flow name="get:\orders:order-pro-api-config">
-        <flow-ref doc:name="Flow Reference" doc:id="04512d83-ef8b-458f-97f5-728ddc4294b3" name="get-orders-flow"/>
-<!-- [STUDIO:"Transform Message"]		<ee:transform>
+        <flow-ref doc:name="Flow Reference" doc:id="04512d83-ef8b-458f-97f5-728ddc4294b3" name="get-orders-flow" />
+        <!-- [STUDIO:"Transform Message"]		<ee:transform>
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -253,13 +253,13 @@ output application/json
         </ee:transform>
     </flow>
     <flow name="get:\orders\(orderID):order-pro-api-config">
-        <flow-ref doc:name="Flow Reference" doc:id="3c7c6065-e7a2-44c7-8deb-b5f045800d2e" name="get-orders-by-ID-flow"/>
-<!-- [STUDIO:"Transform Message"]		<ee:transform>
+        <flow-ref doc:name="Flow Reference" doc:id="3c7c6065-e7a2-44c7-8deb-b5f045800d2e" name="get-orders-by-ID-flow" />
+        <!-- [STUDIO:"Transform Message"]		<ee:transform>
             <ee:variables>
                 <ee:set-variable variableName="orderID">attributes.uriParams.'orderID'</ee:set-variable>
             </ee:variables>
         </ee:transform> [STUDIO] -->
-<!-- [STUDIO:"Transform Message"]        <ee:transform>
+        <!-- [STUDIO:"Transform Message"]        <ee:transform>
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -312,11 +312,11 @@ output application/json
 }]]></ee:set-payload>
             </ee:message>
         </ee:transform>
-<!-- [STUDIO:"Flow Reference"]		<flow-ref doc:name="Flow Reference" doc:id="e233c4fd-df33-4edb-ad8b-a509c96481ab" name="implement-orders-pro-offers-POST"/> [STUDIO] -->
+        <!-- [STUDIO:"Flow Reference"]		<flow-ref doc:name="Flow Reference" doc:id="e233c4fd-df33-4edb-ad8b-a509c96481ab" name="implement-orders-pro-offers-POST"/> [STUDIO] -->
     </flow>
     <flow name="post:\orders:application\json:order-pro-api-config">
-        <flow-ref doc:name="Flow Reference" doc:id="c51188ec-fe85-483a-a2ca-f30ab3719767" name="post-orders-flow"/>
-<!-- [STUDIO:"Transform Message"]		<ee:transform>
+        <flow-ref doc:name="Flow Reference" doc:id="c51188ec-fe85-483a-a2ca-f30ab3719767" name="post-orders-flow" />
+        <!-- [STUDIO:"Transform Message"]		<ee:transform>
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -336,6 +336,28 @@ output application/json
 {
   message: "Shipping details posted successfully."
 }]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+    <flow name="patch:\offers:application\json:order-pro-api-config">
+        <ee:transform>
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  message: "Offer updated succesfully."
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+    <flow name="get:\products:order-pro-api-config">
+        <ee:transform>
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+16]]></ee:set-payload>
             </ee:message>
         </ee:transform>
     </flow>

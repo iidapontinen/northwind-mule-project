@@ -5,7 +5,7 @@ types:
 
 /offers:
   post:
-    displayName: Create offer for client
+    description: Create offer for client
     body:
       application/json:
         example: !include examples/offer-example.raml
@@ -17,10 +17,23 @@ types:
               message: "Offer is created succesfully"
      
   get:
-    displayName: Get list of all  created offers
+    description: Get list of all  created offers
     responses:
         200:
           body:
             application/json:
               type: object
               example: !include examples/offer-examples.raml
+              
+  patch:
+    description: Salesperson updates offer as proposed
+    body:
+      application/json:
+        type: Offer
+        examples: !include examples/offer-example.raml
+    responses:
+      201:
+        body:
+          application/json:
+            example:
+              message: "Offer updated succesfully."

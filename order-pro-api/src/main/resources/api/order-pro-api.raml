@@ -7,6 +7,18 @@ types:
   Customer: !include data-types/customer-data-type.raml
   Order: !include data-types/order-data-type.raml
 
+/products:
+  get:
+    description: list all products for frontend
+    responses:
+      200:
+        body:
+          application/json:
+            examples:
+              productID: 16
+              productName: Pavlova
+              unitsInStock: 29
+
 /inquiries:
   /{customerID}:
     get:
@@ -70,6 +82,19 @@ types:
           application/json:
             example:
               message: "Offer created successfully."
+
+  patch:
+      description: Salesperson updates offer as proposed
+      body:
+        application/json:
+          type: Offer
+          examples: !include examples/offer-example.raml
+      responses:
+        201:
+          body:
+            application/json:
+              example:
+               message: "Offer updated succesfully."
 
 /shippingdetails:
   post:
