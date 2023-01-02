@@ -15,7 +15,7 @@ http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mu
 	</flow>
 	<flow name="implement-orders-pro-offers-POST" doc:id="77f9972a-9462-48c4-a236-0058af69fc17" >
 		<logger level="INFO" doc:name="Offer-pro-starting" doc:id="70ebfa5e-990d-41e0-b8f2-009a587778e7" />
-<!-- [STUDIO:"Set Payload"]		<set-payload value='#[output application/json&#10;&#45;&#45;-&#10;{&#10;	"productID": 2,&#10;	"quantity": 15,&#10;	"customerID": "ALFKI"&#10;}]' doc:name="Set Payload" doc:id="cc94dd01-527f-4e38-9927-85d63bdd431e" /> [STUDIO] -->
+<!-- [STUDIO:"Set Payload Mock payload"]		<set-payload value='#[output application/json&#10;&#45;&#45;-&#10;{&#10;	"productID": 2,&#10;	"quantity": 15,&#10;	"customerID": "ALFKI"&#10;}]' doc:name="Set Payload Mock payload" doc:id="cc94dd01-527f-4e38-9927-85d63bdd431e" /> [STUDIO] -->
 		<db:select doc:name="UnitsInStock and target 'units'" doc:id="ec005592-2599-41f4-a45f-84c985c87860" config-ref="Database_Config" target="units" targetValue="#[payload.UnitsInStock[0]]">
 			<db:sql ><![CDATA[SELECT UnitsInStock FROM products
 WHERE ProductID = :productID]]></db:sql>
@@ -23,7 +23,7 @@ WHERE ProductID = :productID]]></db:sql>
 		</db:select>
 		<choice doc:name="Choice" doc:id="caaa9f09-6857-41ea-abed-83135cd02945" >
 			<when expression="#[payload.quantity &gt; vars.units]">
-				<ee:transform doc:name="Transform Message" doc:id="c57477a8-81de-4929-bb05-ac3ebb455190">
+				<ee:transform doc:name="Out of stock" doc:id="c57477a8-81de-4929-bb05-ac3ebb455190">
 					<ee:message>
 						<ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -31,11 +31,11 @@ output application/json
 payload ++ { "status": "Out of Stock" }]]></ee:set-payload>
 					</ee:message>
 				</ee:transform>
-<!-- [STUDIO:"Request"]				<http:request method="GET" doc:name="Request" doc:id="9b402dc0-ca22-42bf-8ac1-cf1925796bcc" config-ref="HTTP_Request_configuration1" path="/api/offers"/> [STUDIO] -->
-				<logger level="INFO" doc:name="Logger" doc:id="183cec56-f49a-4fb9-9b75-2ef946d7a126" message="liian suuri määrä pyydetty"/>
+				<http:request method="GET" doc:name="offers-sapi-post-flow" doc:id="9b402dc0-ca22-42bf-8ac1-cf1925796bcc" config-ref="HTTP_Request_configuration1" path="/api/offers"/>
+<!-- [STUDIO:"Logger"]				<logger level="INFO" doc:name="Logger" doc:id="183cec56-f49a-4fb9-9b75-2ef946d7a126" message="liian suuri määrä pyydetty"/> [STUDIO] -->
 			</when>
 			<otherwise >
-				<ee:transform doc:name="Transform Message" doc:id="27ef0330-563b-4d12-bd34-87b3b167f557">
+				<ee:transform doc:name="Pending" doc:id="27ef0330-563b-4d12-bd34-87b3b167f557">
 					<ee:message>
 						<ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -43,14 +43,37 @@ output application/json
 payload ++ { "status": "Pending" }]]></ee:set-payload>
 					</ee:message>
 				</ee:transform>
-<!-- [STUDIO:"Contact offers-sapi-post-flow"]				<http:request method="POST" doc:name="Contact offers-sapi-post-flow" doc:id="50130b5f-f61b-4bf0-98dc-1589c3f8f870" config-ref="HTTP_Request_configuration1" path="/api/offers" /> [STUDIO] -->
-				<logger level="INFO" doc:name="Logger" doc:id="f037e5e8-862e-49f8-8875-5bc0acc72c0e" message="default"/>
+				<http:request method="POST" doc:name="Contact offers-sapi-post-flow" doc:id="50130b5f-f61b-4bf0-98dc-1589c3f8f870" config-ref="HTTP_Request_configuration1" path="/api/offers" />
+<!-- [STUDIO:"Logger"]				<logger level="INFO" doc:name="Logger" doc:id="f037e5e8-862e-49f8-8875-5bc0acc72c0e" message="default"/> [STUDIO] -->
 			</otherwise>
 		</choice>
 		<logger level="INFO" doc:name="Offer-pro-ending" doc:id="95ebdf74-7a7b-4629-9323-8d3dfb78531e" />
 	</flow>
 	<flow name="implement-orders-pro-offers-PATCH" doc:id="3d764a83-5d00-402f-bdc7-e622eb709328" >
 		<logger level="INFO" doc:name="Offer-pro-starting" doc:id="2885e577-dcb3-4e09-92f7-6a472bc8190a" />
+		<set-payload value='#[output application/json&#10;---&#10;{&#10;	"offerID": 13,&#10;	"discountProposed": 5,&#10;	"employeeID": 3,&#10;	"customerID": "PICCO"&#10;}]' doc:name="Mock Payload" doc:id="0505d33b-ae0b-42a4-8072-de1342b1c7b7" />
+		<db:select doc:name="UnitsInStock and target 'units'" doc:id="017227ee-44f5-4bdf-a179-cafb01b5588b" config-ref="Database_Config" target="units" targetValue="#[payload.UnitsInStock[0]]" >
+			<db:sql ><![CDATA[SELECT products.UnitsInStock, offers.productID
+FROM products, offers
+WHERE products.ProductID = :productID]]></db:sql>
+			<db:input-parameters ><![CDATA[#["productID" : payload.productID]]]></db:input-parameters>
+		</db:select>
+		<choice doc:name="Choice" doc:id="60eb9325-97fa-4fe4-8328-51981a91a629">
+			<when>
+				<ee:transform doc:name="Out of stock" doc:id="4e4336a6-578c-41dc-9bd4-a1ec13534e39">
+					<ee:message>
+						<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+payload ++ { "status": "Out of Stock" }]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+				<http:request method="GET" doc:name="Request" doc:id="9b22fcc6-6e52-42d3-a4bc-89075dc36fad" config-ref="HTTP_Request_configuration1" path="/api/offers" />
+			</when>
+			<otherwise>
+				<http:request method="GET" doc:name="Request" doc:id="a5da854f-a1ac-4a73-849c-d36478f277a0" config-ref="HTTP_Request_configuration1" path="/api/offers" />
+			</otherwise>
+		</choice>
 		<http:request method="PATCH" doc:name="Contact offers-sapi-patch-flow" doc:id="05b3b493-db86-493a-a915-9f6800a9f6fe" config-ref="HTTP_Request_configuration1" path="/api/offers/"/>
 		<logger level="INFO" doc:name="Offer-pro-ending" doc:id="c70a14ac-8ded-4855-a22d-379f6064c720" />
 	</flow>
