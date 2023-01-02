@@ -10,17 +10,8 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd">
 	<flow name="implement-orders-pro-offers-GET" doc:id="4e6dfa0a-6be5-46d6-8352-f717a9713b8e" >
 		<logger level="INFO" doc:name="Offer-pro-starting" doc:id="1d0b80ff-30ca-4301-890d-69b8b29c4d0e" message="Offer pro starting"/>
-		<http:request method="GET" doc:name="Request" doc:id="d1e1de4f-7a9c-48b1-9605-b9f958812815" path="/api/offers" config-ref="HTTP_Request_configuration1"/>
+		<http:request method="GET" doc:name="Contact offers-sapi get-flow" doc:id="d1e1de4f-7a9c-48b1-9605-b9f958812815" path="/api/offers" config-ref="HTTP_Request_configuration1"/>
 		<logger level="INFO" doc:name="Offer-pro-ending" doc:id="cef6ceff-10f6-408c-906d-dea699acfa2b" />
-<!-- [STUDIO:"Transform Message"]		<ee:transform doc:name="Transform Message" doc:id="c1a398aa-6ab3-4782-b3e5-d7c2eb2864de" >
-			<ee:message >
-				<ee:set-payload ><![CDATA[%dw 2.0
-output application/java
-&#45;&#45;-
-{
-}]]></ee:set-payload>
-			</ee:message>
-		</ee:transform> [STUDIO] -->
 	</flow>
 <!-- [STUDIO:"implement-orders-pro-offers-POST"]	<flow name="implement-orders-pro-offers-POST" doc:id="b1e5fa32-2dcc-4dd6-be08-99a1bca06bd3" >
 		<logger level="INFO" doc:name="Offer-pro-starting" doc:id="3c6996a5-8f85-4225-a5f3-7a05e92f7eac" message="Offer pro starting"/>
