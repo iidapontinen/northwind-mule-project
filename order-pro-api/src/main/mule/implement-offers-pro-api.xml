@@ -13,20 +13,45 @@ http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mu
 		<http:request method="GET" doc:name="Contact offers-sapi get-flow" doc:id="d1e1de4f-7a9c-48b1-9605-b9f958812815" path="/api/offers" config-ref="HTTP_Request_configuration1"/>
 		<logger level="INFO" doc:name="Offer-pro-ending" doc:id="cef6ceff-10f6-408c-906d-dea699acfa2b" />
 	</flow>
-<!-- [STUDIO:"implement-orders-pro-offers-POST"]	<flow name="implement-orders-pro-offers-POST" doc:id="b1e5fa32-2dcc-4dd6-be08-99a1bca06bd3" >
-		<logger level="INFO" doc:name="Offer-pro-starting" doc:id="3c6996a5-8f85-4225-a5f3-7a05e92f7eac" message="Offer pro starting"/>
-		<http:request method="GET" doc:name="Request" doc:id="53ef0b31-1e05-4a87-bfad-2cb7832691c3" />
-		<db:insert doc:name="Insert" doc:id="c77d9d78-1c43-4139-bf15-72a922bad828" />
-		<validation:is-number numberType="" doc:name="Is number" doc:id="c78dc645-6f3a-41c0-8810-52f95b88baa1" />
-		<logger level="INFO" doc:name="Logger" doc:id="8790dec8-ca06-452d-9252-5e21eb12b8d4" />
-		<ee:transform doc:name="Transform Message" doc:id="948a7ecf-d5f4-4c2e-ba92-3695e17905a8" >
-			<ee:message >
-				<ee:set-payload ><![CDATA[%dw 2.0
+	<flow name="implement-orders-pro-offers-POST" doc:id="77f9972a-9462-48c4-a236-0058af69fc17" >
+		<logger level="INFO" doc:name="Offer-pro-starting" doc:id="70ebfa5e-990d-41e0-b8f2-009a587778e7" />
+<!-- [STUDIO:"Set Payload"]		<set-payload value='#[output application/json&#10;&#45;&#45;-&#10;{&#10;	"productID": 2,&#10;	"quantity": 15,&#10;	"customerID": "ALFKI"&#10;}]' doc:name="Set Payload" doc:id="cc94dd01-527f-4e38-9927-85d63bdd431e" /> [STUDIO] -->
+		<db:select doc:name="UnitsInStock and target 'units'" doc:id="ec005592-2599-41f4-a45f-84c985c87860" config-ref="Database_Config" target="units" targetValue="#[payload.UnitsInStock[0]]">
+			<db:sql ><![CDATA[SELECT UnitsInStock FROM products
+WHERE ProductID = :productID]]></db:sql>
+			<db:input-parameters ><![CDATA[#["productID" : payload.productID]]]></db:input-parameters>
+		</db:select>
+		<choice doc:name="Choice" doc:id="caaa9f09-6857-41ea-abed-83135cd02945" >
+			<when expression="#[payload.quantity &gt; vars.units]">
+				<ee:transform doc:name="Transform Message" doc:id="c57477a8-81de-4929-bb05-ac3ebb455190">
+					<ee:message>
+						<ee:set-payload><![CDATA[%dw 2.0
 output application/json
-&#45;&#45;-
-{
-}]]></ee:set-payload>
-			</ee:message>
-		</ee:transform>
-	</flow> [STUDIO] -->
+---
+payload ++ { "status": "Out of Stock" }]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+<!-- [STUDIO:"Request"]				<http:request method="GET" doc:name="Request" doc:id="9b402dc0-ca22-42bf-8ac1-cf1925796bcc" config-ref="HTTP_Request_configuration1" path="/api/offers"/> [STUDIO] -->
+				<logger level="INFO" doc:name="Logger" doc:id="183cec56-f49a-4fb9-9b75-2ef946d7a126" message="liian suuri määrä pyydetty"/>
+			</when>
+			<otherwise >
+				<ee:transform doc:name="Transform Message" doc:id="27ef0330-563b-4d12-bd34-87b3b167f557">
+					<ee:message>
+						<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+payload ++ { "status": "Pending" }]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+<!-- [STUDIO:"Contact offers-sapi-post-flow"]				<http:request method="POST" doc:name="Contact offers-sapi-post-flow" doc:id="50130b5f-f61b-4bf0-98dc-1589c3f8f870" config-ref="HTTP_Request_configuration1" path="/api/offers" /> [STUDIO] -->
+				<logger level="INFO" doc:name="Logger" doc:id="f037e5e8-862e-49f8-8875-5bc0acc72c0e" message="default"/>
+			</otherwise>
+		</choice>
+		<logger level="INFO" doc:name="Offer-pro-ending" doc:id="95ebdf74-7a7b-4629-9323-8d3dfb78531e" />
+	</flow>
+	<flow name="implement-orders-pro-offers-PATCH" doc:id="3d764a83-5d00-402f-bdc7-e622eb709328" >
+		<logger level="INFO" doc:name="Offer-pro-starting" doc:id="2885e577-dcb3-4e09-92f7-6a472bc8190a" />
+		<http:request method="PATCH" doc:name="Contact offers-sapi-patch-flow" doc:id="05b3b493-db86-493a-a915-9f6800a9f6fe" config-ref="HTTP_Request_configuration1" path="/api/offers/"/>
+		<logger level="INFO" doc:name="Offer-pro-ending" doc:id="c70a14ac-8ded-4855-a22d-379f6064c720" />
+	</flow>
 </mule>
