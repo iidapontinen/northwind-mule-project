@@ -36,7 +36,7 @@ payload map ( payload01 , indexOfPayload01 ) ->
 	</flow>
 	<flow name="post-new-offer" doc:id="e06d4da8-3601-469c-ac75-23c48da89c1d" >
 		<logger level="INFO" doc:name="Logger" doc:id="6ad5932f-1e4f-468d-907c-c2517627de14" />
-		<db:insert doc:name="Insert new offer to DB" doc:id="9c02643e-9275-4a71-9609-4b4fe6b8f0c7" config-ref="Database_Config">
+<!-- [STUDIO:"Insert new offer to DB"]		<db:insert doc:name="Insert new offer to DB" doc:id="9c02643e-9275-4a71-9609-4b4fe6b8f0c7" config-ref="Database_Config">
 			<db:sql ><![CDATA[INSERT INTO OFFERS (OfferStatus,DateCreated,EmployeeID,CustomerID,ProductID,Quantity,OrderID,TotalPrice,PriceDiscount,PaymentTransactionID)
 VALUES (:OfferStatus,:DateCreated,:EmployeeID,:CustomerID,:ProductID,:Quantity,:OrderID,:TotalPrice,:PriceDiscount,:PaymentTransactionID)]]></db:sql>
 			<db:input-parameters ><![CDATA[#[{
@@ -50,6 +50,16 @@ VALUES (:OfferStatus,:DateCreated,:EmployeeID,:CustomerID,:ProductID,:Quantity,:
   "TotalPrice": payload.totalPrice,
   "PriceDiscount": payload.priceDiscount,
   "PaymentTransactionID": payload.paymentTransactionID
+  }]]]></db:input-parameters>
+		</db:insert> [STUDIO] -->
+		<db:insert doc:name="Insert new offer to DB" doc:id="41a01a56-ed6c-4fcb-a25f-0f060be6ebd7" config-ref="Database_Config">
+			<db:sql ><![CDATA[INSERT INTO OFFERS (CustomerID, ProductID, Quantity, OfferStatus)
+VALUES (:OfferStatus, :CustomerID,:ProductID,:Quantity)]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+  "OfferStatus": payload.offerStatus,
+  "CustomerID": payload.customerID,
+  "ProductID": payload.productID,
+  "Quantity": payload.quantity,
   }]]]></db:input-parameters>
 		</db:insert>
 		<ee:transform doc:name="Return message" doc:id="86309fb8-82bd-4440-b8aa-08a889d85f50" >
