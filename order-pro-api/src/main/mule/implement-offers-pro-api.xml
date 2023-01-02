@@ -59,7 +59,7 @@ WHERE products.ProductID = :productID]]></db:sql>
 			<db:input-parameters ><![CDATA[#["productID" : payload.productID]]]></db:input-parameters>
 		</db:select>
 		<choice doc:name="Choice" doc:id="60eb9325-97fa-4fe4-8328-51981a91a629">
-			<when>
+			<when expression="#[payload.quantity &gt; vars.units]">
 				<ee:transform doc:name="Out of stock" doc:id="4e4336a6-578c-41dc-9bd4-a1ec13534e39">
 					<ee:message>
 						<ee:set-payload><![CDATA[%dw 2.0
