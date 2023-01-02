@@ -5,13 +5,10 @@
 	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
-<<<<<<< HEAD
-	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="3446bb62-026a-49dc-ad47-6272c98da9f8" >
-		<http:request-connection host="${sapi.customer.host}" port="${sapi.customer.port}" connectionIdleTimeout="3000000">
-=======
+
 	<http:request-config name="HTTP_Request_configuration_customer_sapi" doc:name="HTTP Request configuration" doc:id="3446bb62-026a-49dc-ad47-6272c98da9f8" >
-		<http:request-connection host="${sapi.host}" port="${sapi.port}" connectionIdleTimeout="3000000">
->>>>>>> b03be6b3a877489e3a68816075e57c3a909f6540
+		<http:request-connection host="${sapi.customer.host}" port="${sapi.customer.port}" connectionIdleTimeout="3000000">
+
 			<reconnection >
 				<reconnect />
 			</reconnection>
