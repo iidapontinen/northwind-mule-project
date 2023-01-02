@@ -43,7 +43,7 @@ output application/json
 payload ++ { "status": "Pending" }]]></ee:set-payload>
 					</ee:message>
 				</ee:transform>
-				<http:request method="POST" doc:name="Contact offers-sapi-post-flow" doc:id="50130b5f-f61b-4bf0-98dc-1589c3f8f870" config-ref="HTTP_Request_configuration1" path="/api/offers" />
+				<http:request method="POST" doc:name="Contact offers-sapi-post-flow" doc:id="50130b5f-f61b-4bf0-98dc-1589c3f8f870" config-ref="HTTP_Request_configuration1" path="/api/offers" responseTimeout="600000"/>
 <!-- [STUDIO:"Logger"]				<logger level="INFO" doc:name="Logger" doc:id="f037e5e8-862e-49f8-8875-5bc0acc72c0e" message="default"/> [STUDIO] -->
 			</otherwise>
 		</choice>

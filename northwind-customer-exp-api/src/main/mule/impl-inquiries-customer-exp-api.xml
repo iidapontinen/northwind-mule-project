@@ -7,9 +7,11 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
 	<flow name="post-inquiries-flow" doc:id="68113a7c-0ed2-49a2-80fa-8ac69ad1bbe9" >
 		<logger level="INFO" doc:name="Logger" doc:id="13afacbf-349f-4de8-a9df-662132294224" />
-		<set-payload value='#[{&#10;	"customerID": "ALFKI",&#10;	"productID": 1,&#10;	"quantity": 5&#10;}]' doc:name="Set Payload" doc:id="dd7708cf-df4c-454d-8a98-29e2bf9a6f91" />
-		<http:request method="GET" doc:name="Request" doc:id="07a64f11-ae32-4791-ad12-544b70dbd7dd" config-ref="HTTP_Request_configuration_order_papi" path="/offers"/>
-		<ee:transform doc:name="Transform Message" doc:id="4d4cc176-b1de-425c-85f7-3881f35aabc0" >
+<!-- [STUDIO:"Mock payload"]		<set-payload value='#[{&#10;	"customerID": "ALFKI",&#10;	"productID": 1,&#10;	"quantity": 5&#10;}]' doc:name="Mock payload" doc:id="dd7708cf-df4c-454d-8a98-29e2bf9a6f91" /> [STUDIO] -->
+		<http:request method="POST" doc:name="POST to order-pro-api /offers" doc:id="07a64f11-ae32-4791-ad12-544b70dbd7dd" config-ref="HTTP_Request_configuration_order_papi" path="/api/offers" responseTimeout="600000">
+			<reconnect/>
+		</http:request>
+		<ee:transform doc:name="Thank you for your inquiry" doc:id="4d4cc176-b1de-425c-85f7-3881f35aabc0" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
