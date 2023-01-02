@@ -64,4 +64,20 @@ output application/json
 		</ee:transform>
 		<logger level="INFO" doc:name="Logger" doc:id="a87966f3-ea97-431e-a790-409eefdde836" />
 	</flow>
+	<flow name="patch-offer-flow" doc:id="f57456db-10de-4291-915b-905411bcb103" >
+		<logger level="INFO" doc:name="Logger" doc:id="7bc746b7-57c0-47be-b08b-33075802f038" />
+		<set-payload value='#[{&#10;	"offerID": 1,&#10;	"employeeID": 1,&#10;	"priceDiscount": 20,&#10;	"totalPrice": 134,&#10;	"dateCreated": "2022-01-01" as Date { format: "yyyy-MM-dd"}&#10;}]' doc:name="Mock payload" doc:id="ac5a25d1-4a00-45c3-8566-f21c09b58731" />
+		<db:update doc:name="Update offer record " doc:id="58256a2b-5c40-4622-ae3f-e6d9df654335" config-ref="Database_Config">
+			<db:sql ><![CDATA[UPDATE offers
+SET PriceDiscount = (:priceDiscount, TotalPrice = :totalPrice, DateCreated = :dateCreated)
+WHERE OfferID = :offerID]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+	"priceDiscount": payload.priceDiscount,
+	"totalPrice": payload.totalPrice,
+	"dateCreated": payload.dateCreated,
+	"offerID": payload.offerID
+}]]]></db:input-parameters>
+		</db:update>
+		<logger level="INFO" doc:name="Logger" doc:id="75dc7083-59d1-4ebe-9f35-89bed09215cd" />
+	</flow>
 </mule>
