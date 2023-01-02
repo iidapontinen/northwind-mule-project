@@ -1,0 +1,18 @@
+%dw 2.0
+
+type auto_f57456db_10de_4291_915b_905411bcb103_Input_Payload = {
+  dateCreated?: String, 
+  quantity?: Number, 
+  productID?: Number, 
+  orderID?: Number, 
+  totalPrice?: Number, 
+  customerID?: String, 
+  offerID?: Number, 
+  employeeID?: Number, 
+  paymentTransactionID?: Number, 
+  status?: "Proposed" | "Shipped" | "Rejected" | "Pending" | "Accepted" | "Out of stock", 
+  priceDiscount?: Number, 
+  _?: Any
+} {"description": "All details for all offers",
+"label": "Offer Details"}
+
