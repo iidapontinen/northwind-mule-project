@@ -8,7 +8,7 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 
 	<flow name="get-customers-eapi-flow" doc:id="ebbcb711-caf5-4c71-b4da-d10810341b65" >
 		<logger level="INFO" doc:name="Entering eapi getCustomers flow" doc:id="a8a4ac78-1dd0-4efd-8048-5f58c11e1972" />
-		<http:request method="GET" doc:name="Request to customers-sys-api" doc:id="30c670f3-f6f1-4bde-97dc-5f8bc6f44d70" config-ref="HTTP_Request_configuration" path="/api/customers" responseTimeout="300000"/>
+		<http:request method="GET" doc:name="Request to customers-sys-api" doc:id="30c670f3-f6f1-4bde-97dc-5f8bc6f44d70" config-ref="HTTP_Request_configuration_customer_sapi" path="/api/customers" responseTimeout="300000"/>
 <!-- [STUDIO:"Transform Message from json to xml"]		<ee:transform doc:name="Transform Message from json to xml" doc:id="8deda804-093c-4378-8ff1-a5dd95611f66" >
 			<ee:message >
 				<ee:set-payload resource="get-customers-json-to-xml.dwl" />
@@ -18,7 +18,7 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 	</flow>
 	<flow name="get-customers-byID-flow" doc:id="91e00e74-94a9-470b-b8b9-41a8c014070a" >
 		<logger level="INFO" doc:name="Entering eapi getCustomers byID flow" doc:id="fd1cbc56-f8e6-464d-95f2-ae114177b56a" />
-		<http:request method="GET" doc:name="Request to customers-sys-api" doc:id="2d346257-5d56-42ca-8af8-7d32f36c6a97" config-ref="HTTP_Request_configuration" path="/api/customers/{customerID}">
+		<http:request method="GET" doc:name="Request to customers-sys-api" doc:id="2d346257-5d56-42ca-8af8-7d32f36c6a97" config-ref="HTTP_Request_configuration_customer_sapi" path="/api/customers/{customerID}">
 			<http:uri-params ><![CDATA[#[output application/java
 ---
 {
@@ -35,7 +35,7 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 				<ee:set-payload resource="post-customer-xml-to-json.dwl" />
 			</ee:message>
 		</ee:transform> [STUDIO] -->
-		<http:request method="POST" doc:name="Request to customers-sys-api" doc:id="b7aa0f05-f3b2-4fb2-b05a-ea5466458836" path="/api/customers" config-ref="HTTP_Request_configuration" responseTimeout="300000"/>
+		<http:request method="POST" doc:name="Request to customers-sys-api" doc:id="b7aa0f05-f3b2-4fb2-b05a-ea5466458836" path="/api/customers" config-ref="HTTP_Request_configuration_customer_sapi" responseTimeout="300000"/>
 		<logger level="INFO" doc:name="Leaving eapi postCustomers flow" doc:id="62ae0c29-2c7f-4309-ac21-0357b94baee5" />
 	</flow>
 </mule>

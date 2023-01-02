@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<flow name="post-inquiries-flow" doc:id="68113a7c-0ed2-49a2-80fa-8ac69ad1bbe9" >
+		<logger level="INFO" doc:name="Logger" doc:id="13afacbf-349f-4de8-a9df-662132294224" />
+		<set-payload value='#[{&#10;	"customerID": "ALFKI",&#10;	"productID": 1,&#10;	"quantity": 5&#10;}]' doc:name="Set Payload" doc:id="dd7708cf-df4c-454d-8a98-29e2bf9a6f91" />
+		<http:request method="GET" doc:name="Request" doc:id="07a64f11-ae32-4791-ad12-544b70dbd7dd" config-ref="HTTP_Request_configuration_order_papi" path="/offers"/>
+		<ee:transform doc:name="Transform Message" doc:id="4d4cc176-b1de-425c-85f7-3881f35aabc0" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"message": "Thank you for your inquiry. We will get back to you shortly."
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="get-inquiries-by-ID" doc:id="04bacf4c-4419-4f1a-ba2e-b14af414ad6d" >
+		<logger level="INFO" doc:name="Logger" doc:id="25d5f69a-4236-4727-9225-c0959aa3cd4d" />
+	</flow>
+</mule>
