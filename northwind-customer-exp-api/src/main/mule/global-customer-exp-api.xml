@@ -5,7 +5,7 @@
 	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
-	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="3446bb62-026a-49dc-ad47-6272c98da9f8" >
+	<http:request-config name="HTTP_Request_configuration_customer_sapi" doc:name="HTTP Request configuration" doc:id="3446bb62-026a-49dc-ad47-6272c98da9f8" >
 		<http:request-connection host="${sapi.host}" port="${sapi.port}" connectionIdleTimeout="3000000">
 			<reconnection >
 				<reconnect />
@@ -18,6 +18,9 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 	<configuration doc:name="Configuration" doc:id="f6548d94-c860-4f92-968e-5fe7406e465c" defaultErrorHandler-ref="globalError_Handler" />
 	<configuration-properties doc:name="Configuration properties" doc:id="aa6e2df2-899f-4ca5-8900-94bd68abaa88" file="${env}.yaml" />
 	<global-property doc:name="Global Property" doc:id="985543b0-c11d-427b-8738-e79620f4f6e0" name="env" value="dev" />
+	<http:request-config name="HTTP_Request_configuration_order_papi" doc:name="HTTP Request configuration" doc:id="75d7d2b5-f19a-450a-93ab-d769a5dfd3c0" >
+		<http:request-connection host="${order.papi.host}" port="${order.papi.port}" />
+	</http:request-config>
 	<error-handler name="globalError_Handler" doc:id="15d32bff-10e4-4bc0-b637-d9e4ff89e0c8" >
 		<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="a8973560-9f87-4dfd-8e86-564238ee9510" type="HTTP:CONNECTIVITY">
 			<ee:transform doc:name="Transform Message" doc:id="8be208c0-d9dd-466c-91c2-1ee3cd57de8c" >

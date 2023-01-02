@@ -4,3 +4,7 @@ http:
 sapi:
   host: "localhost"
   port: "8083"
+  
+papi.order:
+  host: "localhost"
+  port: "8084"
