@@ -299,15 +299,16 @@ output application/json
         </ee:transform> [STUDIO] -->
     </flow>
     <flow name="post:\inquiries:application\json:customer-exp-api-config">
-        <ee:transform>
+        <flow-ref doc:name="Flow Reference" doc:id="6d718062-3a77-49a1-86a8-72ca9f49595e" name="post-inquiries-flow"/>
+<!-- [STUDIO:"Transform Message"]		<ee:transform>
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
----
+&#45;&#45;-
 {
   message: "Thank you for your inquiry. We will get back to you shortly"
 }]]></ee:set-payload>
             </ee:message>
-        </ee:transform>
+        </ee:transform> [STUDIO] -->
     </flow>
 </mule>

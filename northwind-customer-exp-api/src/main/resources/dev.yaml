@@ -7,4 +7,4 @@ sapi.customer:
   
 papi.order:
   host: "localhost"
-  port: "8084"
+  port: "8082"

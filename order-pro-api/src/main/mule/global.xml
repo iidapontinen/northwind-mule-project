@@ -6,7 +6,7 @@
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
 http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
 	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="a921a0f2-9d21-4ec5-b671-0da507ba65d8" >
-		<http:listener-connection host="0.0.0.0" port="${http.port}"/>
+		<http:listener-connection host="0.0.0.0" port="${http.port}" readTimeout="6000000"/>
 	</http:listener-config>
 	<global-property doc:name="Global Property" doc:id="e38db926-c4e5-4753-9171-401a7546b0a6" name="env" value="dev" />
 	<configuration-properties doc:name="Configuration properties" doc:id="fdc53db4-a996-4362-b917-efcf5bc69281" file="${env}.yaml" />
@@ -14,7 +14,7 @@ http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/cu
 		<db:my-sql-connection host="${db.host}" port="${db.port}" user="${db.user}" password="${db.password}" database="${db.database}" />
 	</db:config>
 	<http:request-config name="HTTP_Request_configuration1" doc:name="HTTP Request configuration" doc:id="3911edba-5591-4828-8152-d6bb95b55552">
-		<http:request-connection host="${sapi.offer.host}" port="${sapi.offer.port}" />
+		<http:request-connection host="${sapi.offer.host}" port="${sapi.offer.port}" connectionIdleTimeout="6000000"/>
 </http:request-config>
 	<http:request-config name="order_sapi_HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="87752a4a-b982-4ba0-91cb-25469ad18b59" >
 		<http:request-connection host="${sapi.order.host}" port="${sapi.order.port}"/>
