@@ -3,8 +3,8 @@ http:
  port: "8083"
  
 db:
- host: "localhost"
+ host: "20.224.50.155"
  port: "3306"
- user: "iida"
- password: "iidaiida"
- database: "northwind"
+ user: "group01"
+ password: "@Br1ghtsGr0up01!"
+ database: "northwind01"

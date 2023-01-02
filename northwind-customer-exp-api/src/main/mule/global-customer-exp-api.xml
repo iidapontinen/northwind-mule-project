@@ -6,14 +6,14 @@
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
 	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="3446bb62-026a-49dc-ad47-6272c98da9f8" >
-		<http:request-connection host="${sapi.host}" port="${sapi.port}" connectionIdleTimeout="3000000">
+		<http:request-connection host="${sapi.customer.host}" port="${sapi.customer.port}" connectionIdleTimeout="3000000">
 			<reconnection >
 				<reconnect />
 			</reconnection>
 		</http:request-connection>
 	</http:request-config>
 	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="ace7b2a2-b185-4e53-837d-dbf0b9bd4a15" >
-		<http:listener-connection host="0.0.0.0" port="8082" />
+		<http:listener-connection host="0.0.0.0" port="${http.port}" />
 	</http:listener-config>
 	<configuration doc:name="Configuration" doc:id="f6548d94-c860-4f92-968e-5fe7406e465c" defaultErrorHandler-ref="globalError_Handler" />
 	<configuration-properties doc:name="Configuration properties" doc:id="aa6e2df2-899f-4ca5-8900-94bd68abaa88" file="${env}.yaml" />

@@ -7,9 +7,9 @@ db:
  
 http:
  host: "localhost"
- port: "8081"
+ port: "8086"
  
 shipping.ext:
-  host: "20.224.50.155"
-  port: "8081"
+ host: "20.224.50.155"
+ port: "8081"
  
