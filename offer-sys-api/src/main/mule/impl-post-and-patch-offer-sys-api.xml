@@ -81,6 +81,13 @@ SET OfferStatus = :status
 WHERE OfferID = :offerID]]></db:sql>
 				</db:update>
 			</when>
+			<when expression='#[payload.status == "Shipped"]'>
+				<db:update doc:name="status = Shipped" doc:id="e305f5b3-7175-4fb7-92e9-9116ae69a586" config-ref="Database_Config">
+					<db:sql ><![CDATA[UPDATE offers
+SET OfferStatus = :status
+WHERE OfferID = :offerID]]></db:sql>
+				</db:update>
+			</when>
 			<otherwise>
 				<db:update doc:name="status = Accepted" doc:id="b1357e0f-7ad9-46d1-92be-b8a45f9635f8" config-ref="Database_Config">
 					<db:sql ><![CDATA[UPDATE offers
