@@ -90,7 +90,7 @@ WHERE CustomerID = :customerID]]></db:sql>
 	customerID: vars.customerID
 }]]]></db:input-parameters>
 		</db:select>
-		<ee:transform doc:name="Transform Message" doc:id="99ad2be1-a853-4f5e-ade8-b610f5924992" >
+		<ee:transform doc:name="Send orderID's with specific CustomerID" doc:id="99ad2be1-a853-4f5e-ade8-b610f5924992" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
 output application/json

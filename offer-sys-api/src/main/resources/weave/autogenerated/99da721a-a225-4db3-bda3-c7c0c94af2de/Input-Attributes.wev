@@ -1,0 +1,23 @@
+%dw 2.0
+
+type auto_99da721a_a225_4db3_bda3_c7c0c94af2de_Input_Attributes = {|
+  clientCertificate?: {|
+    publicKey?: {|  |}, 
+    "type"?: String, 
+    encoded?: Binary
+  |}, 
+  headers: {|  |}, 
+  listenerPath: String, 
+  method: String, 
+  queryParams: {| status: "Proposed" |}, 
+  queryString: String, 
+  relativePath: String, 
+  remoteAddress: String, 
+  requestPath: String, 
+  requestUri: String, 
+  scheme: String, 
+  uriParams: {| customerID: String |}, 
+  version: String, 
+  localAddress: String
+|}
+

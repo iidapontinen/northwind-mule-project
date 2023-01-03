@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="get-offer-by-customer-ID-sys-api-flow" doc:id="99da721a-a225-4db3-bda3-c7c0c94af2de" >
+		<logger level="INFO" doc:name="Logger" doc:id="374e27c3-becd-4ad8-87e9-91e7c07814be" />
+		<db:select doc:name="Offer by customerID" doc:id="84f378ec-7db3-4e53-a212-f7dba46d3e8b" config-ref="Database_Config">
+			<db:sql ><![CDATA[SELECT *
+FROM offers
+WHERE CustomerID = :customerID AND OfferStatus = :offerStatus]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{"customerID": attributes.uriParams.'customerID', "offerStatus": attributes.queryParams.'status'}]]]></db:input-parameters>
+		</db:select>
+		<ee:transform doc:name="Transform Message" doc:id="f654a94d-874e-4bcb-81f9-2326b3569c7b" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="d66acea5-0812-40a5-9ebd-201f8f674306" />
+	</flow>
+</mule>

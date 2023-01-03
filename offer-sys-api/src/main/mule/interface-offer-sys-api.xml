@@ -166,14 +166,44 @@ output application/json
         <flow-ref doc:name="Flow Reference" doc:id="a8c5d40f-520c-4175-90cc-6bf4e5302030" name="post-new-offer" />
     </flow>
     <flow name="patch:\offers:application\json:offer-sys-api-config">
-        <flow-ref doc:name="Flow Reference" doc:id="b3e11194-3f68-4c47-b6b0-3cf2aa6b4f32" name="patch-offer-flow"/>
-<!-- [STUDIO:"Transform Message"]		<ee:transform>
+        <flow-ref doc:name="Flow Reference" doc:id="b3e11194-3f68-4c47-b6b0-3cf2aa6b4f32" name="patch-offer-flow" />
+        <!-- [STUDIO:"Transform Message"]		<ee:transform>
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
 &#45;&#45;-
 {
   message: "Offer updated succesfully."
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform> [STUDIO] -->
+    </flow>
+    <flow name="get:\offers\(customerID):offer-sys-api-config">
+<flow-ref doc:name="Flow Reference" doc:id="21b25b79-5e7d-476b-8eca-665b69e613bf" name="get-offer-by-customer-ID-sys-api-flow"/>
+<!-- [STUDIO:"Transform Message"]		        <ee:transform>
+            <ee:variables>
+                <ee:set-variable variableName="customerID">attributes.uriParams.'customerID'</ee:set-variable>
+            </ee:variables>
+        </ee:transform> [STUDIO] -->
+<!-- [STUDIO:"Transform Message"]        <ee:transform>
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+&#45;&#45;-
+{
+  "offer-example": {
+    offerID: 56678,
+    Status: "Pending",
+    dateCreated: "2022-12-20",
+    employeeID: 595959,
+    customerID: "SALIS",
+    productID: 595957,
+    quantity: 1,
+    orderID: 565656,
+    totalPrice: 1000,
+    priceDiscount: 30,
+    paymentTransactionID: 989898
+  }
 }]]></ee:set-payload>
             </ee:message>
         </ee:transform> [STUDIO] -->
