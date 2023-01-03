@@ -269,22 +269,23 @@ output application/json
         </ee:transform> [STUDIO] -->
     </flow>
     <flow name="patch:\proposedoffers\(customerID)\(offerID):application\json:customer-exp-api-config">
-        <ee:transform>
+<!-- [STUDIO:"Transform Message"]        <ee:transform>
             <ee:variables>
                 <ee:set-variable variableName="customerID">attributes.uriParams.'customerID'</ee:set-variable>
                 <ee:set-variable variableName="offerID">attributes.uriParams.'offerID'</ee:set-variable>
             </ee:variables>
-        </ee:transform>
-        <ee:transform>
+        </ee:transform> [STUDIO] -->
+<!-- [STUDIO:"Transform Message"]        <ee:transform>
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
----
+&#45;&#45;-
 {
   message: "Updated offer succesfully."
 }]]></ee:set-payload>
             </ee:message>
-        </ee:transform>
+        </ee:transform> [STUDIO] -->
+		<flow-ref doc:name="Flow Reference" doc:id="d62f6687-89c0-4471-a964-e8e866389205" name="patch-proposed-offers-by-offer-ID"/>
     </flow>
     <flow name="post:\customers:application\json:customer-exp-api-config">
         <flow-ref doc:name="post-customers-eapi-flow" doc:id="72638e8a-a281-4bc9-88f3-d5e2a9af820e" name="post-customers-eapi-flow" />

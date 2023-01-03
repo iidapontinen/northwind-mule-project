@@ -52,15 +52,6 @@ output application/json
 	offerID : attributes.uriParams.'offerID'
 }]]]></http:uri-params>
 		</http:request>
-		<ee:transform doc:name="Offer updated succesfully" doc:id="09ef48bb-e979-45ab-96ea-ed9b6d5b06a2" >
-			<ee:message >
-				<ee:set-payload ><![CDATA[%dw 2.0
-output application/json
----
-{
-	message:"Offer updated successfully"
-}]]></ee:set-payload>
-			</ee:message>
-		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="d2d2fad4-73f5-49b3-97dc-7bdd9e457313" />
 	</flow>
 </mule>
