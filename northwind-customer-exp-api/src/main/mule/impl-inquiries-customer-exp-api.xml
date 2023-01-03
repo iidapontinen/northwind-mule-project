@@ -17,7 +17,8 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 output application/json
 ---
 {
-	"message": "Thank you for your inquiry. We will get back to you shortly."
+	"message": "Thank you for your inquiry. We will get back to you shortly.",
+	"offerID": payload.offerID
 }]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
