@@ -24,6 +24,21 @@ types:
             application/json:
               type: object
               example: !include examples/offer-examples.raml
+
+  /{customerID}:
+    get: 
+      description: get a list of proposed offers by customer ID
+      queryParameters:
+          status:
+            enum:
+              - Proposed
+      responses:
+        200:
+          body:
+            application/json:
+              type: Offer
+              examples:
+                output: !include examples/offer-example.raml
               
   patch:
     description: Salesperson updates offer as proposed
