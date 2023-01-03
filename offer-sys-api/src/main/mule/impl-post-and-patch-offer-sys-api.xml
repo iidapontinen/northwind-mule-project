@@ -6,34 +6,6 @@
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
 http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
-	<flow name="get-all-offers-list" doc:id="79ef714a-80c9-4bd6-9c26-ffbee3d16a92" >
-		<logger level="INFO" doc:name="Logger" doc:id="b64c97d8-38b8-4523-bc86-cef954a8512d" />
-		<db:select doc:name="Get list of created offers" doc:id="9576a68d-e888-4cab-a542-5b844bf930ff" config-ref="Database_Config">
-			<db:sql ><![CDATA[SELECT * FROM offers]]></db:sql>
-		</db:select>
-		<ee:transform doc:name="Java to json" doc:id="3a918fc2-d053-4159-91d4-42c216b96fa1">
-			<ee:message>
-				<ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-payload map ( payload01 , indexOfPayload01 ) ->
-{
-	offerID: payload01.offerID,
-	offerStatus: payload01.offerStatus default "",
-	dateCreated: payload01.dateCreated as String default "",
-	employeeID: payload01.employeeID,
-	customerID: payload01.customerID,
-	productID: payload01.productID,
-	quantity: payload01.quantity default 0,
-	orderID: payload01.orderID,
-	totalPrice: payload01.totalPrice default 0,
-	priceDiscount: payload01.priceDiscount default 0,
-	paymentTransactionID: payload01.paymentTransactionID default 0
-}]]></ee:set-payload>
-			</ee:message>
-		</ee:transform>
-		<logger level="INFO" doc:name="Logger" doc:id="ac1ac888-cbb7-4da9-8ac6-9a928dcabcdc" />
-	</flow>
 	<flow name="post-new-offer" doc:id="e06d4da8-3601-469c-ac75-23c48da89c1d" >
 		<logger level="INFO" doc:name="Logger" doc:id="6ad5932f-1e4f-468d-907c-c2517627de14" />
 <!-- [STUDIO:"Insert new offer to DB"]		<db:insert doc:name="Insert new offer to DB" doc:id="9c02643e-9275-4a71-9609-4b4fe6b8f0c7" config-ref="Database_Config">

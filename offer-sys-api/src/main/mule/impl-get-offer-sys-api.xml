@@ -23,4 +23,32 @@ payload]]></ee:set-payload>
 		</ee:transform>
 		<logger level="INFO" doc:name="Logger" doc:id="d66acea5-0812-40a5-9ebd-201f8f674306" />
 	</flow>
+	<flow name="get-all-offers-list" doc:id="a49307a5-ea34-409f-987a-dea1dc38156e" >
+		<logger level="INFO" doc:name="Logger" doc:id="657ef576-8809-4bb6-af21-e2af4532dc86" />
+		<db:select doc:name="Get list of created offers" doc:id="e78fa180-9fb3-4008-a914-3dc38347f6a0" config-ref="Database_Config">
+			<db:sql ><![CDATA[SELECT * FROM offers]]></db:sql>
+		</db:select>
+		<ee:transform doc:name="Java to json" doc:id="b4ddf61b-73e4-4c32-a18b-2be37c0d75d0">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+payload map ( payload01 , indexOfPayload01 ) ->
+{
+	offerID: payload01.offerID,
+	offerStatus: payload01.offerStatus default "",
+	dateCreated: payload01.dateCreated as String default "",
+	employeeID: payload01.employeeID,
+	customerID: payload01.customerID,
+	productID: payload01.productID,
+	quantity: payload01.quantity default 0,
+	orderID: payload01.orderID,
+	totalPrice: payload01.totalPrice default 0,
+	priceDiscount: payload01.priceDiscount default 0,
+	paymentTransactionID: payload01.paymentTransactionID default 0
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="bf2f0184-47f2-4c58-a6c4-24b941dd65c3" />
+	</flow>
 </mule>
