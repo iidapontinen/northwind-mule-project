@@ -1,0 +1,9 @@
+%dw 2.0
+
+type auto_3d764a83_5d00_402f_bdc7_e622eb709328_Output_Variables_totalPrice = {|
+  offerID: Number, 
+  discountProposed: Number, 
+  employeeID: Number, 
+  customerID: String
+|}
+

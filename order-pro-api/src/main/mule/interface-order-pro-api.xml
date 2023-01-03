@@ -340,16 +340,17 @@ output application/json
         </ee:transform>
     </flow>
     <flow name="patch:\offers:application\json:order-pro-api-config">
-        <ee:transform>
+        <flow-ref doc:name="Flow Reference" doc:id="67cb06b2-ce92-452a-9c6d-a7a463261990" name="implement-orders-pro-offers-PATCH"/>
+<!-- [STUDIO:"Transform Message"]		<ee:transform>
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
----
+&#45;&#45;-
 {
   message: "Offer updated succesfully."
 }]]></ee:set-payload>
             </ee:message>
-        </ee:transform>
+        </ee:transform> [STUDIO] -->
     </flow>
     <flow name="get:\products:order-pro-api-config">
         <ee:transform>

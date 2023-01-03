@@ -23,7 +23,7 @@ WHERE ProductID = :productID]]></db:sql>
 		</db:select>
 		<choice doc:name="Choice" doc:id="caaa9f09-6857-41ea-abed-83135cd02945" >
 			<when expression="#[payload.quantity &gt; vars.units]">
-				<ee:transform doc:name="Out of stock" doc:id="c57477a8-81de-4929-bb05-ac3ebb455190">
+				<ee:transform doc:name="Out of stock" doc:id="6c76d8c0-c596-4e65-80c2-b886f34e7205">
 					<ee:message>
 						<ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -31,14 +31,14 @@ output application/json
 payload ++ { "status": "Out of Stock" }]]></ee:set-payload>
 					</ee:message>
 				</ee:transform>
-				<http:request method="GET" doc:name="offers-sapi-post-flow" doc:id="9b402dc0-ca22-42bf-8ac1-cf1925796bcc" config-ref="HTTP_Request_configuration1" path="/api/offers"/>
+				<http:request method="POST" doc:name="offers-sapi-post-flow" doc:id="9b402dc0-ca22-42bf-8ac1-cf1925796bcc" config-ref="HTTP_Request_configuration1" path="/api/offers"/>
 <!-- [STUDIO:"Logger"]				<logger level="INFO" doc:name="Logger" doc:id="183cec56-f49a-4fb9-9b75-2ef946d7a126" message="liian suuri määrä pyydetty"/> [STUDIO] -->
 			</when>
 			<otherwise >
-				<ee:transform doc:name="Pending" doc:id="27ef0330-563b-4d12-bd34-87b3b167f557">
+				<ee:transform doc:name="Pending" doc:id="b04a8a48-fc26-411e-8818-a8a18a011226">
 					<ee:message>
 						<ee:set-payload><![CDATA[%dw 2.0
-output application/json
+output application/java
 ---
 payload ++ { "status": "Pending" }]]></ee:set-payload>
 					</ee:message>
@@ -84,14 +84,14 @@ output application/json
 payload ++ { "status": "Out of Stock" }]]></ee:set-payload>
 					</ee:message>
 				</ee:transform>
-				<http:request method="GET" doc:name="Request" doc:id="9b22fcc6-6e52-42d3-a4bc-89075dc36fad" config-ref="HTTP_Request_configuration1" path="/api/offers" />
+				<http:request method="PATCH" doc:name="Request" doc:id="9b22fcc6-6e52-42d3-a4bc-89075dc36fad" config-ref="HTTP_Request_configuration1" path="/api/offers" />
 			</when>
 			<otherwise>
 				<validation:is-number numberType="INTEGER" doc:name="Is number" doc:id="e7700d9b-a35b-4045-80ed-a97a0397d293" value="#[payload.discountProposed]"/>
 				<set-variable value="#[output application/json&#10;---&#10;payload]" doc:name="Set totalPrice" doc:id="02ba814c-5c95-4e33-9de0-aa0a3bd3267a" variableName="totalPrice"/>
+				<http:request method="PATCH" doc:name="Contact offers-sapi-patch-flow" doc:id="05b3b493-db86-493a-a915-9f6800a9f6fe" config-ref="HTTP_Request_configuration1" path="/api/offers/" />
 			</otherwise>
 		</choice>
-		<http:request method="PATCH" doc:name="Contact offers-sapi-patch-flow" doc:id="05b3b493-db86-493a-a915-9f6800a9f6fe" config-ref="HTTP_Request_configuration1" path="/api/offers/"/>
 		<logger level="INFO" doc:name="Offer-pro-ending" doc:id="c70a14ac-8ded-4855-a22d-379f6064c720" />
 	</flow>
 </mule>
