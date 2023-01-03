@@ -10,8 +10,8 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 		<db:select doc:name="Offer by customerID" doc:id="84f378ec-7db3-4e53-a212-f7dba46d3e8b" config-ref="Database_Config">
 			<db:sql ><![CDATA[SELECT *
 FROM offers
-WHERE CustomerID = :CustomerID]]></db:sql>
-			<db:input-parameters ><![CDATA[#[{"CustomerID": attributes.uriParams.customerID]]]></db:input-parameters>
+WHERE CustomerID = :customerID AND OfferStatus = :offerStatus]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{"customerID": attributes.uriParams.'customerID', "offerStatus": attributes.queryParams.'status'}]]]></db:input-parameters>
 		</db:select>
 		<ee:transform doc:name="Transform Message" doc:id="f654a94d-874e-4bcb-81f9-2326b3569c7b" >
 			<ee:message >

@@ -179,16 +179,17 @@ output application/json
         </ee:transform> [STUDIO] -->
     </flow>
     <flow name="get:\offers\(customerID):offer-sys-api-config">
-        <ee:transform>
+<flow-ref doc:name="Flow Reference" doc:id="21b25b79-5e7d-476b-8eca-665b69e613bf" name="get-offer-by-customer-ID-sys-api-flow"/>
+<!-- [STUDIO:"Transform Message"]		        <ee:transform>
             <ee:variables>
                 <ee:set-variable variableName="customerID">attributes.uriParams.'customerID'</ee:set-variable>
             </ee:variables>
-        </ee:transform>
-        <ee:transform>
+        </ee:transform> [STUDIO] -->
+<!-- [STUDIO:"Transform Message"]        <ee:transform>
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
----
+&#45;&#45;-
 {
   "offer-example": {
     offerID: 56678,
@@ -205,6 +206,6 @@ output application/json
   }
 }]]></ee:set-payload>
             </ee:message>
-        </ee:transform>
+        </ee:transform> [STUDIO] -->
     </flow>
 </mule>
