@@ -28,10 +28,21 @@ output application/json
 	</flow>
 	<flow name="get-proposed-offers-by-customer-ID" doc:id="5b3df564-3b9c-4e26-9524-d162588545ee" >
 		<logger level="INFO" doc:name="Start of offers by customerID" doc:id="23bfba05-0cf3-47fe-bd68-6f2f927279e6" />
-		<http:request method="GET" doc:name="call-sys-api/offers" doc:id="0b2ab3a7-64e3-4a31-8be3-2bfca4f8ef84" config-ref="HTTP_Request_configuration_order_papi" path="/offers/{customerID}"/>
-		<ee:transform doc:name="list-of-offers" doc:id="6af34205-18ea-4b3b-95d1-92063169411e" >
-			<ee:message >
-				<ee:set-payload ><![CDATA[%dw 2.0
+		<http:request method="GET" doc:name="call-pro-api/offers" doc:id="0b2ab3a7-64e3-4a31-8be3-2bfca4f8ef84" config-ref="HTTP_Request_configuration_order_papi" path="/proposedoffers/{customerID}">
+			<http:uri-params ><![CDATA[#[output application/java
+---
+{
+	customerID : attributes.uriParams.'customerID'
+}]]]></http:uri-params>
+			<http:query-params ><![CDATA[#[output application/java
+---
+{
+	status : attributes.queryParams.'status'
+}]]]></http:query-params>
+		</http:request>
+		<ee:transform doc:name="list-of-offers" doc:id="6af34205-18ea-4b3b-95d1-92063169411e">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
 output application/json
 ---
 payload

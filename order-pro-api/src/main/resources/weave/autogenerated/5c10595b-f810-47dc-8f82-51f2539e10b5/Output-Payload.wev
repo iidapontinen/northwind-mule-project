@@ -1,0 +1,5 @@
+%dw 2.0
+
+type auto_5c10595b_f810_47dc_8f82_51f2539e10b5_Output_Payload = Array<{  dateCreated?: String,   quantity?: Number,   productID?: Number,   orderID?: Number,   totalPrice?: Number,   customerID?: String,   offerID?: Number,   employeeID?: Number,   paymentTransactionID?: Number,   status?: "Proposed" | "Shipped" | "Rejected" | "Pending" | "Accepted" | "Out of stock",   priceDiscount?: Number,   _?: Any} {"description": "All details for all offers",
+"label": "Offer Details"}>
+

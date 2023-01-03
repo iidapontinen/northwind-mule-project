@@ -51,6 +51,19 @@ types:
 
 /proposedoffers:
   /{customerID}:
+    get: 
+      description: get a list of proposed offers to be able to accept an offer later down the line.
+      queryParameters:
+          status:
+            enum:
+              - Proposed
+      responses:
+        200:
+          body:
+            application/json:
+              type: Offer[] 
+              examples:
+                output: !include examples/offer-examples.raml
     /{offerID}:
       patch:
         description: Modify the state of the proposed offer (Accepted/Rejected)
