@@ -74,21 +74,14 @@ WHERE OfferID = :offerID]]></db:sql>
 }]]]></db:input-parameters>
 		</db:update>
 			</when>
+			<when expression='#[payload.status == "Rejected"]'>
+				<db:update doc:name="status = Rejected" doc:id="738df84a-5add-488d-8cc4-a8e68c1bc8e3" config-ref="Database_Config">
+					<db:sql ><![CDATA[UPDATE offers
+SET OfferStatus = :status
+WHERE OfferID = :offerID]]></db:sql>
+				</db:update>
+			</when>
 			<otherwise>
-				<ee:transform doc:name="Transform Message" doc:id="39cc4d92-91cf-46e1-96c6-6398c76101fd">
-					<ee:message>
-						<ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-{
-	"offerID": payload.offerID,
-	"paymentTransactionID": payload.paymentTransactionID,
-	"dateApproved": payload.dateApproved,
-	"dateApproved": now() as Date,
-	"status": "Accepted"
-}]]></ee:set-payload>
-					</ee:message>
-				</ee:transform>
 				<db:update doc:name="status = Accepted" doc:id="b1357e0f-7ad9-46d1-92be-b8a45f9635f8" config-ref="Database_Config">
 					<db:sql ><![CDATA[UPDATE offers
 SET OfferID = :offerID, PaymentTransactionID = :paymentTransactionID, DateApproved = :dateApproved, OfferStatus = :status
