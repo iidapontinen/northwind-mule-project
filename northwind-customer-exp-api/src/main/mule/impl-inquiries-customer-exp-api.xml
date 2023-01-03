@@ -25,4 +25,31 @@ output application/json
 	<flow name="get-inquiries-by-ID" doc:id="04bacf4c-4419-4f1a-ba2e-b14af414ad6d" >
 		<logger level="INFO" doc:name="Logger" doc:id="25d5f69a-4236-4727-9225-c0959aa3cd4d" />
 	</flow>
+	<flow name="get-proposed-offers-by-customer-ID" doc:id="5b3df564-3b9c-4e26-9524-d162588545ee" >
+		<logger level="INFO" doc:name="Start of offers by customerID" doc:id="23bfba05-0cf3-47fe-bd68-6f2f927279e6" />
+		<http:request method="GET" doc:name="call-sys-api/offers" doc:id="0b2ab3a7-64e3-4a31-8be3-2bfca4f8ef84" config-ref="HTTP_Request_configuration_order_papi" path="/offers/{customerID}"/>
+		<ee:transform doc:name="list-of-offers" doc:id="6af34205-18ea-4b3b-95d1-92063169411e" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="patch-proposed-offers-by-offer-ID" doc:id="f6fc96ba-62df-40c4-8500-6240683fff6f" >
+		<logger level="INFO" doc:name="Start of offers by offerID" doc:id="b9aaf2df-fec4-494b-9e1e-a9ef7c6b092f" />
+		<http:request method="PATCH" doc:name="call-sys-api/offers" doc:id="f5744727-41f7-4b59-a2c4-80c37ad9f90a" config-ref="HTTP_Request_configuration_order_papi" path="/offers/{offerID}"/>
+		<ee:transform doc:name="Offer updated succesfully" doc:id="09ef48bb-e979-45ab-96ea-ed9b6d5b06a2" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	message:"Offer updated successfully"
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
 </mule>
