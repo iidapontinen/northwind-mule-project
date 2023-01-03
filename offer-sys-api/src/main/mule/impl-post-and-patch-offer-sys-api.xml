@@ -81,7 +81,11 @@ WHERE OfferID = :offerID]]></db:sql>
 output application/json
 ---
 {
-	"dateApproved": now() as Date
+	"offerID": payload.offerID,
+	"paymentTransactionID": payload.paymentTransactionID,
+	"dateApproved": payload.dateApproved,
+	"dateApproved": now() as Date,
+	"status": "Accepted"
 }]]></ee:set-payload>
 					</ee:message>
 				</ee:transform>
@@ -89,12 +93,12 @@ output application/json
 					<db:sql ><![CDATA[UPDATE offers
 SET OfferID = :offerID, PaymentTransactionID = :paymentTransactionID, DateApproved = :dateApproved, OfferStatus = :status
 WHERE OfferID = :offerID]]></db:sql>
-					<db:input-parameters ><![CDATA[{
+					<db:input-parameters ><![CDATA[#[{
 	"offerID": payload.offerID,
 	"paymentTransactionID": payload.paymentTransactionID,
 	"dateApproved": payload.dateApproved,
 	"status": payload.status
-}]]></db:input-parameters>
+}]]]></db:input-parameters>
 				</db:update>
 			</otherwise>
 		</choice>
