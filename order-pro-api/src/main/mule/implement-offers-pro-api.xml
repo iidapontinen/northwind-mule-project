@@ -115,7 +115,7 @@ output application/json
 		<logger level="INFO" doc:name="Offer-pro-ending" doc:id="c70a14ac-8ded-4855-a22d-379f6064c720" />
 	</flow>
 	<flow name="implement-orders-pro-offers-by-customerID-GET" doc:id="5c10595b-f810-47dc-8f82-51f2539e10b5" >
-		<logger level="INFO" doc:name="Logger" doc:id="4b66a8dc-186f-49f1-a792-8fa6c0be2d4a" />
+		<logger level="INFO" doc:name="Start of get customer ID flow" doc:id="4b66a8dc-186f-49f1-a792-8fa6c0be2d4a" />
 		<http:request method="GET" doc:name="call-sys-api-offer" doc:id="b8869b9b-2964-4415-b02b-c492c5ced36a" config-ref="HTTP_Request_offer_sapi" path="/api/offers/{customerID}" responseTimeout="300000">
 			<http:uri-params ><![CDATA[#[output application/java
 ---
@@ -129,5 +129,17 @@ output application/json
 }]]]></http:query-params>
 		</http:request>
 		<logger level="INFO" doc:name="Logger" doc:id="a0c67849-4abe-4a5e-acfa-237296498464" />
+	</flow>
+	<flow name="orders-pro-by-customerID-offerID-PATCH" doc:id="0e7c2fd4-67a8-4b11-8c22-fa7b1433d854" >
+		<logger level="INFO" doc:name="Start of patch customer and offer ID flow" doc:id="5b6515ba-ba5c-4cf9-afe7-4f847d5c2a12" />
+		<http:request method="PATCH" doc:name="call-sys-api-offer" doc:id="888101ce-e936-4580-b3c0-683ac1241441" path="/api/offers" config-ref="HTTP_Request_offer_sapi">
+			<http:body ><![CDATA[#[output application/json
+---
+payload ++
+{"offerID" : attributes.uriParams.'offerID',
+	"dateApproved" : now() as Date}
+}]]]></http:body>
+		</http:request>
+		<logger level="INFO" doc:name="Logger" doc:id="49187be2-8046-4ea7-815d-9ae28a55c3af" />
 	</flow>
 </mule>

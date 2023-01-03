@@ -44,7 +44,14 @@ output application/json
 	</flow>
 	<flow name="patch-proposed-offers-by-offer-ID" doc:id="f6fc96ba-62df-40c4-8500-6240683fff6f" >
 		<logger level="INFO" doc:name="Start of offers by offerID" doc:id="b9aaf2df-fec4-494b-9e1e-a9ef7c6b092f" />
-		<http:request method="PATCH" doc:name="call-sys-api/offers" doc:id="f5744727-41f7-4b59-a2c4-80c37ad9f90a" config-ref="HTTP_Request_configuration_order_papi" path="/offers/{offerID}"/>
+		<http:request method="PATCH" doc:name="call-pro-api/offers" doc:id="f5744727-41f7-4b59-a2c4-80c37ad9f90a" config-ref="HTTP_Request_configuration_order_papi" path="/api/proposedoffers/{customerID}/{offerID}" responseTimeout="300000">
+			<http:uri-params ><![CDATA[#[output application/java
+---
+{
+	customerID : attributes.uriParams.'customerID',
+	offerID : attributes.uriParams.'offerID'
+}]]]></http:uri-params>
+		</http:request>
 		<ee:transform doc:name="Offer updated succesfully" doc:id="09ef48bb-e979-45ab-96ea-ed9b6d5b06a2" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
