@@ -10,6 +10,7 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 		<logger level="INFO" doc:name="Logger" doc:id="bd13fa9f-4f17-45b7-ad9b-35d6611077ea" />
 		<set-variable value="#[payload.offerID]" doc:name="offerID" doc:id="cf4fb40c-d7b3-4c3c-831d-4472853f30d7" variableName="offerID"/>
 		<set-variable value="#[payload.employeeID]" doc:name="employeeID" doc:id="7768a276-5402-4500-961c-e0f7804d2276" variableName="employeeID"/>
+		<set-variable value="#[payload.shipVia]" doc:name="shipVia" doc:id="ce682e39-f8cb-4769-b64c-54109a505591" variableName="shipVia"/>
 		<db:select doc:name="DateApproved from offers" doc:id="e6485804-4693-40ac-bf2c-491f04565242" config-ref="Database_Config" target="dateApproved" targetValue="#[payload.DateApproved]">
 			<db:sql ><![CDATA[SELECT DateApproved
 FROM offers
@@ -47,7 +48,8 @@ payload ++
 	"customerID": vars.customerID[0],
 	"dateApproved": vars.dateApproved[0] as Date,
 	"employeeID": vars.employeeID,
-	"offerID": vars.offerID
+	"offerID": vars.offerID,
+	"shipVia": vars.shipVia
 }]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
@@ -60,7 +62,7 @@ output application/json
 ---
 payload ++
 {
-	"offerID": vars.offerID,	
+	"offerID": vars.offerID,
 	"status": "Shipped"
 }]]></ee:set-payload>
 			</ee:message>
