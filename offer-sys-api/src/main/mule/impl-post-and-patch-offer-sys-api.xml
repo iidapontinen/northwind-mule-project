@@ -63,10 +63,11 @@ WHERE OfferID = :offerID]]></db:sql>
 			<when expression='#[payload.status == "Proposed"]'>
 				<db:update doc:name="status = Proposed" doc:id="58256a2b-5c40-4622-ae3f-e6d9df654335" config-ref="Database_Config">
 			<db:sql><![CDATA[UPDATE offers
-SET PriceDiscount = :priceDiscount, TotalPrice = :totalPrice, DateCreated = :dateCreated, OfferStatus = :status
+SET PriceDiscount = :priceDiscount, EmployeeID = :employeeID, TotalPrice = :totalPrice, DateCreated = :dateCreated, OfferStatus = :status
 WHERE OfferID = :offerID]]></db:sql>
 			<db:input-parameters><![CDATA[#[{
 	"priceDiscount": payload.priceDiscount,
+	"employeeID": payload.employeeID,
 	"totalPrice": payload.totalPrice,
 	"dateCreated": payload.dateCreated,
 	"offerID": payload.offerID,
