@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
-	xmlns="http://www.mulesoft.org/schema/mule/core"
-	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+<mule xmlns:validation="http://www.mulesoft.org/schema/mule/validation" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
-http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd">
 	<flow name="post-inquiries-flow" doc:id="68113a7c-0ed2-49a2-80fa-8ac69ad1bbe9" >
 		<logger level="INFO" doc:name="Logger" doc:id="13afacbf-349f-4de8-a9df-662132294224" />
 <!-- [STUDIO:"Mock payload"]		<set-payload value='#[{&#10;	"customerID": "ALFKI",&#10;	"productID": 1,&#10;	"quantity": 5&#10;}]' doc:name="Mock payload" doc:id="dd7708cf-df4c-454d-8a98-29e2bf9a6f91" /> [STUDIO] -->
@@ -44,6 +45,9 @@ output application/json
 	</flow>
 	<flow name="patch-proposed-offers-by-customerID-by-offerID" doc:id="f6fc96ba-62df-40c4-8500-6240683fff6f" >
 		<logger level="INFO" doc:name="Start of offers by offerID" doc:id="b9aaf2df-fec4-494b-9e1e-a9ef7c6b092f" />
+		<try doc:name="Try" doc:id="1ccb4e07-5064-4b19-a7fe-cabdb4d0c5bc" >
+			<validation:matches-regex doc:name="Matches regex" doc:id="61053086-0f4f-4b49-a02c-9adb9202256a" value="#[payload.paymentTransactionID]" regex="[0-9]*-[A-Z]*-[0-9]*" config-ref="Validation_Config"/>
+		</try>
 		<http:request method="PATCH" doc:name="call-pro-api/offers" doc:id="f5744727-41f7-4b59-a2c4-80c37ad9f90a" config-ref="HTTP_Request_configuration_order_papi" path="/api/proposedoffers/{customerID}/{offerID}" responseTimeout="300000">
 			<http:uri-params ><![CDATA[#[output application/java
 ---

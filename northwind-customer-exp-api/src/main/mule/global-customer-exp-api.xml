@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
-	xmlns="http://www.mulesoft.org/schema/mule/core"
-	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+<mule xmlns:validation="http://www.mulesoft.org/schema/mule/validation" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
-http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd">
 
 	<http:request-config name="HTTP_Request_configuration_customer_sapi" doc:name="HTTP Request configuration" doc:id="3446bb62-026a-49dc-ad47-6272c98da9f8" >
 		<http:request-connection host="${sapi.customer.host}" port="${sapi.customer.port}" connectionIdleTimeout="3000000">
@@ -23,6 +24,7 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 	<http:request-config name="HTTP_Request_configuration_order_papi" doc:name="HTTP Request configuration" doc:id="75d7d2b5-f19a-450a-93ab-d769a5dfd3c0" >
 		<http:request-connection host="${papi.order.host}" port="${papi.order.port}" connectionIdleTimeout="60000000"/>
 	</http:request-config>
+	<validation:config name="Validation_Config" doc:name="Validation Config" doc:id="1ede41bd-ea27-46ff-a003-5eda4d3f1e66" />
 	<error-handler name="globalError_Handler" doc:id="15d32bff-10e4-4bc0-b637-d9e4ff89e0c8" >
 		<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="a8973560-9f87-4dfd-8e86-564238ee9510" type="HTTP:CONNECTIVITY">
 			<ee:transform doc:name="Transform Message" doc:id="8be208c0-d9dd-466c-91c2-1ee3cd57de8c" >
