@@ -39,7 +39,7 @@ payload ++ { "status": "Out of stock" }
 				<ee:transform doc:name="Pending" doc:id="b04a8a48-fc26-411e-8818-a8a18a011226">
 					<ee:message>
 						<ee:set-payload><![CDATA[%dw 2.0
-output application/java
+output application/json
 ---
 payload ++ { "status": "Pending" }]]></ee:set-payload>
 					</ee:message>
