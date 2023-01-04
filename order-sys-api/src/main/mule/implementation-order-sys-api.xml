@@ -62,7 +62,7 @@ payload map ( payload01 , indexOfPayload01 ) -> {
 	<flow name="post-order-to-db-flow" doc:id="56a72d94-d323-45d3-8600-e6bf9a63b9a0" >
 		<logger level="INFO" doc:name="Entering post-order-flow" doc:id="cf3ee5e3-88a6-4aff-b6b2-1e13d4f25fae" />
 		<set-variable value="#[payload.customerID]" doc:name="Set customerID" doc:id="38b46cd8-1490-419c-918c-a53f056670ca" variableName="customerID"/>
-		<db:select doc:name="Select Shipping Address from customers" doc:id="1737536d-06fc-4ec7-82dd-885ac3f3be2d" config-ref="Northwind_database_Config" target="shippingAddress" targetValue="#[payload.Address]">
+		<db:select doc:name="Select ShippingAddress from customers + target shippingAddress" doc:id="1737536d-06fc-4ec7-82dd-885ac3f3be2d" config-ref="Northwind_database_Config" target="shippingAddress" targetValue="#[payload.Address]">
 			<db:sql ><![CDATA[SELECT Address from customers
 WHERE CustomerID = :customerID]]></db:sql>
 			<db:parameter-types />
