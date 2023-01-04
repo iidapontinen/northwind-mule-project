@@ -68,12 +68,12 @@ var timeBetween = Periods::between(shipDate, formattedApprDate)
  
 ---
 {
-	"days": timeBetween.days
+	"days": timeBetween.days as Number
 }]]></ee:set-variable>
 			</ee:variables>
 		</ee:transform>
 		<choice doc:name="Choice" doc:id="1ca5b7dd-0de1-4884-8dfe-df2adf56f9d7" >
-			<when expression="#[vars.daysBetween &lt;= 15]">
+			<when expression="#[vars.daysBetween.days &lt;= 15]">
 				<ee:transform doc:name="Transform Message" doc:id="e3c45dd6-48b7-4d4e-b538-9dc3ba09a151" >
 					<ee:message >
 						<ee:set-payload ><![CDATA[%dw 2.0

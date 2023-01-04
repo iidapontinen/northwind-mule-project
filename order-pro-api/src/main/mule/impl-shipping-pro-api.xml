@@ -8,11 +8,19 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
 	<flow name="shippingdetails-post" doc:id="373dce71-4aa2-4291-a9cb-c87c1a0a8b7e" >
 		<logger level="INFO" doc:name="Logger" doc:id="bd13fa9f-4f17-45b7-ad9b-35d6611077ea" />
+		<set-variable value="#[payload.offerID]" doc:name="offerID" doc:id="cf4fb40c-d7b3-4c3c-831d-4472853f30d7" variableName="offerID"/>
+		<set-variable value="#[payload.employeeID]" doc:name="employeeID" doc:id="7768a276-5402-4500-961c-e0f7804d2276" variableName="employeeID"/>
 		<db:select doc:name="DateApproved from offers" doc:id="e6485804-4693-40ac-bf2c-491f04565242" config-ref="Database_Config" target="dateApproved" targetValue="#[payload.DateApproved]">
 			<db:sql ><![CDATA[SELECT DateApproved
 FROM offers
 WHERE OfferID = :offerID]]></db:sql>
-			<db:input-parameters ><![CDATA[#["offerID": payload.'offerID']]]></db:input-parameters>
+			<db:input-parameters ><![CDATA[#["offerID": vars.'offerID']]]></db:input-parameters>
+		</db:select>
+		<db:select doc:name="CustomerID from offers" doc:id="1b818a84-3332-4d6c-bc0b-3e93627bc318" target="customerID" targetValue="#[payload.customerID]" config-ref="Database_Config">
+			<db:sql ><![CDATA[SELECT CustomerID
+FROM offers
+WHERE OfferID = :offerID]]></db:sql>
+			<db:input-parameters ><![CDATA[#["offerID" : vars.offerID]]]></db:input-parameters>
 		</db:select>
 		<ee:transform doc:name="payload ++ dateApproved" doc:id="bc6a9235-f4df-490f-961a-fc707b537c3f" >
 			<ee:message >
@@ -23,11 +31,26 @@ output application/json
 	payload ++ 
 {
 	"dateApproved": vars.dateApproved[0]
+	
 }]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
 		<http:request method="POST" doc:name="to shipping-sys-api" doc:id="b7bc6ef6-9286-4603-82c4-045b6ad1f3ab" config-ref="HTTP_Request_shipping_sapi" path="/api/shippingdetails" responseTimeout="300000"/>
+		<ee:transform doc:name="payload from sys shipping api ++ vars" doc:id="11c89772-5e11-49f9-b3fe-d276af4e7a82" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload ++ 
+{
+	"customerID": vars.customerID[0],
+	"dateApproved": vars.dateApproved[0] as Date,
+	"employeeID": vars.employeeID,
+	"offerID": vars.offerID
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<http:request method="POST" doc:name="to order-sys-api" doc:id="71534533-55bc-4c4e-85e7-6cbe0d69bff8" config-ref="order_sapi_HTTP_Request_configuration" path="/api/orders" responseTimeout="300000"/>
 		<logger level="INFO" doc:name="Logger" doc:id="c67612c1-2b02-4384-9691-cb03fef168e0" />
-		<http:request method="POST" doc:name="to order-pro-api" doc:id="71534533-55bc-4c4e-85e7-6cbe0d69bff8" config-ref="order_sapi_HTTP_Request_configuration" path="/api/orders"/>
 	</flow>
 </mule>
