@@ -28,5 +28,6 @@ output application/json
 		</ee:transform>
 		<http:request method="POST" doc:name="to shipping-sys-api" doc:id="b7bc6ef6-9286-4603-82c4-045b6ad1f3ab" config-ref="HTTP_Request_shipping_sapi" path="/api/shippingdetails" responseTimeout="300000"/>
 		<logger level="INFO" doc:name="Logger" doc:id="c67612c1-2b02-4384-9691-cb03fef168e0" />
+		<http:request method="POST" doc:name="to order-pro-api" doc:id="71534533-55bc-4c4e-85e7-6cbe0d69bff8" config-ref="order_sapi_HTTP_Request_configuration" path="/api/orders"/>
 	</flow>
 </mule>

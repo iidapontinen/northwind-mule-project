@@ -1,0 +1,4 @@
+%dw 2.0
+
+type auto_67e64a50_d3f8_4445_9d46_01036c60b8d0_Input_Variables_categoryName = Array<String>
+
