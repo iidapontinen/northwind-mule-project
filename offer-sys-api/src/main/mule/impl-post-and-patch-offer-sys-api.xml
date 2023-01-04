@@ -86,6 +86,10 @@ WHERE OfferID = :offerID]]></db:sql>
 					<db:sql ><![CDATA[UPDATE offers
 SET OfferStatus = :status
 WHERE OfferID = :offerID]]></db:sql>
+					<db:input-parameters ><![CDATA[#[{
+"offerID": payload.offerID,
+"status": payload.status
+}]]]></db:input-parameters>
 				</db:update>
 			</when>
 			<otherwise>
@@ -102,7 +106,7 @@ WHERE OfferID = :offerID]]></db:sql>
 				</db:update>
 			</otherwise>
 		</choice>
-		<ee:transform doc:name="Offer created successfully" doc:id="b5db0924-4d42-476f-bc33-15f4d48255cd" >
+		<ee:transform doc:name="Offer updated successfully" doc:id="b5db0924-4d42-476f-bc33-15f4d48255cd" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
