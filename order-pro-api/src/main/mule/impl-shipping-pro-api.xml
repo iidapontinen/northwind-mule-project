@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<flow name="shippingdetails-post" doc:id="373dce71-4aa2-4291-a9cb-c87c1a0a8b7e" >
+		<logger level="INFO" doc:name="Logger" doc:id="bd13fa9f-4f17-45b7-ad9b-35d6611077ea" />
+		<db:select doc:name="DateApproved from offers" doc:id="e6485804-4693-40ac-bf2c-491f04565242" config-ref="Database_Config" target="dateApproved" targetValue="#[payload.DateApproved]">
+			<db:sql ><![CDATA[SELECT DateApproved
+FROM offers
+WHERE OfferID = :offerID]]></db:sql>
+			<db:input-parameters ><![CDATA[#["offerID": payload.'offerID']]]></db:input-parameters>
+		</db:select>
+		<ee:transform doc:name="payload ++ dateApproved" doc:id="bc6a9235-f4df-490f-961a-fc707b537c3f" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+
+	payload ++ 
+{
+	"dateApproved": vars.dateApproved[0]
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<http:request method="POST" doc:name="to shipping-sys-api" doc:id="b7bc6ef6-9286-4603-82c4-045b6ad1f3ab" config-ref="HTTP_Request_shipping_sapi" path="/api/shippingdetails" responseTimeout="300000"/>
+		<logger level="INFO" doc:name="Logger" doc:id="c67612c1-2b02-4384-9691-cb03fef168e0" />
+	</flow>
+</mule>

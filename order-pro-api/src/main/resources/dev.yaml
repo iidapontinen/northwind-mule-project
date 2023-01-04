@@ -15,3 +15,7 @@ db:
 sapi.offer:
  host: "localhost"
  port: "8084"
+ 
+sapi.shipping:
+ host: "localhost"
+ port: "8086"

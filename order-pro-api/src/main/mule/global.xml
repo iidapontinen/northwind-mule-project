@@ -19,4 +19,7 @@ http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/cu
 	<http:request-config name="order_sapi_HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="87752a4a-b982-4ba0-91cb-25469ad18b59" >
 		<http:request-connection host="${sapi.order.host}" port="${sapi.order.port}"/>
 </http:request-config>
+	<http:request-config name="HTTP_Request_shipping_sapi" doc:name="HTTP Request configuration" doc:id="036f268f-d578-411b-be7f-605be79675df" >
+		<http:request-connection host="${sapi.shipping.host}" port="${sapi.shipping.port}" />
+	</http:request-config>
 </mule>

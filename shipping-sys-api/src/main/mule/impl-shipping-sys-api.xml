@@ -12,7 +12,7 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 	<flow name="impl-shipping-sys-apiFlow" doc:id="693ed158-14ec-4115-8445-acd8573b8b69" >
 		<logger level="INFO" doc:name="Logger" doc:id="06f7db86-a447-4038-a178-7254e7520a10" />
 <!-- [STUDIO:"temporary payload for testing"]		<set-payload value='#[output application/json&#10;&#45;&#45;-&#10;{&#10;	"offerID": "1",&#10;	"dateApproved": "2022-04-11 00:00:00",&#10;	"shipperID": "1"&#10;}]' doc:name="temporary payload for testing" doc:id="f8cea91b-b014-44dd-a3e5-a258b3cc18f7" /> [STUDIO] -->
-		<set-variable value="#[payload.dateAccepted]" doc:name="dateAccepted" doc:id="4b882926-22c1-4df8-9156-1e7524b40bb1" variableName="dateAccepted"/>
+		<set-variable value="#[payload.dateApproved]" doc:name="dateApproved" doc:id="4b882926-22c1-4df8-9156-1e7524b40bb1" variableName="dateApproved"/>
 		<set-variable value="#[payload.offerID]" doc:name="offerID" doc:id="0c357448-a3b4-43f4-9767-4f0485a1a896" variableName="offerID"/>
 		<db:select doc:name="CustomerID and target" doc:id="144be8fe-224a-45ef-ae68-7961334f0241" target="customerID" config-ref="Database_Config" targetValue="#[output application/json&#10;---&#10;payload.CustomerID]">
 			<db:sql ><![CDATA[SELECT CustomerID
