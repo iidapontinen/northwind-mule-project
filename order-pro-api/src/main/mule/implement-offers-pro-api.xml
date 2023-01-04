@@ -85,7 +85,7 @@ output application/json
 { 
 	"offerID": payload.offerID,
 	"employeeID": payload.employeeID,
-	"status": "Out of Stock" 
+	"status": "Out of stock" 
 }]]></ee:set-payload>
 					</ee:message>
 				</ee:transform>
