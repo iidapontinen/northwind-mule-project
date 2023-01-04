@@ -109,7 +109,7 @@ output application/json
 }]]></ee:set-payload>
 					</ee:message>
 				</ee:transform>
-				<http:request method="PATCH" doc:name="PATCH offers-sapi-flow" doc:id="05b3b493-db86-493a-a915-9f6800a9f6fe" config-ref="HTTP_Request_offer_sapi" path="/api/offers/" />
+				<http:request method="PATCH" doc:name="PATCH offers-sapi-flow" doc:id="05b3b493-db86-493a-a915-9f6800a9f6fe" config-ref="HTTP_Request_offer_sapi" path="/api/offers" />
 			</otherwise>
 		</choice>
 		<logger level="INFO" doc:name="Offer-pro-ending" doc:id="c70a14ac-8ded-4855-a22d-379f6064c720" />
