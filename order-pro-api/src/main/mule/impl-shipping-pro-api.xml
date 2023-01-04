@@ -49,7 +49,8 @@ payload ++
 	"dateApproved": vars.dateApproved[0] as Date,
 	"employeeID": vars.employeeID,
 	"offerID": vars.offerID,
-	"shipVia": vars.shipVia
+	"shipVia": vars.shipVia,
+	"shippedDate": vars.shippingDate
 }]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
