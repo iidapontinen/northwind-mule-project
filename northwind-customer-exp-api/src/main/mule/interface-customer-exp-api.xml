@@ -285,7 +285,7 @@ output application/json
 }]]></ee:set-payload>
             </ee:message>
         </ee:transform> [STUDIO] -->
-		<flow-ref doc:name="Flow Reference" doc:id="d62f6687-89c0-4471-a964-e8e866389205" name="patch-proposed-offers-by-offer-ID"/>
+		<flow-ref doc:name="Flow Reference" doc:id="d62f6687-89c0-4471-a964-e8e866389205" name="patch-proposed-offers-by-customerID-by-offerID"/>
     </flow>
     <flow name="post:\customers:application\json:customer-exp-api-config">
         <flow-ref doc:name="post-customers-eapi-flow" doc:id="72638e8a-a281-4bc9-88f3-d5e2a9af820e" name="post-customers-eapi-flow" />

@@ -42,7 +42,7 @@ output application/json
 		</http:request>
 		<logger level="INFO" doc:name="Logger" doc:id="59ea657a-c7ea-48be-b867-fa29e84c377b" />
 	</flow>
-	<flow name="patch-proposed-offers-by-offer-ID" doc:id="f6fc96ba-62df-40c4-8500-6240683fff6f" >
+	<flow name="patch-proposed-offers-by-customerID-by-offerID" doc:id="f6fc96ba-62df-40c4-8500-6240683fff6f" >
 		<logger level="INFO" doc:name="Start of offers by offerID" doc:id="b9aaf2df-fec4-494b-9e1e-a9ef7c6b092f" />
 		<http:request method="PATCH" doc:name="call-pro-api/offers" doc:id="f5744727-41f7-4b59-a2c4-80c37ad9f90a" config-ref="HTTP_Request_configuration_order_papi" path="/api/proposedoffers/{customerID}/{offerID}" responseTimeout="300000">
 			<http:uri-params ><![CDATA[#[output application/java
