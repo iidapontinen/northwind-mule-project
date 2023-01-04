@@ -19,7 +19,7 @@ http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mu
 		<db:select doc:name="UnitsInStock and target 'units'" doc:id="ec005592-2599-41f4-a45f-84c985c87860" config-ref="Database_Config" target="units" targetValue="#[payload.UnitsInStock[0]]">
 			<db:sql ><![CDATA[SELECT UnitsInStock FROM products
 WHERE ProductID = :productID]]></db:sql>
-			<db:input-parameters ><![CDATA[#["productID" : payload.productID]]]></db:input-parameters>
+			<db:input-parameters ><![CDATA[#["productID" : payload.'productID']]]></db:input-parameters>
 		</db:select>
 		<choice doc:name="Choice" doc:id="caaa9f09-6857-41ea-abed-83135cd02945" >
 			<when expression="#[payload.quantity &gt; vars.units]">
@@ -28,7 +28,7 @@ WHERE ProductID = :productID]]></db:sql>
 						<ee:set-payload><![CDATA[%dw 2.0
 output application/json
 ---
-payload ++ { "status": "Out of Stock" }
+payload ++ { "status" : "Out of stock" }
 ]]></ee:set-payload>
 					</ee:message>
 				</ee:transform>
@@ -39,9 +39,9 @@ payload ++ { "status": "Out of Stock" }
 				<ee:transform doc:name="Pending" doc:id="b04a8a48-fc26-411e-8818-a8a18a011226">
 					<ee:message>
 						<ee:set-payload><![CDATA[%dw 2.0
-output application/java
+output application/json
 ---
-payload ++ { "status": "Pending" }]]></ee:set-payload>
+payload ++ { "status" : "Pending" }]]></ee:set-payload>
 					</ee:message>
 				</ee:transform>
 				<http:request method="POST" doc:name="POST offers-sapi-flow" doc:id="50130b5f-f61b-4bf0-98dc-1589c3f8f870" config-ref="HTTP_Request_offer_sapi" path="/api/offers" responseTimeout="600000"/>
@@ -85,7 +85,7 @@ output application/json
 { 
 	"offerID": payload.offerID,
 	"employeeID": payload.employeeID,
-	"status": "Out of Stock" 
+	"status": "Out of stock" 
 }]]></ee:set-payload>
 					</ee:message>
 				</ee:transform>
@@ -109,7 +109,7 @@ output application/json
 }]]></ee:set-payload>
 					</ee:message>
 				</ee:transform>
-				<http:request method="PATCH" doc:name="PATCH offers-sapi-flow" doc:id="05b3b493-db86-493a-a915-9f6800a9f6fe" config-ref="HTTP_Request_offer_sapi" path="/api/offers/" />
+				<http:request method="PATCH" doc:name="PATCH offers-sapi-flow" doc:id="05b3b493-db86-493a-a915-9f6800a9f6fe" config-ref="HTTP_Request_offer_sapi" path="/api/offers" />
 			</otherwise>
 		</choice>
 		<logger level="INFO" doc:name="Offer-pro-ending" doc:id="c70a14ac-8ded-4855-a22d-379f6064c720" />
