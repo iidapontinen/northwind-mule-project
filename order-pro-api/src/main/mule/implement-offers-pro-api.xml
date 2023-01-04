@@ -28,7 +28,7 @@ WHERE ProductID = :productID]]></db:sql>
 						<ee:set-payload><![CDATA[%dw 2.0
 output application/json
 ---
-payload ++ { "status": "Out of Stock" }
+payload ++ { "status": "Out of stock" }
 ]]></ee:set-payload>
 					</ee:message>
 				</ee:transform>
