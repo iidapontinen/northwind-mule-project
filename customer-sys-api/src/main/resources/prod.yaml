@@ -6,5 +6,5 @@ db:
  database: "northwind01"
  
 http:
- host:
+ host: ""
  port: "8083"
