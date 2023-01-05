@@ -1,0 +1,266 @@
+{
+	"info": {
+		"_postman_id": "f8399c3c-4b5b-4bcd-a776-b6ff0acc8c87",
+		"name": "Northwind-mule-project",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23519119"
+	},
+	"item": [
+		{
+			"name": "customers",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/api/customers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"customers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "new customer to database",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"customerID\": \"MIMSU\",\r\n    \"companyName\": \"Mimmin Suklaat\",\r\n    \"contactName\": \"Mimmi Meikäläinen\",\r\n    \"contactTitle\": \"Manufacturer\",\r\n    \"address\": \"Tekniikantie 12\",\r\n    \"postalCode\": \"02150\",\r\n    \"country\": \"Finland\",\r\n    \"phone\": \"0500-123123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/customers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"customers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "customers by ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/api/customers/MIMSU",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"customers",
+						"MIMSU"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "inquiry (customer)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"productID\": 33,\r\n    \"quantity\": 20,\r\n    \"customerID\": \"MIMSU\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/inquiries",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"inquiries"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "proposes offer with discount (seller)",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"offerID\": 30,\r\n    \"discountProposed\": 5,\r\n    \"employeeID\": 3\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8082/api/offers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"api",
+						"offers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "proposedoffers by ID (customer)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/api/proposedoffers/MIMSU?status=Proposed",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"proposedoffers",
+						"MIMSU"
+					],
+					"query": [
+						{
+							"key": "status",
+							"value": "Proposed"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "accept/reject offer by ID (customer)",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"paymentTransactionID\": \"331-TAM-000\",\r\n    \"status\": \"Accepted\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/proposedoffers/TAMPA/39",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"proposedoffers",
+						"TAMPA",
+						"39"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "shippingdetails for order",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"offerID\": 30,\r\n    \"employeeID\": 5,\r\n    \"shipVia\": 3\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8082/api/shippingdetails",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"api",
+						"shippingdetails"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "orders (seller)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8082/api/orders",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"api",
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "orders by ID (seller)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8082/api/orders/11084",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"api",
+						"orders",
+						"11084"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
