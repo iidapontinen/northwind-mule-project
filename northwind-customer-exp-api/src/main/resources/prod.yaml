@@ -1,0 +1,10 @@
+http:
+ port: "8081"
+ 
+sapi.customer:
+  host:
+  port: "8083"
+  
+papi.order:
+  host:
+  port: "8082"

@@ -1,6 +1,21 @@
+http:
+ port: "8082"
+
+sapi.order:
+ host: 
+ port: "8085"
+
 db:
  host: "20.224.50.155"
  port: "3306"
  user: "group01"
  password: "@Br1ghtsGr0up01!"
  database: "northwind01"
+
+sapi.offer:
+ host: 
+ port: "8084"
+ 
+sapi.shipping:
+ host: 
+ port: "8086"

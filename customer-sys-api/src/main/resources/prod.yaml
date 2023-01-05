@@ -4,3 +4,7 @@ db:
  user: "group01"
  password: "@Br1ghtsGr0up01!"
  database: "northwind01"
+ 
+http:
+ host:
+ port: "8083"

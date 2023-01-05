@@ -5,6 +5,11 @@ db:
  password: "@Br1ghtsGr0up01!"
  database: "northwind01"
  
+http:
+ host:
+ port: "8086"
+ 
 shipping.ext:
  host: "20.224.50.155"
  port: "8081"
+ 
