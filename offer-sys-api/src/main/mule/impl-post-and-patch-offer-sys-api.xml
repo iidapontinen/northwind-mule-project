@@ -80,6 +80,10 @@ WHERE OfferID = :offerID]]></db:sql>
 					<db:sql ><![CDATA[UPDATE offers
 SET OfferStatus = :status
 WHERE OfferID = :offerID]]></db:sql>
+					<db:input-parameters ><![CDATA[#[{
+	"offerID": payload.offerID,
+	"status": payload.status
+}]]]></db:input-parameters>
 				</db:update>
 			</when>
 			<when expression='#[payload.status == "Shipped"]'>
