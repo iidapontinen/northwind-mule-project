@@ -354,14 +354,15 @@ output application/json
         </ee:transform> [STUDIO] -->
     </flow>
     <flow name="get:\products:order-pro-api-config">
-        <ee:transform>
+<!-- [STUDIO:"Transform Message"]        <ee:transform>
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
----
+&#45;&#45;-
 16]]></ee:set-payload>
             </ee:message>
-        </ee:transform>
+        </ee:transform> [STUDIO] -->
+		<flow-ref doc:name="Flow Reference" doc:id="43c2230d-8c72-4b28-acd8-ab0f0f2d78ae" name="GET-products"/>
     </flow>
     <flow name="get:\proposedoffers\(customerID):order-pro-api-config">
         <!-- [STUDIO:"Transform Message"]        <ee:transform>

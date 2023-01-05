@@ -1,0 +1,4 @@
+%dw 2.0
+
+type auto_1200d102_622b_4fae_83a9_f32c02d72ee8_Output_Payload = Number {"typeId": "int"}
+
