@@ -27,4 +27,15 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 		<http:request method="POST" doc:name="POST orders-sapi-flow" doc:id="adb83aab-8a2d-4e75-b67c-f0925fd82b9e" config-ref="order_sapi_HTTP_Request_configuration" path="/api/orders"/>
 		<logger level="INFO" doc:name="Exiting post-orders-flow" doc:id="be9d5f8e-0a3b-4a75-a5c3-9a5d3d5399db" />
 	</flow>
+	<flow name="get-orders-for-customer-by-customerID-flow" doc:id="e67e19fd-a634-44ba-bc34-efe1bdb5d138" >
+		<logger level="INFO" doc:name="Entering get-orders-for-customer" doc:id="8826cfc3-d646-4748-8d36-d13b3197ac9d" />
+		<http:request method="GET" doc:name="GET /customerID orders-sapi-flow" doc:id="f1fbf396-869e-495d-9508-18e3c75481da" config-ref="order_sapi_HTTP_Request_configuration" path="/api/orders/{customerID}">
+			<http:uri-params ><![CDATA[#[output application/java
+---
+{
+	'customerID' : attributes.uriParams.customerID
+}]]]></http:uri-params>
+		</http:request>
+		<logger level="INFO" doc:name="Exiting get-orders-for-customer" doc:id="6935e76b-0c5b-4f77-b31d-96946fae8745" />
+	</flow>
 </mule>

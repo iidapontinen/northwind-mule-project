@@ -25,6 +25,17 @@ types:
               examples:
                 output: !include examples/order-example.raml
 
+  /{customerID}:
+    description: Get list of orders by customerID
+    get:
+      responses:
+        200:
+          body:
+            application/json:
+              type: Order[]
+              examples:
+                output: !include examples/orders-example.raml
+
   post:
     body:
       application/json:
