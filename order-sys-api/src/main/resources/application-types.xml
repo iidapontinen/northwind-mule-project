@@ -349,4 +349,13 @@ type: string]]></types:shape>
       </types:output-event>
     </types:processor-declaration>
   </types:enrichment>
+  <types:enrichment select="#5832f57c-9d27-47c3-a248-e5846289e27d">
+    <types:processor-declaration>
+      <types:output-event>
+        <types:message>
+          <types:payload type="orders-example-json"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
 </types:mule>

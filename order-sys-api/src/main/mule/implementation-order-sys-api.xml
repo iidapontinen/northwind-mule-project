@@ -71,6 +71,21 @@ WHERE CustomerID = :customerID]]></db:sql>
 	customerID: attributes.uriParams.'customerID'
 }]]]></db:input-parameters>
 		</db:select>
+		<ee:transform doc:name="order info from db-java -&gt; json" doc:id="5832f57c-9d27-47c3-a248-e5846289e27d" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload map ( payload01 , indexOfPayload01 ) -> {
+	orderID: payload01.OrderID,
+	employeeID: payload01.EmployeeID default 0,
+	customerID: payload01.CustomerID default "",
+	acceptedDate: payload01.OrderDate as String default "",
+	shippedDate: payload01.ShippedDate as String default "",
+	shipVia: payload01.ShipVia default 0
+} ]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
 		<logger level="INFO" doc:name="Exiting get-orders-for-customer-by-ID-flow" doc:id="56bb7637-4bd2-4d9c-ad1b-d82260f3ecf8" />
 	</flow>
 	<flow name="post-order-to-db-flow" doc:id="56a72d94-d323-45d3-8600-e6bf9a63b9a0" >
