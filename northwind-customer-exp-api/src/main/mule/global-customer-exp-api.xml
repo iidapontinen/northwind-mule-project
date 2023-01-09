@@ -15,8 +15,8 @@ http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mu
 			</reconnection>
 		</http:request-connection>
 	</http:request-config>
-	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="ace7b2a2-b185-4e53-837d-dbf0b9bd4a15" >
-		<http:listener-connection host="0.0.0.0" port="${http.port}" readTimeout="300000"/>
+	<http:listener-config name="HTTPS_Listener_config" doc:name="HTTP Listener config" doc:id="ace7b2a2-b185-4e53-837d-dbf0b9bd4a15" >
+		<http:listener-connection host="0.0.0.0" port="${http.port}" readTimeout="300000" protocol="HTTPS"/>
 	</http:listener-config>
 	<configuration doc:name="Configuration" doc:id="f6548d94-c860-4f92-968e-5fe7406e465c" defaultErrorHandler-ref="globalError_Handler" />
 	<configuration-properties doc:name="Configuration properties" doc:id="aa6e2df2-899f-4ca5-8900-94bd68abaa88" file="${env}.yaml" />
