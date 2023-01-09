@@ -51,7 +51,7 @@ WHERE CustomerID = 'VICTE']]></db:sql>
 			<db:parameter-types />
 		</db:select> [STUDIO] -->
 <!-- [STUDIO:"Set Payload"]		<set-payload value='#[output application/json&#10;&#45;&#45;-&#10;{&#10;    "shipperID": 2,&#10;    "categoryName": "Condiments",&#10;    "postalCode": "44087",&#10;    "shippingDate": "2023-01-06" as Date { format: "yyyy-MM-dd"}&#10;}]' doc:name="Set Payload" doc:id="454a13e7-9670-412d-83f8-6850b73e76c2" /> [STUDIO] -->
-		<ee:transform doc:name="Transform Message" doc:id="40d75de8-f088-4770-a0dc-384f84091405" >
+		<ee:transform doc:name="calculating daysBetween &amp; saving into vars.daysBetween" doc:id="40d75de8-f088-4770-a0dc-384f84091405" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[output application/json
 ---
@@ -74,7 +74,7 @@ var timeBetween = Periods::between(shipDate, formattedApprDate)
 		</ee:transform>
 		<choice doc:name="Choice" doc:id="1ca5b7dd-0de1-4884-8dfe-df2adf56f9d7" >
 			<when expression="#[vars.daysBetween.days &lt;= 15]">
-				<ee:transform doc:name="Transform Message" doc:id="e3c45dd6-48b7-4d4e-b538-9dc3ba09a151" >
+				<ee:transform doc:name="happy path: payload with shipping details" doc:id="e3c45dd6-48b7-4d4e-b538-9dc3ba09a151" >
 					<ee:message >
 						<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
@@ -86,7 +86,7 @@ output application/json
 
 			</when>
 			<otherwise >
-				<ee:transform doc:name="Transform Message" doc:id="bfdd4715-7e71-4fa6-9dda-286679e6f2a2" >
+				<ee:transform doc:name="shipping not available in 15 days" doc:id="bfdd4715-7e71-4fa6-9dda-286679e6f2a2" >
 					<ee:message >
 						<ee:set-payload ><![CDATA[%dw 2.0
 output application/json

@@ -142,4 +142,20 @@ payload ++
 		</http:request>
 		<logger level="INFO" doc:name="Logger" doc:id="49187be2-8046-4ea7-815d-9ae28a55c3af" />
 	</flow>
+	<flow name="impl-orders-pro-accepted-inquiries-by-customerID-GET" doc:id="9debe0e0-66b0-42d0-97d8-da8061df4211" >
+		<logger level="INFO" doc:name="Starting get accepted inquiries by customerID" doc:id="68a67c3f-9b4b-4e3c-bd3c-f28755930122" />
+		<http:request method="GET" doc:name="call sys-api-offers" doc:id="f84f30ad-16db-413b-89db-481639f576ed" config-ref="HTTP_Request_offer_sapi" path="/api/offers/{customerID}">
+			<http:uri-params ><![CDATA[#[output application/java
+---
+{
+	customerID : attributes.uriParams.'customerID'
+}]]]></http:uri-params>
+			<http:query-params ><![CDATA[#[output application/java
+---
+{
+	status : attributes.queryParams.'status'
+}]]]></http:query-params>
+		</http:request>
+		<logger level="INFO" doc:name="Ending get accepted inquiries by customerID" doc:id="a000010f-944b-4b9c-85bf-5d9870ba4d89" />
+	</flow>
 </mule>

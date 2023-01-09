@@ -5,6 +5,7 @@ types:
   Customer: !include data-types/customer-data-type.raml
   Offer: !include data-types/offer-data-type.raml
   Inquiry: !include data-types/inquiry-data-type.raml
+  Order: !include data-types/order-data-type.raml
   
 /customers:
   get:
@@ -96,3 +97,15 @@ types:
               application/json:
                 example:
                   message: "Updated offer succesfully."
+
+/orders:
+  /{customerID}:
+    description: Get list of orders by customerID
+    get:
+      responses:
+        200:
+          body:
+            application/json:
+              type: Order[]
+              examples:
+                output: !include examples/orders-example.raml

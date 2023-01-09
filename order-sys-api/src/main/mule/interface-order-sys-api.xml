@@ -190,4 +190,39 @@ output application/json
             </ee:message>
         </ee:transform> [STUDIO] -->
     </flow>
+    <flow name="get:\orders\(customerID):order-sys-api-config">
+        <flow-ref doc:name="Flow Reference" doc:id="5bb96b8a-b84a-4742-8429-15dc5121958d" name="get-orders-for-customer-by-customerID-flow"/>
+<!-- [STUDIO:"Transform Message"]		<ee:transform>
+            <ee:variables>
+                <ee:set-variable variableName="customerID">attributes.uriParams.'customerID'</ee:set-variable>
+            </ee:variables>
+        </ee:transform> [STUDIO] -->
+<!-- [STUDIO:"Transform Message"]        <ee:transform>
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+&#45;&#45;-
+[
+  {
+    orderID: 34567,
+    offerID: 12345,
+    employeeID: 45454,
+    shipVia: 54656,
+    customerID: "ALFKI",
+    dateApproved: "2016-02-28",
+    shippedDate: "2016-02-28"
+  }, 
+  {
+    orderID: 75874,
+    offerID: 63245,
+    employeeID: 68584,
+    shipVia: 76889,
+    customerID: "FLGKH",
+    dateApproved: "2022-12-21",
+    shippedDate: "2023-01-23"
+  }
+]]]></ee:set-payload>
+            </ee:message>
+        </ee:transform> [STUDIO] -->
+    </flow>
 </mule>

@@ -159,54 +159,13 @@ output application/json
         </ee:transform> [STUDIO] -->
     </flow>
     <flow name="get:\inquiries\(customerID):customer-exp-api-config">
-        <ee:transform>
-            <ee:variables>
-                <ee:set-variable variableName="customerID">attributes.uriParams.'customerID'</ee:set-variable>
-            </ee:variables>
-        </ee:transform>
-        <ee:transform>
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-[
-  {
-    offerID: 56678,
-    Status: "Pending",
-    dateCreated: 1671494400000,
-    employeeID: 595959,
-    customerID: "SALIS",
-    productID: 595957,
-    quantity: 1,
-    orderID: 565656,
-    totalPrice: 1000,
-    priceDiscount: 30,
-    paymentTransactionID: 989898
-  }, 
-  {
-    offerID: 56678,
-    Status: "Pending",
-    dateCreated: 1671494400000,
-    employeeID: 595959,
-    customerID: "SALIS",
-    productID: 595957,
-    quantity: 1,
-    orderID: 565656,
-    totalPrice: 1000,
-    priceDiscount: 30,
-    paymentTransactionID: 989898
-  }
-]]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
-    </flow>
-    <flow name="get:\proposedoffers\(customerID):customer-exp-api-config">
-<!-- [STUDIO:"Transform Message"]        <ee:transform>
+        <flow-ref doc:name="Flow Reference" doc:id="e0e280d0-76e4-46f6-afd8-267c5550b0ea" name="get-accepted-inquiries-by-customerID" />
+        <!-- [STUDIO:"Transform Message"]		<ee:transform>
             <ee:variables>
                 <ee:set-variable variableName="customerID">attributes.uriParams.'customerID'</ee:set-variable>
             </ee:variables>
         </ee:transform> [STUDIO] -->
-<!-- [STUDIO:"Transform Message"]        <ee:transform>
+        <!-- [STUDIO:"Transform Message"]        <ee:transform>
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -241,16 +200,58 @@ output application/json
 ]]]></ee:set-payload>
             </ee:message>
         </ee:transform> [STUDIO] -->
-		<flow-ref doc:name="Flow Reference" doc:id="fd3394fe-9d75-43af-a2b9-c3968b918414" name="get-proposed-offers-by-customer-ID"/>
     </flow>
-    <flow name="get:\customers\(customerID):customer-exp-api-config">
-        <flow-ref doc:name="Flow Reference" doc:id="6a9a3710-b356-4397-a885-773ca24ebf86" name="get-customers-byID-flow"/>
-<!-- [STUDIO:"Transform Message"]		<ee:transform>
+    <flow name="get:\proposedoffers\(customerID):customer-exp-api-config">
+        <!-- [STUDIO:"Transform Message"]        <ee:transform>
             <ee:variables>
                 <ee:set-variable variableName="customerID">attributes.uriParams.'customerID'</ee:set-variable>
             </ee:variables>
         </ee:transform> [STUDIO] -->
-<!-- [STUDIO:"Transform Message"]        <ee:transform>
+        <!-- [STUDIO:"Transform Message"]        <ee:transform>
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+&#45;&#45;-
+[
+  {
+    offerID: 56678,
+    Status: "Pending",
+    dateCreated: 1671494400000,
+    employeeID: 595959,
+    customerID: "SALIS",
+    productID: 595957,
+    quantity: 1,
+    orderID: 565656,
+    totalPrice: 1000,
+    priceDiscount: 30,
+    paymentTransactionID: 989898
+  }, 
+  {
+    offerID: 56678,
+    Status: "Pending",
+    dateCreated: 1671494400000,
+    employeeID: 595959,
+    customerID: "SALIS",
+    productID: 595957,
+    quantity: 1,
+    orderID: 565656,
+    totalPrice: 1000,
+    priceDiscount: 30,
+    paymentTransactionID: 989898
+  }
+]]]></ee:set-payload>
+            </ee:message>
+        </ee:transform> [STUDIO] -->
+        <flow-ref doc:name="Flow Reference" doc:id="fd3394fe-9d75-43af-a2b9-c3968b918414" name="get-proposed-offers-by-customer-ID" />
+    </flow>
+    <flow name="get:\customers\(customerID):customer-exp-api-config">
+        <flow-ref doc:name="Flow Reference" doc:id="6a9a3710-b356-4397-a885-773ca24ebf86" name="get-customers-byID-flow" />
+        <!-- [STUDIO:"Transform Message"]		<ee:transform>
+            <ee:variables>
+                <ee:set-variable variableName="customerID">attributes.uriParams.'customerID'</ee:set-variable>
+            </ee:variables>
+        </ee:transform> [STUDIO] -->
+        <!-- [STUDIO:"Transform Message"]        <ee:transform>
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -269,13 +270,13 @@ output application/json
         </ee:transform> [STUDIO] -->
     </flow>
     <flow name="patch:\proposedoffers\(customerID)\(offerID):application\json:customer-exp-api-config">
-<!-- [STUDIO:"Transform Message"]        <ee:transform>
+        <!-- [STUDIO:"Transform Message"]        <ee:transform>
             <ee:variables>
                 <ee:set-variable variableName="customerID">attributes.uriParams.'customerID'</ee:set-variable>
                 <ee:set-variable variableName="offerID">attributes.uriParams.'offerID'</ee:set-variable>
             </ee:variables>
         </ee:transform> [STUDIO] -->
-<!-- [STUDIO:"Transform Message"]        <ee:transform>
+        <!-- [STUDIO:"Transform Message"]        <ee:transform>
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -285,11 +286,11 @@ output application/json
 }]]></ee:set-payload>
             </ee:message>
         </ee:transform> [STUDIO] -->
-		<flow-ref doc:name="Flow Reference" doc:id="d62f6687-89c0-4471-a964-e8e866389205" name="patch-proposed-offers-by-customerID-by-offerID"/>
+        <flow-ref doc:name="Flow Reference" doc:id="d62f6687-89c0-4471-a964-e8e866389205" name="patch-proposed-offers-by-customerID-by-offerID" />
     </flow>
     <flow name="post:\customers:application\json:customer-exp-api-config">
         <flow-ref doc:name="post-customers-eapi-flow" doc:id="72638e8a-a281-4bc9-88f3-d5e2a9af820e" name="post-customers-eapi-flow" />
-<!-- [STUDIO:"Transform Message"]		<ee:transform>
+        <!-- [STUDIO:"Transform Message"]		<ee:transform>
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -301,8 +302,8 @@ output application/json
         </ee:transform> [STUDIO] -->
     </flow>
     <flow name="post:\inquiries:application\json:customer-exp-api-config">
-        <flow-ref doc:name="Flow Reference" doc:id="6d718062-3a77-49a1-86a8-72ca9f49595e" name="post-inquiries-flow"/>
-<!-- [STUDIO:"Transform Message"]		<ee:transform>
+        <flow-ref doc:name="Flow Reference" doc:id="6d718062-3a77-49a1-86a8-72ca9f49595e" name="post-inquiries-flow" />
+        <!-- [STUDIO:"Transform Message"]		<ee:transform>
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -310,6 +311,41 @@ output application/json
 {
   message: "Thank you for your inquiry. We will get back to you shortly"
 }]]></ee:set-payload>
+            </ee:message>
+        </ee:transform> [STUDIO] -->
+    </flow>
+    <flow name="get:\orders\(customerID):customer-exp-api-config">
+        <flow-ref doc:name="Flow Reference" doc:id="91dac043-5f9e-44a3-a5cb-8fc254fcd6b4" name="get-orders-for-customer-by-customerID"/>
+<!-- [STUDIO:"Transform Message"]		<ee:transform>
+            <ee:variables>
+                <ee:set-variable variableName="customerID">attributes.uriParams.'customerID'</ee:set-variable>
+            </ee:variables>
+        </ee:transform> [STUDIO] -->
+<!-- [STUDIO:"Transform Message"]        <ee:transform>
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+&#45;&#45;-
+[
+  {
+    orderID: 34567,
+    offerID: 12345,
+    employeeID: 45454,
+    shipVia: 54656,
+    customerID: "ALFKI",
+    acceptedDate: "2016-02-28",
+    shippedDate: "2016-02-28"
+  }, 
+  {
+    orderID: 75874,
+    offerID: 63245,
+    employeeID: 68584,
+    shipVia: 76889,
+    customerID: "FLGKH",
+    acceptedDate: "2022-12-21",
+    shippedDate: "2023-01-23"
+  }
+]]]></ee:set-payload>
             </ee:message>
         </ee:transform> [STUDIO] -->
     </flow>
