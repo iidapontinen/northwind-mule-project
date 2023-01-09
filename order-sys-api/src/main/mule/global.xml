@@ -110,23 +110,20 @@ output application/json
                 </ee:transform>
             </on-error-propagate>
 		<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="38cd3288-8d9a-4627-9cd8-7a83186c550d" type="DB:BAD_SQL_SYNTAX">
+			<set-variable value="400" doc:name="httpStatus" doc:id="93712f8d-ca3e-4888-bb7c-b50cf5e9564d" variableName="httpStatus"/>
 			<ee:transform doc:name="error in SQL query" doc:id="061f9f85-8fe9-4621-81f8-69cd042430f8">
 				<ee:message>
 					<ee:set-payload><![CDATA[%dw 2.0
 output application/json
 ---
 {
-"error":{ 
-"type": error.errorType,
 "message": "There is an error in SQL query in system API",
 "status": vars.httpStatus,
 "description": error.description
 }
-}
 ]]></ee:set-payload>
 				</ee:message>
 				<ee:variables >
-					<ee:set-variable variableName="httpStatus" ><![CDATA[400]]></ee:set-variable>
 				</ee:variables>
 			</ee:transform>
 		</on-error-continue>
@@ -138,42 +135,41 @@ output application/json
 output application/json
 ---
 {
-"error":{ 
-"type": error.errorType,
-"message": "Failed to connect to Database in system level",
-"statusCode": vars.httpStatus,
+"message": "Failed to connect to Database",
+"status": vars.httpStatus,
 "description": error.description
-}
-}
-
-]]></ee:set-payload>
+}]]></ee:set-payload>
 				</ee:message>
 				<ee:variables >
-					<ee:set-variable variableName="httpStatus" ><![CDATA[%dw 2.0
-output application/java
----
-400]]></ee:set-variable>
 				</ee:variables>
 			</ee:transform>
 		</on-error-continue>
 				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="05580de0-9f41-4541-9cf0-fbdc4f64bc83" type="DB:QUERY_EXECUTION">
+			<set-variable value="400" doc:name="httpStatus" doc:id="4a61428e-8c25-44f6-a46d-1745558f4151" variableName="httpStatus"/>
 			<ee:transform doc:name="Transform Message" doc:id="30c4dcf2-f913-4aed-b6bf-0ed18a8f334b" >
 				<ee:message >
 					<ee:set-payload ><![CDATA[%dw 2.0
-output application/java
+output application/json
 ---
 {
+"message": "Can not add order to DB",
+"status": vars.httpStatus,
+"description": error.description
 }]]></ee:set-payload>
 				</ee:message>
 			</ee:transform>
 		</on-error-continue>
 		<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="88e6c101-0c1f-4a96-99a4-5619f22f94fa" type="DB:INVALID_CREDENTIALS">
+			<set-variable value="400" doc:name="httpStatus" doc:id="6e7c3b76-ee65-4cfd-828d-4f2f257138d3" variableName="httpStatus"/>
 			<ee:transform doc:name="Transform Message" doc:id="98690d6b-a18b-4f29-a5a3-ebf02afd2a3b" >
 				<ee:message >
 					<ee:set-payload ><![CDATA[%dw 2.0
-output application/java
+output application/json
 ---
 {
+"message": "Failed to connect to Database",
+"status": vars.httpStatus,
+"description": error.description
 }]]></ee:set-payload>
 				</ee:message>
 			</ee:transform>
@@ -186,13 +182,12 @@ output application/java
 output application/json
 ---
 {
-"error":{ 
-"type": error.errorType,
-"message": "Connection failure",
+"message": "Failed to connect in System api",
 "status": vars.httpStatus,
 "description": error.description
 }
-}
+
+
 ]]></ee:set-payload>
 				</ee:message>
 			</ee:transform>
@@ -205,14 +200,10 @@ output application/json
 output application/json
 ---
 {
-"error":{ 
-"type": error.errorType,
-"message": "Failed to connect to Database in system level",
+"message": "Failed to connect to Database",
 "status": vars.httpStatus,
 "description": error.description
-}
-}
-]]></ee:set-payload>
+}]]></ee:set-payload>
 				</ee:message>
 			</ee:transform>
 		</on-error-continue>
@@ -224,11 +215,9 @@ output application/json
 output application/json
 ---
 {
-"error":{ 
-"type": error.errorType,
+"message": "Error occured in System API",
 "status": vars.httpStatus,
 "description": error.description
-}
 }]]></ee:set-payload>
 				</ee:message>
 			</ee:transform>
