@@ -21,6 +21,11 @@ types:
 
 /inquiries:
   /{customerID}:
+    uriParameters:
+      customerID:
+        type: string
+        maxLength: 5
+        minLength: 2
     get:
       description: "Get a list of customers' own accepted offers"
       queryParameters:
@@ -51,6 +56,11 @@ types:
 
 /proposedoffers:
   /{customerID}:
+    uriParameters:
+      customerID:
+        type: string
+        maxLength: 5
+        minLength: 2
     get: 
       description: get a list of proposed offers to be able to accept an offer later down the line.
       queryParameters:
@@ -65,6 +75,9 @@ types:
               examples:
                 output: !include examples/offer-examples.raml
     /{offerID}:
+      uriParameters:
+        offerID:
+          type: number
       patch:
         description: Modify the state of the proposed offer (Accepted/Rejected)
         body:
@@ -142,6 +155,11 @@ types:
             examples: !include examples/customers-example.raml
         
   /{customerID}:
+    uriParameters:
+      customerID:
+        type: string
+        maxLength: 5
+        minLength: 2
     get:
       description: Get information about a specific customer by ID
       responses:
@@ -179,6 +197,11 @@ types:
               output: !include examples/orders-example.raml
   
   /{orderID}:
+    uriParameters:
+      orderID:
+        type: string
+        maxLength: 5
+        minLength: 2
     description: Get a specific order by orderID
     get:
       responses:
@@ -190,6 +213,11 @@ types:
                 output: !include examples/order-example.raml
 
   /{customerID}:
+    uriParameters:
+      customerID:
+        type: string
+        maxLength: 5
+        minLength: 2
     description: Get list of orders by customerID
     get:
       responses:
