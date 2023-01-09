@@ -31,6 +31,17 @@ payload map ( payload01 , indexOfPayload01 ) -> {
 			</ee:message>
 		</ee:transform>
 		<logger level="INFO" doc:name="Exiting get-orders-flow" doc:id="5298d38b-ac39-4ddf-bb11-521c0c5d478f"/>
+		<error-handler >
+			<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="912d07ed-f54e-4e1f-967c-68c7d2d5c7ad" type="DB:BAD_SQL_SYNTAX">
+<!-- [STUDIO:"Set Payload"]				<set-payload value='#["There is an error in SQL query."]' doc:name="Set Payload" doc:id="8ca3b7d9-5bc2-43ce-ae7c-4d75e2194647" /> [STUDIO] -->
+			</on-error-continue>
+<!-- [STUDIO:"On Error Continue"]			<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="97b0039d-40ae-4460-bee8-53b7aaf5de89" type="DB:CONNECTIVITY">
+				<set-payload value='#["Can not connect to database"]' doc:name="Set Payload" doc:id="52201184-54ee-4530-a4d2-369414ef039b" />
+			</on-error-continue> [STUDIO] -->
+<!-- [STUDIO:"On Error Propagate"]			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="db2fb02e-d58f-42d9-92ab-7ffb73903c91" type="ANY">
+				<set-payload value="#[error.errorType as String ++ error.description as String]" doc:name="Set Payload" doc:id="54bdad9e-f68b-4f01-a9c1-215626567f20" />
+			</on-error-propagate> [STUDIO] -->
+		</error-handler>
 	</flow>
 	<flow name="get-order-by-ID-flow" doc:id="d7a6f37e-1e46-465d-92e0-5fbf288e8879" >
 		<logger level="INFO" doc:name="Entering get-order-by-ID-flow" doc:id="0e8175b5-c059-4241-bc82-2a174004710a" />
