@@ -72,7 +72,7 @@ output application/json
 		<logger level="INFO" doc:name="Logger" doc:id="d2d2fad4-73f5-49b3-97dc-7bdd9e457313" />
 	</flow>
 	<flow name="get-orders-for-customer-by-customerID" doc:id="35f40e5b-a423-4190-8f8a-b68dd7224882" >
-		<logger level="INFO" doc:name="" doc:id="a93e3c39-3842-4041-a4a6-bc8eebfd89ab" />
+		<logger level="INFO" doc:name="Starting get-orders-for-customer-flow" doc:id="a93e3c39-3842-4041-a4a6-bc8eebfd89ab" />
 		<http:request method="GET" doc:name="call pro-api/orders" doc:id="2254f3ab-130f-4d16-90d1-39f7db41098a" config-ref="HTTP_Request_configuration_order_papi" path="/api/orders/{customerID}">
 			<http:uri-params ><![CDATA[#[output application/java
 ---
@@ -80,6 +80,6 @@ output application/json
 	customerID : attributes.uriParams.'customerID'
 }]]]></http:uri-params>
 		</http:request>
-		<logger level="INFO" doc:name="Logger" doc:id="8eef1821-72ed-4b11-8f4e-7e5a56f24342" />
+		<logger level="INFO" doc:name="Ending get-orders-for-customer-flow" doc:id="8eef1821-72ed-4b11-8f4e-7e5a56f24342" />
 	</flow>
 </mule>
