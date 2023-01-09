@@ -6,6 +6,19 @@ types:
   Offer: !include data-types/offer-data-type.raml
   Inquiry: !include data-types/inquiry-data-type.raml
   Order: !include data-types/order-data-type.raml
+
+traits:
+  client-id-required:
+    headers:
+      client_id:
+        type: string
+      client_secret:
+        type: string
+    responses:
+      401:
+        description: Unauthorized or invalid client application credentials
+      500:
+        description: Bad response from authorization server, or WSDL SOAP Fault error
   
 /customers:
   get:
@@ -18,6 +31,11 @@ types:
             examples:
               output: !include examples/customers-example.raml
   /{customerID}:
+    uriParameters:
+      customerID:
+        type: string
+        maxLength: 5
+        minLength: 2
     get:
       description: Retrieve customer by ID
       responses:
@@ -55,21 +73,31 @@ types:
             example:
               message: "Thank you for your inquiry. We will get back to you shortly"
   /{customerID}:
-      get:
-        description: get a list of customers' own accepted offers
-        queryParameters:
-          status:
-            enum:
-              - Accepted
-        responses:
-          200:
-            body:
-              application/json:
-                type: Offer[]
-                examples:
-                  output: !include examples/offers-example.raml 
+    uriParameters:
+      customerID:
+        type: string
+        maxLength: 5
+        minLength: 2
+    get:
+      description: get a list of customers' own accepted offers
+      queryParameters:
+        status:
+          enum:
+            - Accepted
+      responses:
+        200:
+          body:
+            application/json:
+              type: Offer[]
+              examples:
+                output: !include examples/offers-example.raml 
 /proposedoffers:
   /{customerID}:
+    uriParameters:
+      customerID:
+        type: string
+        maxLength: 5
+        minLength: 2
     get: 
       description: get a list of proposed offers to be able to accept an offer later down the line.
       queryParameters:
@@ -84,6 +112,9 @@ types:
               examples:
                 output: !include examples/offers-example.raml        
     /{offerID}:
+      uriParameters:
+        offerID:
+          type: integer
       patch:
         description: partially update customers' offer. 
         body:
@@ -100,6 +131,11 @@ types:
 
 /orders:
   /{customerID}:
+    uriParameters:
+      customerID:
+        type: string
+        maxLength: 5
+        minLength: 2
     description: Get list of orders by customerID
     get:
       responses:
