@@ -26,7 +26,7 @@ output application/json
 	</flow>
 	<flow name="get-accepted-inquiries-by-customerID" doc:id="04bacf4c-4419-4f1a-ba2e-b14af414ad6d" >
 		<logger level="INFO" doc:name="Starting accepted inquiries by customerID" doc:id="25d5f69a-4236-4727-9225-c0959aa3cd4d" />
-		<http:request method="GET" doc:name="call pro-api/offers" doc:id="20d0551d-72f8-4d6c-a377-7c1dcd8b8487" config-ref="HTTP_Request_configuration_order_papi" path="/api/inquiries/{customerID}">
+		<http:request method="GET" doc:name="call pro-api/offers" doc:id="20d0551d-72f8-4d6c-a377-7c1dcd8b8487" config-ref="HTTP_Request_configuration_order_papi" path="/api/inquiries/{customerID}" responseTimeout="300000">
 			<http:uri-params ><![CDATA[#[output application/java
 ---
 {
@@ -73,7 +73,7 @@ output application/json
 	</flow>
 	<flow name="get-orders-for-customer-by-customerID" doc:id="35f40e5b-a423-4190-8f8a-b68dd7224882" >
 		<logger level="INFO" doc:name="Starting get-orders-for-customer-flow" doc:id="a93e3c39-3842-4041-a4a6-bc8eebfd89ab" />
-		<http:request method="GET" doc:name="call pro-api/orders" doc:id="2254f3ab-130f-4d16-90d1-39f7db41098a" config-ref="HTTP_Request_configuration_order_papi" path="/api/orders/{customerID}">
+		<http:request method="GET" doc:name="call pro-api/orders" doc:id="2254f3ab-130f-4d16-90d1-39f7db41098a" config-ref="HTTP_Request_configuration_order_papi" path="/api/orders/{customerID}" responseTimeout="300000">
 			<http:uri-params ><![CDATA[#[output application/java
 ---
 {

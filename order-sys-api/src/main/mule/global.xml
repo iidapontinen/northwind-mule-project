@@ -127,7 +127,7 @@ output application/json
 				</ee:variables>
 			</ee:transform>
 		</on-error-continue>
-		<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="7f016087-ab06-4352-b20f-f328f13b956e" type="DB:CONNECTIVITY">
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="7f016087-ab06-4352-b20f-f328f13b956e" type="DB:CONNECTIVITY">
 			<set-variable value="500" doc:name="httpStatus" doc:id="95269add-1a9f-420b-a26e-e18cdf7fc999" variableName="httpStatus"/>
 			<ee:transform doc:name="Failed to connect to Database" doc:id="b7299d38-d3b6-4a57-8c24-4fbe6ecb529c" >
 				<ee:message >
@@ -143,7 +143,7 @@ output application/json
 				<ee:variables >
 				</ee:variables>
 			</ee:transform>
-		</on-error-continue>
+		</on-error-propagate>
 				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="05580de0-9f41-4541-9cf0-fbdc4f64bc83" type="DB:QUERY_EXECUTION">
 			<set-variable value="400" doc:name="httpStatus" doc:id="4a61428e-8c25-44f6-a46d-1745558f4151" variableName="httpStatus"/>
 			<ee:transform doc:name="Transform Message" doc:id="30c4dcf2-f913-4aed-b6bf-0ed18a8f334b" >
@@ -152,29 +152,14 @@ output application/json
 output application/json
 ---
 {
-"message": "Can not add order to DB",
+"message": "Can not add details to DB",
 "status": vars.httpStatus,
 "description": error.description
 }]]></ee:set-payload>
 				</ee:message>
 			</ee:transform>
 		</on-error-continue>
-		<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="88e6c101-0c1f-4a96-99a4-5619f22f94fa" type="DB:INVALID_CREDENTIALS">
-			<set-variable value="400" doc:name="httpStatus" doc:id="6e7c3b76-ee65-4cfd-828d-4f2f257138d3" variableName="httpStatus"/>
-			<ee:transform doc:name="Transform Message" doc:id="98690d6b-a18b-4f29-a5a3-ebf02afd2a3b" >
-				<ee:message >
-					<ee:set-payload ><![CDATA[%dw 2.0
-output application/json
----
-{
-"message": "Failed to connect to Database",
-"status": vars.httpStatus,
-"description": error.description
-}]]></ee:set-payload>
-				</ee:message>
-			</ee:transform>
-		</on-error-continue>
-		<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="6e55f3b6-931a-4581-9a1f-dfeabc1ceea6" type="HTTP:CONNECTIVITY">
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="6e55f3b6-931a-4581-9a1f-dfeabc1ceea6" type="HTTP:CONNECTIVITY">
 			<set-variable value="400" doc:name="httpStatus" doc:id="640c50cf-9914-4950-939b-58bcc08e739d" variableName="httpStatus"/>
 			<ee:transform doc:name="Transform Message" doc:id="1e12201c-99d1-4196-87f2-e0445a5a4683" >
 				<ee:message >
@@ -182,7 +167,7 @@ output application/json
 output application/json
 ---
 {
-"message": "Failed to connect in System api",
+"message": "Connection failed in System api",
 "status": vars.httpStatus,
 "description": error.description
 }
@@ -191,7 +176,7 @@ output application/json
 ]]></ee:set-payload>
 				</ee:message>
 			</ee:transform>
-		</on-error-continue>
+		</on-error-propagate>
 		<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="b36d5ebd-bbc9-4968-8cd2-92e4e2c0802b" type="HTTP:BAD_REQUEST">
 			<set-variable value="400" doc:name="httpStatus" doc:id="b244d6c0-a97a-4a80-ab1b-04d8b002ed34" variableName="httpStatus"/>
 			<ee:transform doc:name="Transform Message" doc:id="c329c390-fb44-44ab-beb4-43f4bd3ffdf7" >
@@ -200,7 +185,7 @@ output application/json
 output application/json
 ---
 {
-"message": "Failed to connect to Database",
+"message": "Pitaa miettia",
 "status": vars.httpStatus,
 "description": error.description
 }]]></ee:set-payload>

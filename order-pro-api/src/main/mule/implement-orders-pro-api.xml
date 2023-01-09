@@ -8,12 +8,12 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
 	<flow name="get-orders-flow" doc:id="bfd010a5-e13e-4a2a-92b0-84df8a860439" >
 		<logger level="INFO" doc:name="Entering get-orders-flow" doc:id="0d735649-8f08-4841-9807-d14849c8df9e" />
-		<http:request method="GET" doc:name="GET orders-sapi-flow" doc:id="a6a0b71d-3dab-4fa1-bb93-345285413c4d" config-ref="order_sapi_HTTP_Request_configuration" path="/api/orders"/>
+		<http:request method="GET" doc:name="GET orders-sapi-flow" doc:id="a6a0b71d-3dab-4fa1-bb93-345285413c4d" config-ref="order_sapi_HTTP_Request_configuration" path="/api/orders" responseTimeout="300000"/>
 		<logger level="INFO" doc:name="Exiting get-orders-flow" doc:id="fe5731c5-54e3-459f-9152-e8ca34ac1b69"/>
 	</flow>
 	<flow name="get-orders-by-ID-flow" doc:id="f0fabec2-11cc-44ef-9b86-45383794e76f" >
 		<logger level="INFO" doc:name="Entering get-orders-by-ID-flow" doc:id="fb0bfd0b-3861-4092-b0ec-033d53b82c5d" />
-		<http:request method="GET" doc:name="GET /id orders-sapi-flow" doc:id="a5c02bb0-b66d-40bc-9c9f-c633543e1367" config-ref="order_sapi_HTTP_Request_configuration" path="/api/orders/{orderID}">
+		<http:request method="GET" doc:name="GET /id orders-sapi-flow" doc:id="a5c02bb0-b66d-40bc-9c9f-c633543e1367" config-ref="order_sapi_HTTP_Request_configuration" path="/api/orders/{orderID}" responseTimeout="300000">
 			<http:uri-params ><![CDATA[#[output application/java
 ---
 {
@@ -24,12 +24,12 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 	</flow>
 	<flow name="post-orders-flow" doc:id="5c862079-5288-4e27-adef-8fe8bdf10916" >
 		<logger level="INFO" doc:name="Entering post-orders-flow" doc:id="c47951c1-61e0-43cf-8132-76e482b97370" />
-		<http:request method="POST" doc:name="POST orders-sapi-flow" doc:id="adb83aab-8a2d-4e75-b67c-f0925fd82b9e" config-ref="order_sapi_HTTP_Request_configuration" path="/api/orders"/>
+		<http:request method="POST" doc:name="POST orders-sapi-flow" doc:id="adb83aab-8a2d-4e75-b67c-f0925fd82b9e" config-ref="order_sapi_HTTP_Request_configuration" path="/api/orders" responseTimeout="300000"/>
 		<logger level="INFO" doc:name="Exiting post-orders-flow" doc:id="be9d5f8e-0a3b-4a75-a5c3-9a5d3d5399db" />
 	</flow>
 	<flow name="get-orders-for-customer-by-customerID-flow" doc:id="e67e19fd-a634-44ba-bc34-efe1bdb5d138" >
 		<logger level="INFO" doc:name="Entering get-orders-for-customer" doc:id="8826cfc3-d646-4748-8d36-d13b3197ac9d" />
-		<http:request method="GET" doc:name="GET /customerID orders-sapi-flow" doc:id="f1fbf396-869e-495d-9508-18e3c75481da" config-ref="order_sapi_HTTP_Request_configuration" path="/api/orders/{customerID}">
+		<http:request method="GET" doc:name="GET /customerID orders-sapi-flow" doc:id="f1fbf396-869e-495d-9508-18e3c75481da" config-ref="order_sapi_HTTP_Request_configuration" path="/api/orders/{customerID}" responseTimeout="300000">
 			<http:uri-params ><![CDATA[#[output application/java
 ---
 {

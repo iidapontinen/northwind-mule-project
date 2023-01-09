@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:db="http://www.mulesoft.org/schema/mule/db"
-	xmlns="http://www.mulesoft.org/schema/mule/core"
-	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+<mule xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
-http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
 	<http:listener-config name="HTTP_Listener_config1" doc:name="HTTP Listener config" doc:id="8f5337f5-165b-41d5-97cc-a64b74105a5c" >
 		<http:listener-connection host="0.0.0.0" port="${http.port}" readTimeout="300000"/>
 	</http:listener-config>
@@ -13,4 +16,194 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 	</db:config>
 	<configuration-properties doc:name="Configuration properties" doc:id="77e0e68f-adaf-4714-8458-e1729738b75f" file="${env}.yaml" />
 	<global-property doc:name="Global Property" doc:id="ca4ee8f4-63ef-4217-bb1d-b4a61a4065cc" name="env" value="dev" />
+	<configuration doc:name="Configuration" doc:id="a28841fa-be31-4ecf-920e-ea0f46029c85" defaultErrorHandler-ref="GLOBALERRORHANDLER" />
+	<error-handler name="GLOBALERRORHANDLER" doc:id="d1d67897-d13e-4201-b809-c386ce0f0348" >
+            <on-error-propagate type="APIKIT:BAD_REQUEST">
+                <ee:transform>
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Bad request"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus">400</ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+            <on-error-propagate type="APIKIT:NOT_FOUND">
+                <ee:transform>
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Resource not found"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus">404</ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+            <on-error-propagate type="APIKIT:METHOD_NOT_ALLOWED">
+                <ee:transform>
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Method not allowed"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus">405</ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+            <on-error-propagate type="APIKIT:NOT_ACCEPTABLE">
+                <ee:transform>
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Not acceptable"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus">406</ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+            <on-error-propagate type="APIKIT:UNSUPPORTED_MEDIA_TYPE">
+                <ee:transform>
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Unsupported media type"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus">415</ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+            <on-error-propagate type="APIKIT:NOT_IMPLEMENTED">
+                <ee:transform>
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Not Implemented"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus">501</ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+            <on-error-propagate type="APIKIT:NOT_FOUND">
+                <ee:transform>
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Resource not found"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus">404</ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+		<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="f4374f0c-7efe-42f5-9781-1335ce18573f" type="DB:BAD_SQL_SYNTAX" >
+			<set-variable value="400" doc:name="httpStatus" doc:id="e6e8cbbd-129e-465c-9e0e-a149d49e6223" variableName="httpStatus" />
+			<ee:transform doc:name="error in SQL query" doc:id="3e85c9a4-d9e8-4964-a950-4f311c24057c" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+"message": "There is an error in SQL query in system API",
+"status": vars.httpStatus,
+"description": error.description
+}
+]]></ee:set-payload>
+				</ee:message>
+				<ee:variables />
+			</ee:transform>
+		</on-error-continue>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="39b3d6e6-df63-492a-ae31-7ca9dd9cfc93" type="DB:CONNECTIVITY" >
+			<set-variable value="500" doc:name="httpStatus" doc:id="35aeafc9-11eb-49a0-b137-e5a4d1dc352c" variableName="httpStatus" />
+			<ee:transform doc:name="Failed to connect to Database" doc:id="04a111f9-2101-4874-ae4d-adac15847758" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+"message": "Failed to connect to Database",
+"status": vars.httpStatus,
+"description": error.description
+}]]></ee:set-payload>
+				</ee:message>
+				<ee:variables />
+			</ee:transform>
+		</on-error-propagate>
+		<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="11d3b2d0-4ce8-4bc3-82eb-b475b788ebc3" type="DB:QUERY_EXECUTION" >
+			<set-variable value="400" doc:name="httpStatus" doc:id="34d99688-688d-45bf-bed4-645613a52630" variableName="httpStatus" />
+			<ee:transform doc:name="Transform Message" doc:id="440a3d6e-984d-4e89-9748-be53908655a5" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+"message": "Can not add details to DB",
+"status": vars.httpStatus,
+"description": error.description
+}]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+		</on-error-continue>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="89c1dbff-d2df-4299-9467-e0d69719760d" type="HTTP:CONNECTIVITY" >
+			<set-variable value="400" doc:name="httpStatus" doc:id="6472e283-c3d0-40da-b24b-75638fe0ba36" variableName="httpStatus" />
+			<ee:transform doc:name="Transform Message" doc:id="fcbca17b-2c01-40c7-bb5a-6a64d2543fe2" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+"message": "Connection failed in System api",
+"status": vars.httpStatus,
+"description": error.description
+}
+
+
+]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+		</on-error-propagate>
+		<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="505851da-97ae-49fc-b84b-0bd3755067d7" type="HTTP:BAD_REQUEST" >
+			<set-variable value="400" doc:name="httpStatus" doc:id="ccba34b6-99af-4a83-b90b-81b7f7c51061" variableName="httpStatus" />
+			<ee:transform doc:name="Transform Message" doc:id="b01c1a16-e228-4b11-97e1-0b41aaaed1d9" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+"message": "Pitaa miettia",
+"status": vars.httpStatus,
+"description": error.description
+}]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+		</on-error-continue>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="87f94e6d-8ece-4f5c-b9ec-b275f460a43b" type="ANY" >
+			<set-variable value="400" doc:name="httpStatus" doc:id="a374dddf-30ca-47d2-93c7-7e38ddad2634" variableName="httpStatus" />
+			<ee:transform doc:name="Transform Message" doc:id="3dce21a9-84ec-47d0-b952-fb9e1f20648d" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+"message": "Error occured in System API",
+"status": vars.httpStatus,
+"description": error.description
+}]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+		</on-error-propagate>
+	</error-handler>
 </mule>
