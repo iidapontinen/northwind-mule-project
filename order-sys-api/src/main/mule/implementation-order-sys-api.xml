@@ -35,7 +35,11 @@ payload map ( payload01 , indexOfPayload01 ) -> {
 	<flow name="get-order-by-ID-flow" doc:id="d7a6f37e-1e46-465d-92e0-5fbf288e8879" >
 		<logger level="INFO" doc:name="Entering get-order-by-ID-flow" doc:id="0e8175b5-c059-4241-bc82-2a174004710a" />
 		<db:select doc:name="order by ID from Northwind" doc:id="8fbfd2b6-6e2f-43e4-a0ba-b39c62636bb4" config-ref="Northwind_database_Config">
+<<<<<<< HEAD
 			<db:sql ><![CDATA[SELECT orders.OrderID, orders.CustomerID, orders.EmployeeID, orders.ShippedDate, 
+=======
+			<db:sql ><![CDATA[SELECT orders.OrderID, orders.CustomerID, orders.EmployeeID, orders.ShippedDate,
+>>>>>>> eb1cf04956d539c32280530b0b912d4434c5d42f
 orders.ShipVia, offers.OfferID, offers.DateApproved
 FROM orders, offers
 WHERE orders.OrderID = offers.OrderID AND orders.OrderID = :orderID]]></db:sql>
