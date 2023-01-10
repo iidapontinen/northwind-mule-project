@@ -9,54 +9,13 @@ http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/cu
 	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="41774b6a-d1c3-4d0e-9852-928d012bc09a" >
 		<http:listener-connection host="0.0.0.0" port="${http.port}" />
 	</http:listener-config>
-	<configuration doc:name="Configuration" doc:id="dc60ff15-1176-48b1-8d9e-ec28f5dba265" defaultErrorHandler-ref="GLOBAL-ERROR-HANDLER1" />
+	<configuration doc:name="Configuration" doc:id="dc60ff15-1176-48b1-8d9e-ec28f5dba265" defaultErrorHandler-ref="GLOBAL-ERROR-HANDLER" />
 	<db:config name="Database_Config" doc:name="Database Config" doc:id="632a6ee8-a194-411d-b91b-01b7b13244ee" >
 		<db:my-sql-connection host="${db.host}" port="${db.port}" user="${db.user}" password="${db.password}" database="${db.database}" />
 	</db:config>
 	<configuration-properties doc:name="Configuration properties" doc:id="cf76878b-bcfc-409b-b5b0-a09953c99835" file="${env}.yaml" />
 	<global-property doc:name="Global Property" doc:id="b3c33eb1-4915-429b-ae14-76f3a1674c16" name="env" value="dev" />
-<!-- [STUDIO:"GLOBAL-ERROR-HANDLER"]	<error-handler name="GLOBAL-ERROR-HANDLER" doc:id="1af72b89-af9b-404e-b71e-a488f39bfa8b" >
-			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="8ab80dee-5b96-4381-a607-96eb05faefc8" type="DB:CONNECTIVITY">
-				<ee:transform doc:name="Transform Message" doc:id="16878388-2095-4629-8d25-33f69bc8e7b8" >
-					<ee:message >
-						<ee:set-payload ><![CDATA[%dw 2.0
-output application/json
-&#45;&#45;-
-{
-	"message" : "Connectivity error. Try again later." ++ error.description as String
-}]]></ee:set-payload>
-					</ee:message>
-				</ee:transform>
-				<set-variable value='500' doc:name="httpStatus" doc:id="9fd43ecb-66fb-4a32-a137-0ed1262ac9f8" variableName="httpStatus" />
-			</on-error-propagate>
-		<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="6f1dccb1-d112-4ffa-9974-0dc1052667b2" type="DB:QUERY_EXECUTION">
-			<ee:transform doc:name="Transform Message" doc:id="32abc210-f967-4257-b68c-cfb4a70b5012" >
-				<ee:message >
-					<ee:set-payload ><![CDATA[%dw 2.0
-output application/json
-&#45;&#45;-
-{
-	"message": error.description
-}]]></ee:set-payload>
-				</ee:message>
-			</ee:transform>
-			<set-variable value="400" doc:name="Set Variable" doc:id="56e4edc2-c220-4218-895e-df06408e5521" variableName="httpStatus"/>
-		</on-error-continue>
-		<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="191077ac-6c18-4397-9c71-3c78f3d677c9" type="ANY">
-			<ee:transform doc:name="Data unavailable" doc:id="b13e6018-e7ff-4286-b8b1-7af733fe7516">
-				<ee:message>
-					<ee:set-payload><![CDATA[%dw 2.0
-output application/json
-&#45;&#45;-
-{
-	"message": error.description
-}]]></ee:set-payload>
-				</ee:message>
-			</ee:transform>
-			<set-variable value="500" doc:name="Set Variable" doc:id="01495cff-4237-482b-8f0f-1de1c74a65e4" variableName="httpStatus" />
-		</on-error-continue>
-	</error-handler> [STUDIO] -->
-	<error-handler name="GLOBAL-ERROR-HANDLER1" doc:id="218184f1-3283-4c05-851e-be869fa22f64" >
+	<error-handler name="GLOBAL-ERROR-HANDLER" doc:id="218184f1-3283-4c05-851e-be869fa22f64" >
 		<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="dc074fcf-f2c4-4719-8f58-2a72e1982912" type="DB:BAD_SQL_SYNTAX" >
 			<set-variable value="400" doc:name="httpStatus" doc:id="76f83934-c8a9-46d0-b6f3-4d1b15717e1a" variableName="httpStatus" />
 			<ee:transform doc:name="error in SQL query" doc:id="d715e381-fbc8-4223-9396-f4fc62c5f2af" >
@@ -105,7 +64,7 @@ output application/json
 				</ee:message>
 			</ee:transform>
 		</on-error-continue>
-		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate8" doc:id="83adcea9-8a19-4dc6-83df-6e780ceed509" type="HTTP:CONNECTIVITY" >
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="83adcea9-8a19-4dc6-83df-6e780ceed509" type="HTTP:CONNECTIVITY" >
 			<set-variable value="500" doc:name="httpStatus" doc:id="0ee32061-6a84-4656-bd09-03074fb91ab7" variableName="httpStatus" />
 			<ee:transform doc:name="Transform Message" doc:id="fe0f8df9-d42f-44e9-866a-81afe6b03e7b" >
 				<ee:message >
