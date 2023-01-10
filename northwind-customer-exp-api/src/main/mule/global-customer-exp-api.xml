@@ -17,7 +17,7 @@ http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/
 		</http:request-connection>
 	</http:request-config>
 	<http:listener-config name="HTTPS_Listener_config" doc:name="HTTP Listener config" doc:id="ace7b2a2-b185-4e53-837d-dbf0b9bd4a15" >
-		<http:listener-connection host="0.0.0.0" port="${http.port}" readTimeout="300000" protocol="HTTPS">
+		<http:listener-connection host="0.0.0.0" port="${https.port}" readTimeout="300000" protocol="HTTPS">
 			<tls:context >
 				<tls:key-store type="jks" path="server-keystore.jks" keyPassword="group01" password="group01" />
 			</tls:context>
