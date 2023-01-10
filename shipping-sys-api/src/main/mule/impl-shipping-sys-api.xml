@@ -45,17 +45,10 @@ WHERE OfferID = :OfferID ]]></db:sql>
 		<logger level="INFO" doc:name="Logger" doc:id="d651321d-5a56-4b6e-852e-3a3ed3a4f8d2" />
 	</flow>
 	<flow name="check-date-flow" doc:id="67e64a50-d3f8-4445-9d46-01036c60b8d0" >
-<!-- [STUDIO:"Select"]		<db:select doc:name="Select" doc:id="d4423335-a15a-43ac-b50c-2c9b6828154a" config-ref="Database_Config" target="dateApproved" targetValue="#[payload.DateApproved[0]]">
-			<db:sql ><![CDATA[SELECT DateApproved
-FROM offers
-WHERE CustomerID = 'VICTE']]></db:sql>
-			<db:parameter-types />
-		</db:select> [STUDIO] -->
-<!-- [STUDIO:"Set Payload"]		<set-payload value='#[output application/json&#10;&#45;&#45;-&#10;{&#10;    "shipperID": 2,&#10;    "categoryName": "Condiments",&#10;    "postalCode": "44087",&#10;    "shippingDate": "2023-01-06" as Date { format: "yyyy-MM-dd"}&#10;}]' doc:name="Set Payload" doc:id="454a13e7-9670-412d-83f8-6850b73e76c2" /> [STUDIO] -->
-		<ee:transform doc:name="calculating daysBetween &amp; saving into vars.daysBetween" doc:id="40d75de8-f088-4770-a0dc-384f84091405" >
+<!-- [STUDIO:"calculating daysBetween & saving into vars.daysBetween"]		<ee:transform doc:name="calculating daysBetween &amp; saving into vars.daysBetween" doc:id="40d75de8-f088-4770-a0dc-384f84091405" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[output application/json
----
+&#45;&#45;-
 payload]]></ee:set-payload>
 			</ee:message>
 			<ee:variables >
@@ -67,31 +60,33 @@ var shipDate = payload.shippingDate as Date
 
 var timeBetween = Periods::between(shipDate, formattedApprDate)
  
----
+&#45;&#45;-
 {
 	"days": timeBetween.days as Number
 }]]></ee:set-variable>
 			</ee:variables>
-		</ee:transform>
-		<try doc:name="Try" doc:id="ed1e94e6-a8b5-46d1-afff-ced06ba684b1" >
-			<validation:is-true doc:name="Is true" doc:id="832f00c4-6888-4265-a02c-1b60327ca9bc" config-ref="Validation_Config_checking_dates" expression="#[vars.daysBetween.days &lt;= 15]" message='#[%dw 2.0&#10;output application/json&#10;---&#10;{&#10;	"message": "Shipping not available with this shipperID" ++ payload.shipperID&#10;}]'/>
-			<ee:transform doc:name="happy path: payload with shipping details" doc:id="e70d1cc5-d714-4370-980c-c909cca9c662" >
-				<ee:message >
-					<ee:set-payload ><![CDATA[%dw 2.0
+		</ee:transform> [STUDIO] -->
+		<ee:transform doc:name="calculating daysBetween &amp; saving into vars.daysBetween" doc:id="a3ee75f0-a2f8-4c70-b5f9-51734f50d622" >
+			<ee:message >
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="daysBetween" ><![CDATA[%dw 2.0
 output application/json
 ---
-	payload
-]]></ee:set-payload>
-				</ee:message>
-			</ee:transform>
-		</try>
-<!-- [STUDIO:"Choice"]		<choice doc:name="Choice" doc:id="1ca5b7dd-0de1-4884-8dfe-df2adf56f9d7" >
+{
+	
+"days": daysBetween(vars.dateApproved as Date, payload.shippingDate as Date)
+
+}]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<choice doc:name="Choice" doc:id="1ca5b7dd-0de1-4884-8dfe-df2adf56f9d7" >
 			<when expression="#[vars.daysBetween.days &lt;= 15]">
 				<ee:transform doc:name="happy path: payload with shipping details" doc:id="e3c45dd6-48b7-4d4e-b538-9dc3ba09a151" >
 					<ee:message >
 						<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
-&#45;&#45;-
+---
 	payload
 ]]></ee:set-payload>
 					</ee:message>
@@ -103,31 +98,16 @@ output application/json
 					<ee:message >
 						<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
-&#45;&#45;-
+---
 {
-	"message": "Shipping not available with this shipperID" ++ payload.shipperID
+	"message": "Shipping not available with shipperID (shipVia) " ++ payload.shipperID
 }]]></ee:set-payload>
 					</ee:message>
 				</ee:transform>
-				<set-variable value="400" doc:name="Set Variable" doc:id="85610b25-ed8f-483c-9232-50e0a0758d24" variableName="httpStatus"/>
 			
+
 </otherwise>
-		</choice> [STUDIO] -->
+		</choice>
 		<logger level="INFO" doc:name="Logger" doc:id="d5084d5b-9230-4015-8758-be1d23e8c3c5" />
 	</flow>
-<!-- [STUDIO:"impl-shipping-sys-apiFlow1"]	<flow name="impl-shipping-sys-apiFlow1" doc:id="4d58ca6a-86a1-4541-9dc7-fdfdfe2a22b0" >
-		<http:listener doc:name="Listener" doc:id="d93e1440-1af5-4c67-8ab1-d21223f37b89" config-ref="HTTP_Listener_config" path="/testi"/>
-		<logger level="INFO" doc:name="Logger" doc:id="e0dc150a-1752-4ea9-9398-4df6c9c0a0ca" />
-		<db:select doc:name="Select" doc:id="325667df-56c2-4d51-8386-c2e28ec60a13" config-ref="Database_Config">
-			<db:sql ><![CDATA[SELECT * FROM offers]]></db:sql>
-		</db:select>
-		<ee:transform doc:name="Transform Message" doc:id="ed9553c5-cb9c-4754-a405-79d63f5490c0" >
-			<ee:message >
-				<ee:set-payload ><![CDATA[%dw 2.0
-output application/json
-&#45;&#45;-
-payload]]></ee:set-payload>
-			</ee:message>
-		</ee:transform>
-	</flow> [STUDIO] -->
 </mule>
