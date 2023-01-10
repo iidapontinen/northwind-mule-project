@@ -185,7 +185,7 @@ output application/json
 output application/json
 ---
 {
-"message": "Pitaa miettia",
+"message": "BAD REQUEST try again",
 "status": vars.httpStatus,
 "description": error.description
 }]]></ee:set-payload>
@@ -200,7 +200,7 @@ output application/json
 output application/json
 ---
 {
-"message": "Error occured in System API",
+"message": "Error occurred in System API",
 "status": vars.httpStatus,
 "description": error.description
 }]]></ee:set-payload>

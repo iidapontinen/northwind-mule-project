@@ -183,7 +183,7 @@ output application/json
 output application/json
 ---
 {
-"message": "Pitaa miettia",
+"message": "BAD REQUEST try again",
 "status": vars.httpStatus,
 "description": error.description
 }]]></ee:set-payload>
