@@ -74,7 +74,7 @@ var timeBetween = Periods::between(shipDate, formattedApprDate)
 			</ee:variables>
 		</ee:transform>
 		<try doc:name="Try" doc:id="ed1e94e6-a8b5-46d1-afff-ced06ba684b1" >
-			<validation:is-true doc:name="Is true" doc:id="832f00c4-6888-4265-a02c-1b60327ca9bc" config-ref="Validation_Config_dates" expression="#[vars.daysBetween.days &lt;= 15]" message='#[%dw 2.0&#10;output application/json&#10;---&#10;{&#10;	"message": "Shipping not available with this shipperID" ++ payload.shipperID&#10;}]'/>
+			<validation:is-true doc:name="Is true" doc:id="832f00c4-6888-4265-a02c-1b60327ca9bc" config-ref="Validation_Config_checking_dates" expression="#[vars.daysBetween.days &lt;= 15]" message='#[%dw 2.0&#10;output application/json&#10;---&#10;{&#10;	"message": "Shipping not available with this shipperID" ++ payload.shipperID&#10;}]'/>
 			<ee:transform doc:name="happy path: payload with shipping details" doc:id="e70d1cc5-d714-4370-980c-c909cca9c662" >
 				<ee:message >
 					<ee:set-payload ><![CDATA[%dw 2.0
