@@ -24,7 +24,6 @@
             </http:error-response>
         </http:listener>
         <apikit:console config-ref="order-pro-api-config" />
-		<error-handler />
     </flow>
     <flow name="patch:\proposedoffers\(customerID)\(offerID):application\json:order-pro-api-config">
         <!-- [STUDIO:"Transform Message"]        <ee:transform>
