@@ -1,38 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
-	xmlns:db="http://www.mulesoft.org/schema/mule/db"
-	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+<mule xmlns:validation="http://www.mulesoft.org/schema/mule/validation" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
-http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd">
 	<flow name="shippingdetails-post" doc:id="373dce71-4aa2-4291-a9cb-c87c1a0a8b7e" >
 		<logger level="INFO" doc:name="Logger" doc:id="bd13fa9f-4f17-45b7-ad9b-35d6611077ea" />
 		<set-variable value="#[payload.offerID]" doc:name="offerID" doc:id="cf4fb40c-d7b3-4c3c-831d-4472853f30d7" variableName="offerID"/>
 		<set-variable value="#[payload.employeeID]" doc:name="employeeID" doc:id="7768a276-5402-4500-961c-e0f7804d2276" variableName="employeeID"/>
 		<set-variable value="#[payload.shipVia]" doc:name="shipVia" doc:id="ce682e39-f8cb-4769-b64c-54109a505591" variableName="shipVia"/>
-		<db:select doc:name="DateApproved from offers" doc:id="e6485804-4693-40ac-bf2c-491f04565242" config-ref="Database_Config" target="dateApproved" targetValue="#[payload.DateApproved]">
+		<try doc:name="Try if offerID exists" doc:id="7e900042-99f7-4bd4-89b2-c54bab702b6f">
+			<db:select doc:name="check from database" doc:id="48f318e7-1ef4-4fdc-b51d-8168b94b30dc" config-ref="Database_Config">
+				<db:sql><![CDATA[SELECT OfferID
+FROM offers
+WHERE OfferID = :OfferID
+]]></db:sql>
+				<db:input-parameters><![CDATA[#["OfferID": vars.offerID]]]></db:input-parameters>
+			</db:select>
+			<validation:is-not-null doc:name="Is not null" doc:id="48395952-869e-4fa8-8e58-5ec9f6865fa5" value="#[payload.OfferID]" config-ref="Validation_Config" message="offerID you gave doesn't exist" />
+		</try>
+		<db:select doc:name="DateApproved from offers + save target" doc:id="e6485804-4693-40ac-bf2c-491f04565242" config-ref="Database_Config" target="dateApproved" targetValue="#[payload.DateApproved]">
 			<db:sql ><![CDATA[SELECT DateApproved
 FROM offers
 WHERE OfferID = :offerID]]></db:sql>
 			<db:input-parameters ><![CDATA[#["offerID": vars.'offerID']]]></db:input-parameters>
 		</db:select>
-		<db:select doc:name="CustomerID from offers" doc:id="1b818a84-3332-4d6c-bc0b-3e93627bc318" target="customerID" targetValue="#[payload.customerID]" config-ref="Database_Config">
+		<db:select doc:name="CustomerID from offers + save target" doc:id="1b818a84-3332-4d6c-bc0b-3e93627bc318" target="customerID" targetValue="#[payload.customerID]" config-ref="Database_Config">
 			<db:sql ><![CDATA[SELECT CustomerID
 FROM offers
 WHERE OfferID = :offerID]]></db:sql>
 			<db:input-parameters ><![CDATA[#["offerID" : vars.offerID]]]></db:input-parameters>
 		</db:select>
-		<ee:transform doc:name="payload ++ dateApproved" doc:id="bc6a9235-f4df-490f-961a-fc707b537c3f" >
+		<ee:transform doc:name="create payload from vars" doc:id="bc6a9235-f4df-490f-961a-fc707b537c3f" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
 ---
 
-	payload ++ 
 {
+	"employeeID": vars.employeeID,
+	"offerID": vars.offerID,
+	"shipVia": vars.shipVia,
 	"dateApproved": vars.dateApproved[0]
-	
 }]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
