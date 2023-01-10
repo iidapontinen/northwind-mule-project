@@ -2,7 +2,7 @@
 <mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd ">
     <apikit:config name="offer-sys-api-config" api="offer-sys-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
     <flow name="offer-sys-api-main">
-        <http:listener doc:name="Listener" doc:id="584070d8-ed94-4735-b506-2278d1ebbd26" path="/api/*" config-ref="HTTP_Listener_config1" />
+        <http:listener doc:name="Listener" doc:id="813c909f-b164-40dd-8a26-ac4de9896e00" path="/api/*" config-ref="HTTP_Listener_config1" />
         <apikit:router config-ref="offer-sys-api-config" />
     </flow>
     <flow name="offer-sys-api-console">
@@ -16,21 +16,6 @@
             </http:error-response>
         </http:listener>
         <apikit:console config-ref="offer-sys-api-config" />
-        <error-handler>
-<!-- [STUDIO:"On Error Propagate"]            <on-error-propagate type="APIKIT:NOT_FOUND">
-                <ee:transform>
-                    <ee:message>
-                        <ee:set-payload><![CDATA[%dw 2.0
-output application/json
-&#45;&#45;-
-{message: "Resource not found"}]]></ee:set-payload>
-                    </ee:message>
-                    <ee:variables>
-                        <ee:set-variable variableName="httpStatus">404</ee:set-variable>
-                    </ee:variables>
-                </ee:transform>
-            </on-error-propagate> [STUDIO] -->
-        </error-handler>
     </flow>
     <flow name="get:\offers:offer-sys-api-config">
         <!-- [STUDIO:"Transform Message"]        <ee:transform>
@@ -70,7 +55,7 @@ output application/json
 }]]></ee:set-payload>
             </ee:message>
         </ee:transform> [STUDIO] -->
-        <flow-ref doc:name="Flow Reference" doc:id="67d295b3-766f-451b-adc1-61d127c1fabb" name="get-all-offers-list" />
+        <flow-ref doc:name="Flow Reference" doc:id="4b164179-6d5c-4232-a4b2-8fc93d37530c" name="get-all-offers-list" />
     </flow>
     <flow name="post:\offers:application\json:offer-sys-api-config">
         <!-- [STUDIO:"Transform Message"]        <ee:transform>
@@ -83,10 +68,10 @@ output application/json
 }]]></ee:set-payload>
             </ee:message>
         </ee:transform> [STUDIO] -->
-        <flow-ref doc:name="Flow Reference" doc:id="a8c5d40f-520c-4175-90cc-6bf4e5302030" name="post-new-offer" />
+        <flow-ref doc:name="Flow Reference" doc:id="183204bc-8f09-456e-8d4f-337e1711d824" name="post-new-offer" />
     </flow>
     <flow name="patch:\offers:application\json:offer-sys-api-config">
-        <flow-ref doc:name="Flow Reference" doc:id="b3e11194-3f68-4c47-b6b0-3cf2aa6b4f32" name="patch-offer-flow" />
+        <flow-ref doc:name="Flow Reference" doc:id="1c1556cf-08ec-4ac8-b329-80f0f375d0e9" name="patch-offer-flow" />
         <!-- [STUDIO:"Transform Message"]		<ee:transform>
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
@@ -99,7 +84,7 @@ output application/json
         </ee:transform> [STUDIO] -->
     </flow>
     <flow name="get:\offers\(customerID):offer-sys-api-config">
-<flow-ref doc:name="Flow Reference" doc:id="21b25b79-5e7d-476b-8eca-665b69e613bf" name="get-offer-by-customer-ID-sys-api-flow"/>
+<flow-ref doc:name="Flow Reference" doc:id="0f986edc-1698-4f85-90bc-c5eb28d1e04b" name="get-offer-by-customer-ID-sys-api-flow"/>
 <!-- [STUDIO:"Transform Message"]		        <ee:transform>
             <ee:variables>
                 <ee:set-variable variableName="customerID">attributes.uriParams.'customerID'</ee:set-variable>

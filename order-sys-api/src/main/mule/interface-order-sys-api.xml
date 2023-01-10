@@ -12,6 +12,33 @@
             </http:error-response>
         </http:listener>
         <apikit:router config-ref="order-sys-api-config" />
+          </flow>
+    <flow name="order-sys-api-console">
+        <http:listener path="/console/*" config-ref="HTTP_Listener_config">
+            <http:response statusCode="#[vars.httpStatus default 200]">
+                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+            </http:response>
+            <http:error-response statusCode="#[vars.httpStatus default 500]">
+                <http:body><![CDATA[#[payload]]]></http:body>
+                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+            </http:error-response>
+        </http:listener>
+        <apikit:console config-ref="order-sys-api-config" />
+        <error-handler>
+<!-- [STUDIO:"On Error Propagate"]            <on-error-propagate type="APIKIT:NOT_FOUND">
+                <ee:transform>
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+&#45;&#45;-
+{message: "Resource not found"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus">404</ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate> [STUDIO] -->
+        </error-handler>
     </flow>
     <flow name="get:\orders:order-sys-api-config">
         <flow-ref doc:name="Flow Reference" doc:id="622a61a9-990d-46cc-a4b6-bb0993731aec" name="get-orders-flow" />
@@ -84,13 +111,13 @@ output application/json
         </ee:transform> [STUDIO] -->
     </flow>
     <flow name="get:\orders\(customerID):order-sys-api-config">
-        <flow-ref doc:name="Flow Reference" doc:id="5bb96b8a-b84a-4742-8429-15dc5121958d" name="get-orders-for-customer-by-customerID-flow"/>
-<!-- [STUDIO:"Transform Message"]		<ee:transform>
+        <flow-ref doc:name="Flow Reference" doc:id="5bb96b8a-b84a-4742-8429-15dc5121958d" name="get-orders-for-customer-by-customerID-flow" />
+        <!-- [STUDIO:"Transform Message"]		<ee:transform>
             <ee:variables>
                 <ee:set-variable variableName="customerID">attributes.uriParams.'customerID'</ee:set-variable>
             </ee:variables>
         </ee:transform> [STUDIO] -->
-<!-- [STUDIO:"Transform Message"]        <ee:transform>
+        <!-- [STUDIO:"Transform Message"]        <ee:transform>
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
