@@ -20,7 +20,6 @@ http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mu
 		<http:request-connection host="${shipping.ext.host}" port="${shipping.ext.port}" />
 	</http:request-config>
 	<configuration doc:name="Configuration" doc:id="f50049d0-0ea0-4127-a4e2-11d7adb4fae8" defaultErrorHandler-ref="GLOBAL-ERROR-HANDLER" />
-	<validation:config name="Validation_Config_checking_dates" doc:name="Validation Config" doc:id="b2331e0f-cce3-4825-94cd-81388195955a" />
 	<error-handler name="GLOBAL-ERROR-HANDLER" doc:id="b88a92f4-2d3b-40fa-85bb-625f7b6c35e2" >
 		<on-error-propagate type="APIKIT:BAD_REQUEST">
                 <ee:transform>

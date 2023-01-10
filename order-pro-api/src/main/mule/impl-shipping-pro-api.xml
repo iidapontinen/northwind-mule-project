@@ -7,6 +7,57 @@ http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/cu
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
 http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd">
+	<sub-flow name="shipping-pro-succesful-shipping" doc:id="7723a671-5bee-4a59-8885-f1d4734cb59a" >
+		<set-variable value="#[payload.shippingDate]" doc:name="shippingDate" doc:id="794c0924-71d3-4a86-88d3-caecba554e5e" variableName="shippingDate" />
+		<ee:transform doc:name="payload from sys shipping api ++ vars" doc:id="11c89772-5e11-49f9-b3fe-d276af4e7a82">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+payload ++ 
+{
+	"customerID": vars.customerID[0],
+	"dateApproved": vars.dateApproved[0] as Date,
+	"employeeID": vars.employeeID,
+	"offerID": vars.offerID,
+	"shipVia": vars.shipVia,
+	"shippedDate": vars.shippingDate
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<http:request method="POST" doc:name="to order-sys-api" doc:id="71534533-55bc-4c4e-85e7-6cbe0d69bff8" config-ref="order_sapi_HTTP_Request_configuration" path="/api/orders" responseTimeout="300000" />
+		<set-variable value="#[payload.orderID]" doc:name="orderID" doc:id="3aaacf56-842f-48ce-af0a-caf5c13895e6" variableName="orderID" />
+		<ee:transform doc:name="payload from order sys api ++ offerID" doc:id="37469112-0335-44b2-9b6e-c6400c43ebfd">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+payload ++
+{
+	"offerID": vars.offerID,
+	"status": "Shipped"
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<http:request method="PATCH" doc:name="to offer sapi" doc:id="87527340-aed5-4b26-8022-3e7057b47a6b" config-ref="HTTP_Request_offer_sapi" path="/api/offers" responseTimeout="300000" />
+		<ee:transform doc:name="Order created successfully ++ orderID &amp; shippingDate" doc:id="51301f7f-412d-4bb4-87d3-bb7299a37252">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"message": "Order created successfully."
+}
+
+++ 
+
+{
+	"orderID": vars.orderID, "shippingDate": vars.shippingDate
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="c67612c1-2b02-4384-9691-cb03fef168e0" />
+	</sub-flow>
 	<flow name="shippingdetails-post" doc:id="373dce71-4aa2-4291-a9cb-c87c1a0a8b7e" >
 		<logger level="INFO" doc:name="Logger" doc:id="bd13fa9f-4f17-45b7-ad9b-35d6611077ea" />
 		<set-variable value="#[payload.offerID]" doc:name="offerID" doc:id="cf4fb40c-d7b3-4c3c-831d-4472853f30d7" variableName="offerID"/>
@@ -49,54 +100,11 @@ output application/json
 			</ee:message>
 		</ee:transform>
 		<http:request method="POST" doc:name="to shipping-sys-api" doc:id="b7bc6ef6-9286-4603-82c4-045b6ad1f3ab" config-ref="HTTP_Request_shipping_sapi" path="/api/shippingdetails" responseTimeout="300000"/>
-		<set-variable value="#[payload.shippingDate]" doc:name="shippingDate" doc:id="794c0924-71d3-4a86-88d3-caecba554e5e" variableName="shippingDate"/>
-		<ee:transform doc:name="payload from sys shipping api ++ vars" doc:id="11c89772-5e11-49f9-b3fe-d276af4e7a82" >
-			<ee:message >
-				<ee:set-payload ><![CDATA[%dw 2.0
-output application/json
----
-payload ++ 
-{
-	"customerID": vars.customerID[0],
-	"dateApproved": vars.dateApproved[0] as Date,
-	"employeeID": vars.employeeID,
-	"offerID": vars.offerID,
-	"shipVia": vars.shipVia,
-	"shippedDate": vars.shippingDate
-}]]></ee:set-payload>
-			</ee:message>
-		</ee:transform>
-		<http:request method="POST" doc:name="to order-sys-api" doc:id="71534533-55bc-4c4e-85e7-6cbe0d69bff8" config-ref="order_sapi_HTTP_Request_configuration" path="/api/orders" responseTimeout="300000"/>
-		<set-variable value="#[payload.orderID]" doc:name="orderID" doc:id="3aaacf56-842f-48ce-af0a-caf5c13895e6" variableName="orderID"/>
-		<ee:transform doc:name="payload from order sys api ++ offerID" doc:id="37469112-0335-44b2-9b6e-c6400c43ebfd" >
-			<ee:message >
-				<ee:set-payload ><![CDATA[%dw 2.0
-output application/json
----
-payload ++
-{
-	"offerID": vars.offerID,
-	"status": "Shipped"
-}]]></ee:set-payload>
-			</ee:message>
-		</ee:transform>
-		<http:request method="PATCH" doc:name="to offer sapi" doc:id="87527340-aed5-4b26-8022-3e7057b47a6b" config-ref="HTTP_Request_offer_sapi" path="/api/offers" responseTimeout="300000"/>
-		<ee:transform doc:name="Order created successfully ++ orderID &amp; shippingDate" doc:id="51301f7f-412d-4bb4-87d3-bb7299a37252" >
-			<ee:message >
-				<ee:set-payload ><![CDATA[%dw 2.0
-output application/json
----
-{
-	"message": "Order created successfully."
-}
-
-++ 
-
-{
-	"orderID": vars.orderID, "shippingDate": vars.shippingDate
-}]]></ee:set-payload>
-			</ee:message>
-		</ee:transform>
-		<logger level="INFO" doc:name="Logger" doc:id="c67612c1-2b02-4384-9691-cb03fef168e0" />
+		<choice doc:name="Choice" doc:id="b6f7dae8-0739-436a-8769-f1aa676d91ce" >
+			<when expression="#[payload.shippingDate != null]">
+				<flow-ref doc:name="shipping-pro-succesful-shipping" doc:id="49d95e40-1da9-470e-b9a5-6b955b4d1b18" name="shipping-pro-succesful-shipping" />
+			</when>
+		</choice>
+		<logger level="INFO" doc:name="Logger" doc:id="8148bec7-8e6d-4a28-9058-08deaeb15e52" />
 	</flow>
 </mule>
