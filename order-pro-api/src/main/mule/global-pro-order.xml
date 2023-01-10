@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:validation="http://www.mulesoft.org/schema/mule/validation"
+	xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="a921a0f2-9d21-4ec5-b671-0da507ba65d8" >
+		<http:listener-connection host="0.0.0.0" port="${http.port}" readTimeout="6000000"/>
+	</http:listener-config>
+	<global-property doc:name="Global Property" doc:id="e38db926-c4e5-4753-9171-401a7546b0a6" name="env" value="dev" />
+	<configuration-properties doc:name="Configuration properties" doc:id="fdc53db4-a996-4362-b917-efcf5bc69281" file="${env}.yaml" />
+	<db:config name="Database_Config" doc:name="Database Config" doc:id="f9dd9546-0895-4118-8772-1d3b84566f7d" >
+		<db:my-sql-connection host="${db.host}" port="${db.port}" user="${db.user}" password="${db.password}" database="${db.database}" />
+	</db:config>
+	<http:request-config name="HTTP_Request_offer_sapi" doc:name="HTTP Request configuration" doc:id="3911edba-5591-4828-8152-d6bb95b55552">
+		<http:request-connection host="${sapi.offer.host}" port="${sapi.offer.port}" connectionIdleTimeout="6000000"/>
+</http:request-config>
+	<http:request-config name="order_sapi_HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="87752a4a-b982-4ba0-91cb-25469ad18b59" >
+		<http:request-connection host="${sapi.order.host}" port="${sapi.order.port}"/>
+</http:request-config>
+	<http:request-config name="HTTP_Request_shipping_sapi" doc:name="HTTP Request configuration" doc:id="036f268f-d578-411b-be7f-605be79675df" >
+		<http:request-connection host="${sapi.shipping.host}" port="${sapi.shipping.port}" />
+	</http:request-config>
+	<validation:config name="Validation_Config" doc:name="Validation Config" doc:id="f5e99c59-3973-4b78-9365-f867f13b860b" />
+	<configuration doc:name="Configuration" doc:id="eed10014-1e0d-4245-befa-0056fecacc97" defaultErrorHandler-ref="GLOBAL-ERROR-HANDLER" />
+	<error-handler name="GLOBAL-ERROR-HANDLER" doc:id="4d605f71-a7f6-40d0-a7e2-35b4ef3c7c18" >
+		<on-error-propagate type="APIKIT:BAD_REQUEST">
+                <ee:transform>
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Bad request"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus">400</ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+            <on-error-propagate type="APIKIT:NOT_FOUND">
+                <ee:transform>
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Resource not found"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus">404</ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+            <on-error-propagate type="APIKIT:METHOD_NOT_ALLOWED">
+                <ee:transform>
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Method not allowed"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus">405</ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+            <on-error-propagate type="APIKIT:NOT_ACCEPTABLE">
+                <ee:transform>
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Not acceptable"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus">406</ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+            <on-error-propagate type="APIKIT:UNSUPPORTED_MEDIA_TYPE">
+                <ee:transform>
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Unsupported media type"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus">415</ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+            <on-error-propagate type="APIKIT:NOT_IMPLEMENTED">
+                <ee:transform>
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Not Implemented"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus">501</ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+                        <on-error-propagate type="APIKIT:NOT_FOUND" enableNotifications="true" logException="true">
+                <ee:transform>
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Resource not found"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus">404</ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="840798d4-3403-4c51-b62e-0c71d6fdb13e" type="VALIDATION:NULL">
+			<set-variable value="400" doc:name="httpStatus" doc:id="ec9353e9-eac1-448c-9549-be5c4c6041b5" variableName="httpStatus"/>
+			<ee:transform doc:name="Given offerId doesn't exist" doc:id="61eac45b-dd4f-4f37-be8d-186030576014" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+"message": "Given offerId doesn't exist"
+}]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+		</on-error-propagate>
+		<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="853812d6-d7ab-498f-b933-a90f23780728" type="DB:BAD_SQL_SYNTAX" >
+			<set-variable value="400" doc:name="httpStatus" doc:id="cdd4dcca-43fe-441a-87b3-fc70f603de31" variableName="httpStatus" />
+			<ee:transform doc:name="error in SQL query" doc:id="42ccae15-e88a-458e-972f-41765883219d" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+"message": "There is an error in SQL query in system API",
+"status": vars.httpStatus,
+"description": error.description
+}
+]]></ee:set-payload>
+				</ee:message>
+				<ee:variables />
+			</ee:transform>
+		</on-error-continue>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="f0813bf8-506b-42f1-9fb5-406f0298dd96" type="DB:CONNECTIVITY" >
+			<set-variable value="500" doc:name="httpStatus" doc:id="49e1cb4d-1d02-40de-bea7-a46f6833e687" variableName="httpStatus" />
+			<ee:transform doc:name="Failed to connect to Database" doc:id="06fe9949-4f94-463f-8301-5ddb3f8f42c3" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+"message": "Failed to connect to Database",
+"status": vars.httpStatus,
+"description": error.description
+}]]></ee:set-payload>
+				</ee:message>
+				<ee:variables />
+			</ee:transform>
+		</on-error-propagate>
+		<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="ced21b45-d710-4795-bec9-b7a0d7ea9112" type="DB:QUERY_EXECUTION" >
+			<set-variable value="400" doc:name="httpStatus" doc:id="6f780fcf-1740-4507-a8e7-2b785e6a02ac" variableName="httpStatus" />
+			<ee:transform doc:name="Transform Message" doc:id="fc62110b-831e-4801-ae6f-f8301f6c00a8" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+"message": "Can not add data to DB",
+"status": vars.httpStatus,
+"description": error.description
+}]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+		</on-error-continue>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="2ff456d0-2240-4798-9b72-140daefc5076" type="HTTP:CONNECTIVITY" >
+			<set-variable value="500" doc:name="httpStatus" doc:id="f2975ed5-719b-4b26-beed-4322a37c3c56" variableName="httpStatus" />
+			<ee:transform doc:name="Transform Message" doc:id="0908bb43-7444-44cf-bb3a-edc2670618d1" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+"message": "Connection failed in System api",
+"status": vars.httpStatus,
+"description": error.description
+}
+
+
+]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+		</on-error-propagate>
+		<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="cc3076c2-1e78-4ba3-a3da-0354f43976dd" type="HTTP:BAD_REQUEST" >
+			<set-variable value="400" doc:name="httpStatus" doc:id="06842ffd-83e3-42a2-8392-1f5ad3ced301" variableName="httpStatus" />
+			<ee:transform doc:name="Transform Message" doc:id="87470b47-95b4-45b2-8a43-78af396e97ee" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+"message": "BAD REQUEST try again",
+"status": vars.httpStatus,
+"description": error.description
+}]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+		</on-error-continue>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="d52be75c-1308-4bdf-ae47-6354a2cebb77" type="ANY" >
+			<set-variable value="400" doc:name="httpStatus" doc:id="47b263bb-d535-4e62-bdce-975129decbd9" variableName="httpStatus" />
+			<ee:transform doc:name="Transform Message" doc:id="2b62076b-d7c5-4758-aefb-4cd92c652d3b" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+"message": "Error occurred in System API",
+"status": vars.httpStatus,
+"description": error.description
+}]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+		</on-error-propagate>
+	</error-handler>
+</mule>
