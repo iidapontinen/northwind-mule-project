@@ -16,8 +16,8 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 	</http:listener-config>
 	<configuration-properties doc:name="Configuration properties" doc:id="4da96494-ee51-46d8-b955-a5f9a5c4ecd4" file="${env}.yaml" />
 	<global-property doc:name="Global Property" doc:id="62130445-de20-44db-9fd7-1c84ff3c79e1" name="env" value="dev" />
-	<configuration doc:name="Configuration" doc:id="c879a856-0f22-4505-b88f-3b11e2c132f8" defaultErrorHandler-ref="GLOBALERRORHANDLER" />
-	<error-handler name="GLOBALERRORHANDLER" doc:id="719b381d-763e-48bb-bcfd-a065eddde5bf" >
+	<configuration doc:name="Configuration" doc:id="c879a856-0f22-4505-b88f-3b11e2c132f8" defaultErrorHandler-ref="GLOBAL-ERROR-HANDLER" />
+	<error-handler name="GLOBAL-ERROR-HANDLER" doc:id="719b381d-763e-48bb-bcfd-a065eddde5bf" >
 		<on-error-propagate type="APIKIT:BAD_REQUEST">
                 <ee:transform>
                     <ee:message>
@@ -152,7 +152,7 @@ output application/json
 output application/json
 ---
 {
-"message": "Can not add details to DB",
+"message": "Can not add data to DB",
 "status": vars.httpStatus,
 "description": error.description
 }]]></ee:set-payload>
@@ -160,7 +160,7 @@ output application/json
 			</ee:transform>
 		</on-error-continue>
 		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="6e55f3b6-931a-4581-9a1f-dfeabc1ceea6" type="HTTP:CONNECTIVITY">
-			<set-variable value="400" doc:name="httpStatus" doc:id="640c50cf-9914-4950-939b-58bcc08e739d" variableName="httpStatus"/>
+			<set-variable value="500" doc:name="httpStatus" doc:id="640c50cf-9914-4950-939b-58bcc08e739d" variableName="httpStatus"/>
 			<ee:transform doc:name="Transform Message" doc:id="1e12201c-99d1-4196-87f2-e0445a5a4683" >
 				<ee:message >
 					<ee:set-payload ><![CDATA[%dw 2.0
