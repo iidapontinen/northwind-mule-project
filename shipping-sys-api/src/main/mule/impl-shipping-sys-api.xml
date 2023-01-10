@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
-	xmlns:db="http://www.mulesoft.org/schema/mule/db"
-	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+<mule xmlns:validation="http://www.mulesoft.org/schema/mule/validation" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
-http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd">
 	<flow name="impl-shipping-sys-apiFlow" doc:id="693ed158-14ec-4115-8445-acd8573b8b69" >
 		<logger level="INFO" doc:name="Logger" doc:id="06f7db86-a447-4038-a178-7254e7520a10" />
 <!-- [STUDIO:"temporary payload for testing"]		<set-payload value='#[output application/json&#10;&#45;&#45;-&#10;{&#10;	"offerID": "1",&#10;	"dateApproved": "2022-04-11 00:00:00",&#10;	"shipperID": "1"&#10;}]' doc:name="temporary payload for testing" doc:id="f8cea91b-b014-44dd-a3e5-a258b3cc18f7" /> [STUDIO] -->
@@ -72,13 +73,25 @@ var timeBetween = Periods::between(shipDate, formattedApprDate)
 }]]></ee:set-variable>
 			</ee:variables>
 		</ee:transform>
-		<choice doc:name="Choice" doc:id="1ca5b7dd-0de1-4884-8dfe-df2adf56f9d7" >
+		<try doc:name="Try" doc:id="ed1e94e6-a8b5-46d1-afff-ced06ba684b1" >
+			<validation:is-true doc:name="Is true" doc:id="832f00c4-6888-4265-a02c-1b60327ca9bc" config-ref="Validation_Config_dates" expression="#[vars.daysBetween.days &lt;= 15]" message='#[%dw 2.0&#10;output application/json&#10;---&#10;{&#10;	"message": "Shipping not available with this shipperID" ++ payload.shipperID&#10;}]'/>
+			<ee:transform doc:name="happy path: payload with shipping details" doc:id="e70d1cc5-d714-4370-980c-c909cca9c662" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+	payload
+]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+		</try>
+<!-- [STUDIO:"Choice"]		<choice doc:name="Choice" doc:id="1ca5b7dd-0de1-4884-8dfe-df2adf56f9d7" >
 			<when expression="#[vars.daysBetween.days &lt;= 15]">
 				<ee:transform doc:name="happy path: payload with shipping details" doc:id="e3c45dd6-48b7-4d4e-b538-9dc3ba09a151" >
 					<ee:message >
 						<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
----
+&#45;&#45;-
 	payload
 ]]></ee:set-payload>
 					</ee:message>
@@ -90,7 +103,7 @@ output application/json
 					<ee:message >
 						<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
----
+&#45;&#45;-
 {
 	"message": "Shipping not available with this shipperID" ++ payload.shipperID
 }]]></ee:set-payload>
@@ -99,7 +112,7 @@ output application/json
 				<set-variable value="400" doc:name="Set Variable" doc:id="85610b25-ed8f-483c-9232-50e0a0758d24" variableName="httpStatus"/>
 			
 </otherwise>
-		</choice>
+		</choice> [STUDIO] -->
 		<logger level="INFO" doc:name="Logger" doc:id="d5084d5b-9230-4015-8758-be1d23e8c3c5" />
 	</flow>
 <!-- [STUDIO:"impl-shipping-sys-apiFlow1"]	<flow name="impl-shipping-sys-apiFlow1" doc:id="4d58ca6a-86a1-4541-9dc7-fdfdfe2a22b0" >
